@@ -1,0 +1,8 @@
+<context id="fisheryvillage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://repast.org/scenario/context">
+  	<projection id="space" type="continuous space" />
+  	<projection id="grid" type="grid" />
+  	<projection id="couple network" type="network" />
+  	<projection id="children network" type="network" />
+  	<projection id="property network" type="network" />
+  	<projection id="village value layer" type="value layer"/>
+</context>

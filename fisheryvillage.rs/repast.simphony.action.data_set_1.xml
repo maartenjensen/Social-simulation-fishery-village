@@ -1,0 +1,67 @@
+<repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
+  <name>Human by age</name>
+  <type>AGGREGATE</type>
+  <inclTick>true</inclTick>
+  <inclBatchRun>false</inclBatchRun>
+  <inclRandomSeed>false</inclRandomSeed>
+  <scheduleParams>
+    <start>1.0</start>
+    <interval>1.0</interval>
+    <priority>-Infinity</priority>
+    <pType>LAST</pType>
+    <duration>-1.0</duration>
+    <frequency>REPEAT</frequency>
+    <hashCode>1800211978</hashCode>
+  </scheduleParams>
+  <atEnd>false</atEnd>
+  <methodDataSources class="linked-hash-map">
+    <entry>
+      <string>N [0 - 17]</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N [0 - 17]</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getNumberOfChildren</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N [18 - 39]</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N [18 - 39]</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getNumberOfAdultsYoung</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N [40 - 64]</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N [40 - 64]</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getNumberOfAdultsOld</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N [65 - 74]</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N [65 - 74]</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getNumberOfElderlyYoung</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N [75 - ...]</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N [75 - ...]</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getNumberOfElderlyOld</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
+  <customNADataSources class="linked-hash-map"/>
+  <customAggDataSources class="linked-hash-map"/>
+</repast.simphony.data2.engine.DataSetDescriptor>
