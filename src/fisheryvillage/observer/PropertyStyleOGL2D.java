@@ -2,9 +2,10 @@ package fisheryvillage.observer;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.IOException;
+import java.util.HashMap;
+
 import fisheryvillage.common.Constants;
-import fisheryvillage.property.HomelessCare;
-import fisheryvillage.property.House;
 import fisheryvillage.property.Property;
 import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
 import saf.v3d.scene.Position;
@@ -14,21 +15,23 @@ public class PropertyStyleOGL2D extends DefaultStyleOGL2D {
 
 	@Override
 	public VSpatial getVSpatial(Object agent, VSpatial spatial) {
-	    if (spatial == null) {
+		if (agent instanceof Property) {
+			// Create spatials
+			if (spatial == null) {
 	    	
-	    	VSpatial spatialImage = null;
-	    	if (agent instanceof House) {
-	    		spatialImage = shapeFactory.createRectangle(Constants.GRID_CELL_SIZE, Constants.GRID_CELL_SIZE);//createImageFromPath(Constants.ICON_HOUSE);
+	    		Property property = (Property) agent;
+	    		HashMap<Boolean, VSpatial> spatialImages = new HashMap<Boolean, VSpatial>();
+		    	spatialImages.put(false, createImageFromPath(Constants.ICON_NOT_OWNED));
+		    	spatialImages.put(true, createImageFromPath(Constants.ICON_OWNED));
+		    	property.setSpatials(spatialImages);
 	    	}
-	    	else if (agent instanceof HomelessCare)	{
-	    		spatialImage = shapeFactory.createRectangle(Constants.GRID_CELL_SIZE, Constants.GRID_CELL_SIZE);//createImageFromPath(Constants.ICON_HOMELESS_CARE);
+			// Get spatial
+			Property property = (Property) agent;
+	    	if (property.getSpatial() != null) {
+	    		return property.getSpatial();
 	    	}
-	    	if (spatialImage != null) {
-	    		return spatialImage;
-	    	}
-	    	return shapeFactory.createRectangle(Constants.GRID_CELL_SIZE, Constants.GRID_CELL_SIZE);
 	    }
-	    return spatial;
+	    return shapeFactory.createRectangle(Constants.GRID_CELL_SIZE, Constants.GRID_CELL_SIZE);
 	}
 
 	@Override
@@ -67,12 +70,12 @@ public class PropertyStyleOGL2D extends DefaultStyleOGL2D {
 	    return Constants.FONT_SMALL;
 	}
 	
-	/*private VSpatial createImageFromPath(String path) {
+	private VSpatial createImageFromPath(String path) {
 		try {
 			return shapeFactory.createImage(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
-	}*/
+	}
 }

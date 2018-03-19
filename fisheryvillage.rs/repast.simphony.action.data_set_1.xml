@@ -25,24 +25,6 @@
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N [18 - 39]</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N [18 - 39]</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getNumberOfAdultsYoung</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>N [40 - 64]</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N [40 - 64]</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getNumberOfAdultsOld</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
       <string>N [65 - 74]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>N [65 - 74]</id>
@@ -57,6 +39,15 @@
         <id>N [75 - ...]</id>
         <className>fisheryvillage.municipality.Council</className>
         <methodName>getNumberOfElderlyOld</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N [18 - 64]</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N [18 - 64]</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getNumberOfAdults</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

@@ -1,6 +1,8 @@
 package fisheryvillage.property;
 
 import java.awt.Color;
+import java.util.HashMap;
+import java.util.Map;
 
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
@@ -12,6 +14,7 @@ import repast.simphony.space.graph.Network;
 import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.valueLayer.GridValueLayer;
+import saf.v3d.scene.VSpatial;
 
 public class Property {
 	
@@ -23,12 +26,13 @@ public class Property {
 	private final int width;
 	private final int height;
 	protected final Status jobStatus;
+	private final PropertyColor propertyColor;
 	
 	// Variable initialization
-	protected int colorId = 3;
+	protected Map<Boolean, VSpatial> spatialImagesOwned = new HashMap<Boolean, VSpatial>();
 	//private boolean active = false;
 
-	public Property(double price, double maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus) {
+	public Property(double price, double maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus, PropertyColor propertyColor) {
 		this.price = price;
 		this.maintenanceCost = maintenanceCost;
 		this.savings = savings;
@@ -36,6 +40,7 @@ public class Property {
 		this.width = width; // width as number of cells
 		this.height = height; // width as number of cells
 		this.jobStatus = jobStatus;
+		this.propertyColor = propertyColor;
 		
 		SimUtils.getContext().add(this);
 		if (!SimUtils.getGrid().moveTo(this, location.getX(), location.getY())) {
@@ -52,7 +57,7 @@ public class Property {
 		}
 		for (int i = 0; i < width; i ++) {
 			for (int j = 0; j < height; j ++) {
-				valueLayer.set(colorId, location.getX() + i, location.getY() + j);
+				valueLayer.set(propertyColor.getValueLayerIndex(), location.getX() + i, location.getY() + j);
 			}
 		}
 	}
@@ -152,12 +157,24 @@ public class Property {
 		return null;
 	}
 	
+	public void setSpatials(HashMap<Boolean, VSpatial> spatialImages) {
+		this.spatialImagesOwned = spatialImages;
+	}
+	
+	public VSpatial getSpatial() {
+		
+		if (getOwner() == null) {
+			return spatialImagesOwned.get(false);
+		}
+		return spatialImagesOwned.get(true);
+	}
+	
 	public String getLabel() {
 		return "Property";
 	}
 	
 	public Color getColor() {
-		return Constants.COLOR_PROPERTY;
+		return propertyColor.getColor();
 	}
 	
 	public String toString() {

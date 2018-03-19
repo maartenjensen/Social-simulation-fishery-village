@@ -8,6 +8,7 @@ import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.municipality.Council;
 import fisheryvillage.population.Human;
+import fisheryvillage.property.Boat;
 import fisheryvillage.property.CompanyOutside;
 import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
@@ -85,6 +86,10 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 				x ++;
 			}
 		}
+		
+		// Create boats
+		new Boat(0, 0, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
+		new Boat(0, 0, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
 
 		// Create buildings
 		new HomelessCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 18, 2));
@@ -151,6 +156,17 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 				human.stepRelation();
 			}
 		}
+		
+		Logger.logOutputLn("-- Run Boat.stepFish & Boat.stepSellFish --");
+		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
+		for (Boat boat : boats) {
+			boat.stepFish();
+			boat.stepSellFish();
+		}
+		
+		Logger.logOutputLn("-- Run Boat.stepProcessFish --");
+		SimUtils.getFactory().stepProcessFish();
+		
 		Logger.logOutputLn("-- Run Human.stepWork --");
 		for (final Human human: humans) {
 			if (!human.isLivingOutOfTown()) {
@@ -231,7 +247,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			for (int j = 0; j < Constants.GRID_HEIGHT; j ++) {
 				
 				if (i < Constants.GRID_VILLAGE_START) {
-					valueLayer.set(RandomHelper.nextDoubleFromTo(5.9, 5.99), i, j);
+					valueLayer.set(RandomHelper.nextDoubleFromTo(2.9, 2.99), i, j);
 				}
 				else if (i < Constants.GRID_SEA_START) {
 					valueLayer.set(RandomHelper.nextDoubleFromTo(0.95, 0.99), i, j);

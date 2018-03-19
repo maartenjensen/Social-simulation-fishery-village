@@ -1,6 +1,5 @@
 package fisheryvillage.municipality;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import fisheryvillage.common.Constants;
@@ -9,13 +8,14 @@ import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.Property;
+import fisheryvillage.property.PropertyColor;
 import repast.simphony.space.grid.GridPoint;
+import saf.v3d.scene.VSpatial;
 
 public class Council extends Property {
 
 	public Council(double price, double maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 3, 3, Status.NONE);
-		colorId = 5;
+		super(price, maintenanceCost, money, location, 3, 3, Status.NONE, PropertyColor.COUNCIL);
 		addToValueLayer();
 	}
 	
@@ -30,8 +30,9 @@ public class Council extends Property {
 	}
 	
 	@Override
-	public Color getColor() {
-		return Constants.COLOR_HOMELESS_CARE;
+	public VSpatial getSpatial() {
+		
+		return spatialImagesOwned.get(true);
 	}
 	
 	@Override
@@ -93,12 +94,8 @@ public class Council extends Property {
 		return getNumberOfAge(0, Constants.HUMAN_ADULT_AGE);
 	}
 	
-	public int getNumberOfAdultsYoung() {
-		return getNumberOfAge(Constants.HUMAN_ADULT_AGE, 40);
-	}
-	
-	public int getNumberOfAdultsOld() {
-		return getNumberOfAge(40, Constants.HUMAN_ELDERLY_AGE);
+	public int getNumberOfAdults() {
+		return getNumberOfAge(Constants.HUMAN_ADULT_AGE, Constants.HUMAN_ELDERLY_AGE);
 	}
 	
 	public int getNumberOfElderlyYoung() {

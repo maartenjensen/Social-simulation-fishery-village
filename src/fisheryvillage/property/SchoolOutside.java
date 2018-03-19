@@ -1,20 +1,18 @@
 package fisheryvillage.property;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
-import fisheryvillage.common.Constants;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.SchoolType;
 import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
+import saf.v3d.scene.VSpatial;
 
 public class SchoolOutside extends Property {
 
 	public SchoolOutside(double price, double maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 8, 5, Status.NONE);
-		colorId = 5;
+		super(price, maintenanceCost, money, location, 8, 5, Status.NONE, PropertyColor.SCHOOL);
 		addToValueLayer();
 	}
 	
@@ -29,10 +27,11 @@ public class SchoolOutside extends Property {
 		}
 		return pupils;
 	}
-	
+
 	@Override
-	public Color getColor() {
-		return Constants.COLOR_HOMELESS_CARE;
+	public VSpatial getSpatial() {
+		
+		return spatialImagesOwned.get(true);
 	}
 
 	@Override

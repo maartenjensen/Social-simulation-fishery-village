@@ -1,6 +1,5 @@
 package fisheryvillage.common;
 
-import java.awt.Color;
 import java.awt.Font;
 
 public class Constants {
@@ -20,15 +19,17 @@ public class Constants {
 	public static final int GRID_CELL_SIZE = 25;
 	public static final int GRID_SEA_START = GRID_WIDTH - 12;
 	public static final int GRID_VILLAGE_START = 18;
-	public static final int INITIAL_POPULATION_SIZE = 30;
+	public static final int INITIAL_POPULATION_SIZE = 40;
 	public static final double MIGRATION_PROBABILITY = 0.01;
 	public static final int TICKS_PER_YEAR = 1;
 	
 	// Initialize building parameters
 	public static final int NUMBER_OF_HOUSES = 30;
-	public static final Color COLOR_PROPERTY = new Color(255, 255, 255);
-	public static final Color COLOR_HOUSE = new Color(230, 210, 175);
-	public static final Color COLOR_HOMELESS_CARE = new Color(200, 200, 200);
+	public static final double PRICE_PER_KG_FISH_UNPROCESSED = 5;
+	public static final double PRICE_PER_KG_FISH_PROCESSED = 15;
+	public static final int FISH_PROCESSING_AMOUNT_PP = 250;
+	public static final int FISH_CATCH_AMOUNT_MIN_PP = 200;
+	public static final int FISH_CATCH_AMOUNT_MAX_PP = 800;
 	
 	// Initialize population parameters
 	public static final int HUMAN_MIN_CHILDREN_WANTED = 0;
@@ -54,21 +55,31 @@ public class Constants {
 	public static final double NETTO_INCOME_PERCENTAGE = 50;
 	public static final double TAX_TO_COUNCIL = 20;
 	
+	// Initialize employee numbers
+	public static final int MAX_FISHERS_PER_BOAT = 6;
+	
 	// Initialize salary parameters
 	public static final double SALARY_TEACHER = 3000;
-	public static final double SALARY_FACTORY_WORKER = 2500;
-	public static final double SALARY_OUTSIDE_WORK = 3000;
+	public static final double SALARY_FACTORY_WORKER = 2000;
+	public static final double SALARY_OUTSIDE_WORK = 2500;
 
 	// Setup parameter IDs
 	public static final String PARAMETER_PERCENTAGE_TAX = "percentageTax";
 	public static final String PARAMETER_TAX_TO_COUNCIL = "percentageTaxToCouncil";
 
 	// Initialize icon paths
-	public static final String ICON_HOUSE = "./icons/house.png";
-	public static final String ICON_HOMELESS_CARE = "./icons/homelessCare.png";
 	public static final String ICON_CHILD = "./icons/child";
 	public static final String ICON_TEACHER = "./icons/teacher";
 	public static final String ICON_PROCESSOR = "./icons/processor";
+	public static final String ICON_CARETAKER = "./icons/caretaker";
+	public static final String ICON_WORKER_OUTSIDE = "./icons/business";
+	public static final String ICON_FISHER = "./icons/fisher";
+	public static final String ICON_UNEMPLOYED = "./icons/unemployed";
+	public static final String ICON_ELDER = "./icons/elder";
+	public static final String ICON_ELDEST = "./icons/eldest";
+	
+	public static final String ICON_OWNED = "./icons/owned.png";
+	public static final String ICON_NOT_OWNED = "./icons/not_owned.png";
 	
 	// Initialize graphics
 	public static final Font FONT_SMALL = new Font("Tahoma", Font.PLAIN , 10);

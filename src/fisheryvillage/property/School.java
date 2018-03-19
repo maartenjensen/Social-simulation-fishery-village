@@ -1,6 +1,5 @@
 package fisheryvillage.property;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import fisheryvillage.common.Constants;
@@ -10,6 +9,7 @@ import fisheryvillage.population.Human;
 import fisheryvillage.population.SchoolType;
 import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
+import saf.v3d.scene.VSpatial;
 
 public class School extends Property {
 
@@ -18,8 +18,7 @@ public class School extends Property {
 	private int paymentCount = 0;
 	
 	public School(double price, double maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 8, 5, Status.TEACHER);
-		colorId = 5;
+		super(price, maintenanceCost, money, location, 8, 5, Status.TEACHER, PropertyColor.SCHOOL);
 		addToValueLayer();
 	}
 
@@ -140,12 +139,16 @@ public class School extends Property {
 			return paymentAmount;
 		}
 	}
-	
-	@Override
-	public Color getColor() {
-		return Constants.COLOR_HOMELESS_CARE;
-	}
 
+	@Override
+	public VSpatial getSpatial() {
+		
+		if (getTeacherCount() >= 1) {
+			return spatialImagesOwned.get(true);
+		}
+		return spatialImagesOwned.get(false);
+	}
+	
 	@Override
 	public String getLabel() {
 		return "School T:"+ getTeacherCount() + "/" + Math.ceil(getChildrenCount()/(float) maxChildrenPerTeacher) + ", P:" + getPupilCount() + ", $:" + Math.round(getSavings());

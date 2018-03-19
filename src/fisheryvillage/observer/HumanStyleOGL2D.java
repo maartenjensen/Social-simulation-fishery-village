@@ -3,57 +3,61 @@ package fisheryvillage.observer;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import fisheryvillage.common.Constants;
+import fisheryvillage.common.Logger;
 import fisheryvillage.population.Human;
+import fisheryvillage.population.Status;
 import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
 import saf.v3d.scene.Position;
 import saf.v3d.scene.VSpatial;
 
 public class HumanStyleOGL2D extends DefaultStyleOGL2D {
-
+	
 	@Override
 	public VSpatial getVSpatial(Object agent, VSpatial spatial) {
-	    if (spatial == null) {
-	    	if (agent instanceof Human) {
-	    		Human human = (Human) agent;
-	    		ArrayList<VSpatial> spatialImages = new ArrayList<>();
-	    		if (!human.getMigrated()) {
-	    			String append_gender = "_female.png";
-	    			if (human.isMan()) {
-	    				append_gender = "_male.png";
-	    			}
-	    			spatialImages.add(createImageFromPath(Constants.ICON_CHILD + append_gender));
-	    			spatialImages.add(shapeFactory.createCircle(5, 16));
-	    			spatialImages.add(createImageFromPath(Constants.ICON_TEACHER + append_gender));
-	    			spatialImages.add(createImageFromPath(Constants.ICON_PROCESSOR + append_gender));
-	    		}
-	    		else {
-	    			String append_gender = "_female.png";
-	    			if (human.isMan()) {
-	    				append_gender = "_male.png";
-	    			}
-	    			spatialImages.add(createImageFromPath(Constants.ICON_CHILD + append_gender));
-	    			spatialImages.add(shapeFactory.createCircle(5, 16));
-	    			spatialImages.add(createImageFromPath(Constants.ICON_TEACHER + append_gender));
-	    			spatialImages.add(createImageFromPath(Constants.ICON_PROCESSOR + append_gender));
-	    		}
-	    		human.setSpatials(spatialImages);
-	    		VSpatial spatialImage = human.getSpatial();
-	    		if (spatialImage != null) {
-	    			return spatialImage;
-	    		}
-	    	}
-	    	return shapeFactory.createRectangle(6, 6);
-	    }
+		
 	    if (agent instanceof Human) {
-	    	VSpatial spatialImage = ((Human) agent).getSpatial();
-    		if (spatialImage != null) {
-    			return spatialImage;
+    		Human human = (Human) agent;
+    		VSpatial newSpatial = human.getSpatialImage();
+
+    		if (newSpatial != null) {
+    			return newSpatial;
+    		}
+    		else {
+    			loadSpatialImages(human);
+    			newSpatial = human.getSpatialImage();
+    			if (newSpatial != null) {
+        			return newSpatial;
+        		}
+    			else {
+    				Logger.logErrorLn("Getting spatial image for human" + human.getId() + " went wrong.");
+    				return shapeFactory.createRectangle(6, 6);
+    			}
     		}
 	    }
-	    return spatial;
+	    Logger.logErrorLn("Getting spatial went wrong since it is no human.");
+	    return shapeFactory.createRectangle(6, 6);
+	}
+	
+	public void loadSpatialImages(Human human) {
+		
+		String append_gender = "_male.png";
+		if (!human.isMan()) {
+			append_gender = "_female.png";
+		}
+		HashMap<Status, VSpatial> spatialImages = new HashMap<Status, VSpatial>();
+		spatialImages.put(Status.CHILD, createImageFromPath(Constants.ICON_CHILD + append_gender));
+		spatialImages.put(Status.ELDERLY_CARETAKER, createImageFromPath(Constants.ICON_CARETAKER + append_gender));
+		spatialImages.put(Status.ELDER, createImageFromPath(Constants.ICON_ELDER + append_gender));
+		spatialImages.put(Status.ELDEST, createImageFromPath(Constants.ICON_ELDEST + append_gender));
+		spatialImages.put(Status.FISHER, createImageFromPath(Constants.ICON_FISHER + append_gender));
+		spatialImages.put(Status.FACTORY_WORKER, createImageFromPath(Constants.ICON_PROCESSOR + append_gender));
+		spatialImages.put(Status.TEACHER, createImageFromPath(Constants.ICON_TEACHER + append_gender));
+		spatialImages.put(Status.UNEMPLOYED, createImageFromPath(Constants.ICON_UNEMPLOYED + append_gender));
+		spatialImages.put(Status.WORK_OUT_OF_TOWN, createImageFromPath(Constants.ICON_WORKER_OUTSIDE + append_gender));
+		human.setSpatialImages(spatialImages);
 	}
 	
 	@Override

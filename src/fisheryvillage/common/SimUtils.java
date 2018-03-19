@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import fisheryvillage.municipality.Council;
+import fisheryvillage.property.Boat;
+import fisheryvillage.property.Factory;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
 import repast.simphony.context.Context;
@@ -80,12 +82,26 @@ public final strictfp class SimUtils {
 		return valueLayer;
 	}
 	
+	public static Boat getBoat(int fisherId) {
+		ArrayList<Boat> boats = getObjectsAllRandom(Boat.class);
+		for (Boat boat : boats) {
+			if (boat.employeeOnBoat(fisherId)) {
+				return boat;
+			}
+		}
+		return null;
+	}
+	
 	public static School getSchool() {
 		return getObjectsAll(School.class).get(0);
 	}
 	
 	public static Council getCouncil() {
 		return getObjectsAll(Council.class).get(0);
+	}
+	
+	public static Factory getFactory() {
+		return getObjectsAll(Factory.class).get(0);
 	}
 	
 	/**

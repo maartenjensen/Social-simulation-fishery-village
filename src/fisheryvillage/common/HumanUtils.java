@@ -22,7 +22,7 @@ import repast.simphony.space.grid.GridPoint;
 public final strictfp class HumanUtils {
 
 	private static int newHumanId = 0;
-	
+
 	/**
 	 * This returns a new Id. ++ is used after the variable to make sure
 	 * the current newHumanId is returned
@@ -35,7 +35,18 @@ public final strictfp class HumanUtils {
 	public static void resetHumanId() {
 		newHumanId = 0;
 	}
-
+	
+	public static Human getHumanById(int id) {
+		
+		ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		for (Human human : humans) {
+			if (human.getId() == id) {
+				return human;
+			}
+		}
+		return null;
+	}
+	
 	/**
 	 * Returns the house the agents lives in and other wise
 	 * the homelesscare
@@ -159,12 +170,14 @@ public final strictfp class HumanUtils {
 		return null;
 	}
 	
-	public static Property getWorkingPlace(Status status, SchoolType schoolType) {
+	public static Property getWorkingPlace(int id, Status status, SchoolType schoolType) {
 		switch(status) {
 		case TEACHER:
 			return SimUtils.getObjectsAll(School.class).get(0);
 		case FACTORY_WORKER:
 			return SimUtils.getObjectsAll(Factory.class).get(0);
+		case FISHER:
+			return SimUtils.getBoat(id); // Can return null when the id is not found
 		case WORK_OUT_OF_TOWN:
 			return SimUtils.getObjectsAll(CompanyOutside.class).get(0);
 		case CHILD:
@@ -217,7 +230,6 @@ public final strictfp class HumanUtils {
 		Grid<Object> grid = (Grid<Object>) context.getProjection(Constants.ID_GRID);
 		GridPoint newLocation = HumanUtils.getParentsHouse(child).getFreeLocationExcluded(child);
 		grid.moveTo(child, newLocation.getX(), newLocation.getY());
-		
 	}
 	
 	public static boolean cellFreeOfHumans(GridPoint cellLocation) {
@@ -244,5 +256,5 @@ public final strictfp class HumanUtils {
 			}
 		}
 		return true;
-	}	
+	}
 }

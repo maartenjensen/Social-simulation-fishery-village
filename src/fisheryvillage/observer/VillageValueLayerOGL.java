@@ -3,6 +3,7 @@ package fisheryvillage.observer;
 import java.awt.Color;
 
 import fisheryvillage.common.Constants;
+import fisheryvillage.property.PropertyColor;
 import repast.simphony.valueLayer.ValueLayer;
 import repast.simphony.visualizationOGL2D.ValueLayerStyleOGL;
 
@@ -22,28 +23,25 @@ public class VillageValueLayerOGL implements ValueLayerStyleOGL {
 
 	@Override
 	public Color getColor(double... coordinates) {
+		
 		final double value = layer.get(coordinates);
-		Color newColor = new Color(0, 0, 0);
 		if (value <= 1) { // Grass land
-			newColor = new Color(215, (int) Math.min(254 * value, 255), 185);
+			return new Color(215, (int) Math.min(254 * value, 255), 185);
 		}
 		else if (value <= 2) { // Sea
-			newColor = new Color(180, (int) Math.min(254 * (value - 1), 255), (int) Math.min(254 * (value - 1), 255));
+			return new Color(180, (int) Math.min(254 * (value - 1), 255), (int) Math.min(254 * (value - 1), 255));
 		}
-		else if (value <= 3) { // Property
-			newColor = Constants.COLOR_PROPERTY;
+		else if (value <= 3) { // Outside world
+			int strength = (int) Math.min(254 * (value - 2), 255);
+			return new Color(strength, strength, strength);
 		}
-		else if (value <= 4) { // House
-			newColor = Constants.COLOR_HOUSE;
+		else {
+			for (PropertyColor propertyColor : PropertyColor.values()) {
+				if (propertyColor.getValueLayerIndex() > value - 0.5 && propertyColor.getValueLayerIndex() < value + 0.5) {
+					return propertyColor.getColor();
+				}
+			}
 		}
-		else if (value <= 5) { // Homeless care
-			newColor = Constants.COLOR_HOMELESS_CARE;
-		}
-		else if (value <= 6) { // Outside world
-			int strength = (int) Math.min(254 * (value - 5), 255);
-			newColor = new Color(strength, strength, strength);
-		}
-		
-		return newColor;
+		return new Color(0, 0, 0);
 	}
 }

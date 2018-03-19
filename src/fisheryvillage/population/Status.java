@@ -3,6 +3,7 @@ package fisheryvillage.population;
 public enum Status {
 	CHILD,
 	ELDER,
+	ELDEST,
 	UNEMPLOYED,
 	TEACHER,
 	FACTORY_WORKER,
@@ -11,5 +12,6 @@ public enum Status {
 	ELDERLY_CARETAKER,
 	WORK_OUT_OF_TOWN,
 	OUT_OF_TOWN,
+	DEAD,
 	NONE;
 }

@@ -1,6 +1,7 @@
 package fisheryvillage.population;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +10,7 @@ import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.municipality.Council;
+import fisheryvillage.property.Boat;
 import fisheryvillage.property.House;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
@@ -34,8 +36,8 @@ public class Human {
 	private boolean liveOutOfTown;
 	
 	// Variable initialization
-	ArrayList<VSpatial> spatialImages = new ArrayList<VSpatial>();
 	private ArrayList<GridPoint> ancestors = new ArrayList<GridPoint>();
+	private HashMap<Status, VSpatial> spatialImages = new HashMap<Status, VSpatial>();
 	private int homelessTick = 0;
 	private Status status = Status.UNEMPLOYED;
 	private SchoolType schoolType = SchoolType.NO_SCHOOL;
@@ -115,7 +117,7 @@ public class Human {
 			}
 		}
 		else {
-			Property workingPlace = HumanUtils.getWorkingPlace(status, schoolType);
+			Property workingPlace = HumanUtils.getWorkingPlace(id, status, schoolType);
 			if (workingPlace != null){
 				if (workingPlace.getFreeLocationExcluded(this) != null) {
 					newLocation = workingPlace.getFreeLocationExcluded(this);
@@ -196,6 +198,11 @@ public class Human {
 				if (property.getVacancy()) {
 					System.out.println("Human"+getId() + "took the job at : " + property.getLabel());
 					status = property.getJobStatus();
+					if (property instanceof Boat) {
+						Boat boat = (Boat) property;
+						boat.addFisher(id);
+					}
+					break;
 				}
 			}
 		}
@@ -267,6 +274,10 @@ public class Human {
 			
 			removeSelf();
 		}
+		else if (age == Constants.HUMAN_ELDERLY_CARE_AGE) {
+			
+			actionSellAllProperty();
+		}
 		
 		if (homelessTick >= 20 && liveOutOfTown == false) {
 			liveOutOfTown = true;
@@ -283,6 +294,7 @@ public class Human {
 	
 	public void removeSelf() {
 		
+		status = Status.DEAD;
 		liveOutOfTown = true;
 		Logger.logOutputLn("Remove human" + getId());
 		Human partner = HumanUtils.getPartner(this);
@@ -309,7 +321,7 @@ public class Human {
 		Logger.logOutputLn("Human" + id + "buys a house");
 		money -= house.getPrice();
 		SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, house);
-		System.out.println("Human" + id + " bought house:" + HumanUtils.getOwnedHouse(this));
+		Logger.logOutputLn("Human" + id + " bought house:" + HumanUtils.getOwnedHouse(this));
 		homelessTick = 0;
 	}
 	
@@ -322,6 +334,14 @@ public class Human {
 		networkProperty.removeEdge(houseEdge);
 	}
 	
+	public void actionSellAllProperty() {
+		Logger.logOutputLn("Human" + id + "sell all property");
+		Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
+		Iterable<RepastEdge<Object>> propertyEdges = networkProperty.getEdges(this);
+		for (RepastEdge<Object> propertyEdge : propertyEdges) {
+			networkProperty.removeEdge(propertyEdge);
+		}
+	}
 	
 	/*=========================================
 	 * Getters and setters with logic 
@@ -399,6 +419,8 @@ public class Human {
 			return Math.round(SimUtils.getSchool().getTeacherPayment());
 		case WORK_OUT_OF_TOWN:
 			return Constants.SALARY_OUTSIDE_WORK;
+		case FISHER:
+			return Math.round(SimUtils.getBoat(id).getFisherPayment());
 		default: // You get nothing
 			return 0;
 		}
@@ -426,6 +448,10 @@ public class Human {
 		
 		if (age < Constants.HUMAN_ADULT_AGE) {
 			status = Status.CHILD;
+		}
+		else if (age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			status = Status.ELDEST;
+			schoolType = SchoolType.NO_SCHOOL;
 		}
 		else if (age >= Constants.HUMAN_ELDERLY_AGE) {
 			status = Status.ELDER;
@@ -540,34 +566,12 @@ public class Human {
 
 		return Integer.toString(id) + "|" + age;
 	}
-	
-	public void setSpatials(ArrayList<VSpatial> spatialImages) {
-		this.spatialImages = spatialImages;
-	}
-	
-	public VSpatial getSpatial() {
-		if (spatialImages.size() >= 1) {
-			switch (status) {
-			case CHILD:
-				return spatialImages.get(0);
-			case UNEMPLOYED:
-				return spatialImages.get(1);	
-			case FACTORY_WORKER:
-				return spatialImages.get(3);
-			case OUT_OF_TOWN:
-				return spatialImages.get(1);
-			case ELDER:
-				return spatialImages.get(1);
-			case TEACHER:
-				return spatialImages.get(2);
-			case WORK_OUT_OF_TOWN:
-				return spatialImages.get(1);
-			default:
-				Logger.logErrorLn("Human.getSpatial(): Unknown status " + status.toString());
-				return null;
-			}	
-		}
-		return null;
+
+	public VSpatial getSpatialImage() {
+		return spatialImages.get(status);
 	}
 
+	public void setSpatialImages(HashMap<Status, VSpatial> spatialImages) {
+		this.spatialImages = spatialImages;	
+	}
 }
