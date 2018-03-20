@@ -8,6 +8,11 @@ import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* An abstraction of all types of work outside the village
+*
+* @author Maarten Jensen
+*/
 public class CompanyOutside extends Property {
 
 	private int maxEmployees = 100;

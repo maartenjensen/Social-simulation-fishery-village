@@ -2,6 +2,11 @@ package fisheryvillage.property;
 
 import java.awt.Color;
 
+/**
+* An enum for the property color
+*
+* @author Maarten Jensen
+*/
 public enum PropertyColor {
 	
 	COUNCIL(0, new Color(150, 150, 150)),

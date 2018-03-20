@@ -8,7 +8,7 @@ import fisheryvillage.population.Status;
 import fisheryvillage.property.CompanyOutside;
 import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
-import fisheryvillage.property.HomelessCare;
+import fisheryvillage.property.SocialCare;
 import fisheryvillage.property.House;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
@@ -19,6 +19,11 @@ import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 
+/**
+* Supports the Human class with relevant getter functions
+*
+* @author Maarten Jensen
+*/
 public final strictfp class HumanUtils {
 
 	private static int newHumanId = 0;
@@ -73,7 +78,7 @@ public final strictfp class HumanUtils {
 				return parentsHouse;
 			}
 			else { // Go to homeless care
-				return SimUtils.getObjectsAll(HomelessCare.class).get(0);
+				return SimUtils.getObjectsAll(SocialCare.class).get(0);
 			}
 		}
 	}
@@ -213,12 +218,12 @@ public final strictfp class HumanUtils {
 		return properties;
 	}
 	
-	public static void spawnChild(Human mother, Human father) {
+	public static int spawnChild(Human mother, Human father) {
 
 		Context<Object> context = SimUtils.getContext();
-		Logger.logOutputLn("m." + mother.getId() + ", f." + father.getId() + "spawnChild()");
+		Logger.logDebug("m." + mother.getId() + ", f." + father.getId() + "spawnChild()");
 		final Human child = new Human(SimUtils.getRandomBoolean(), 0, getNewHumanId(), 0, false, false);
-		System.out.println("Pre child.setAncestors(), An moth:" + mother.getAncestors() + ", an fath:" + father.getAncestors());
+		Logger.logDebug("Pre child.setAncestors(), An moth:" + mother.getAncestors() + ", an fath:" + father.getAncestors());
 		child.setAncestors(mother.getId(), father.getId(), mother.getAncestors(), father.getAncestors());
 		// Make connection with parents
 		@SuppressWarnings("unchecked")
@@ -230,6 +235,7 @@ public final strictfp class HumanUtils {
 		Grid<Object> grid = (Grid<Object>) context.getProjection(Constants.ID_GRID);
 		GridPoint newLocation = HumanUtils.getParentsHouse(child).getFreeLocationExcluded(child);
 		grid.moveTo(child, newLocation.getX(), newLocation.getY());
+		return child.getId();
 	}
 	
 	public static boolean cellFreeOfHumans(GridPoint cellLocation) {

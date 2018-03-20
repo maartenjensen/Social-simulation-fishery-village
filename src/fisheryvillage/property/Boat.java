@@ -12,6 +12,12 @@ import repast.simphony.random.RandomHelper;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* Boat: although not a building it is property.
+* This is what the fishers use to fish
+*
+* @author Maarten Jensen
+*/
 public class Boat extends Property {
 
 	private int maxFishers = Constants.MAX_FISHERS_PER_BOAT;
@@ -103,7 +109,7 @@ public class Boat extends Property {
 			return paymentAmount;
 		}
 		else if (paymentCount < -1) {
-			Logger.logErrorLn("Error in Boat, exceeded paymentCount : " + paymentCount);
+			Logger.logError("Error in Boat, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
 		else {

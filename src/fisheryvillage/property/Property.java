@@ -16,6 +16,12 @@ import repast.simphony.space.grid.GridPoint;
 import repast.simphony.valueLayer.GridValueLayer;
 import saf.v3d.scene.VSpatial;
 
+/**
+* The property class is inherited by all classes that
+* can be owned by a human or by the village.
+*
+* @author Maarten Jensen
+*/
 public class Property {
 	
 	// Variable declaration (initialization in constructor)
@@ -44,7 +50,7 @@ public class Property {
 		
 		SimUtils.getContext().add(this);
 		if (!SimUtils.getGrid().moveTo(this, location.getX(), location.getY())) {
-			Logger.logErrorLn("Property could not be placed, coordinate: " + location);
+			Logger.logError("Property could not be placed, coordinate: " + location);
 		}
 	}
 
@@ -52,7 +58,7 @@ public class Property {
 
 		GridValueLayer valueLayer = SimUtils.getValueLayer();
 		if (valueLayer == null) {
-			Logger.logOutputLn("Error valueLayer is null");
+			Logger.logError("Error valueLayer is null");
 			return ;
 		}
 		for (int i = 0; i < width; i ++) {
@@ -76,7 +82,7 @@ public class Property {
 	
 	public void addToSavings(double money) {
 		if (money < 0) {
-			Logger.logErrorLn("addToSavings() should be positive or 0");
+			Logger.logError("addToSavings() should be positive or 0");
 			return ;
 		}
 		savings += money;
@@ -88,7 +94,7 @@ public class Property {
 	 */
 	public void removeFromSavings(double money) {
 		if (money > 0) {
-			Logger.logErrorLn("removeFromSavings() should be negative or 0");
+			Logger.logError("removeFromSavings() should be negative or 0");
 			return ;
 		}
 		savings += money;

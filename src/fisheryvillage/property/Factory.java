@@ -10,6 +10,11 @@ import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* The factory that buys fish from fishers and processes it to sell it again
+*
+* @author Maarten Jensen
+*/
 public class Factory extends Property {
 
 	private int maxEmployees = 20;
@@ -77,7 +82,7 @@ public class Factory extends Property {
 			return paymentAmount;
 		}
 		else if (paymentCount < -1) {
-			Logger.logErrorLn("Error in Factory, exceeded paymentCount : " + paymentCount);
+			Logger.logError("Error in Factory, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
 		else {

@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Buildings savings</name>
-  <dataSet>Buildings savings</dataSet>
+  <name>Humans by work</name>
+  <dataSet>Human by status</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Money</yAxisLabel>
-  <chartTitle>Buildings savings</chartTitle>
+  <yAxisLabel>Number</yAxisLabel>
+  <chartTitle>Adult humans by work</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,60 +21,72 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>$ Council</string>
+      <string>N Teachers</string>
       <SeriesData>
-        <label>$ Council</label>
+        <label>N Teachers</label>
         <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>$ Elderly Care</string>
-      <SeriesData>
-        <label>$ Elderly Care</label>
-        <color>
-          <red>255</red>
-          <green>200</green>
+          <red>204</red>
+          <green>153</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>$ Factory</string>
+      <string>N Factory workers</string>
       <SeriesData>
-        <label>$ Factory</label>
+        <label>N Factory workers</label>
         <color>
-          <red>255</red>
-          <green>0</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>$ School</string>
-      <SeriesData>
-        <label>$ School</label>
-        <color>
-          <red>255</red>
-          <green>0</green>
+          <red>0</red>
+          <green>204</green>
           <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>$ Homeless Care</string>
+      <string>N Fishers</string>
       <SeriesData>
-        <label>$ Homeless Care</label>
+        <label>N Fishers</label>
         <color>
-          <red>0</red>
+          <red>255</red>
           <green>255</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>N Unemployed</string>
+      <SeriesData>
+        <label>N Unemployed</label>
+        <color>
+          <red>153</red>
+          <green>153</green>
+          <blue>153</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>N Elderly Caretakers</string>
+      <SeriesData>
+        <label>N Elderly Caretakers</label>
+        <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>N Workers outside</string>
+      <SeriesData>
+        <label>N Workers outside</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>

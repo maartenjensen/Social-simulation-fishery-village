@@ -12,21 +12,46 @@ import fisheryvillage.property.PropertyColor;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* The Council divides money, that is earned through taxing, between the school, social care,
+* elderly care and the factory.
+*
+* @author Maarten Jensen
+*/
 public class Council extends Property {
 
+	private int year = 2000;
+	private double moneyForSchool = 0;
+	private double moneyForSocialCare = 0;
+	private double moneyForElderlyCare = 0;
+	private double moneyForFactory = 0;
+	
 	public Council(double price, double maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 3, 3, Status.NONE, PropertyColor.COUNCIL);
 		addToValueLayer();
 	}
 	
+	//TODO make this dependent on values of residents
 	public void stepDistributeMoney() {
 		
-		double moneyForSchool = getSavings() / 10;
-		Logger.logOutputLn("Money for school:" + Math.round(moneyForSchool));
+		double savingsPartition = getSavings() / 4;
+		moneyForSchool = savingsPartition;
+		moneyForSocialCare = savingsPartition;
+		moneyForElderlyCare = savingsPartition;
+		moneyForFactory = savingsPartition;
+		
 		SimUtils.getSchool().addToSavings(moneyForSchool);
-		//removeFromSavings(-moneyForSchool);
-		removeFromSavings(-getSavings() * 0.5);
-		Logger.logOutputLn("Does the error come afer this? Then it is in the steps of repast");
+		SimUtils.getSocialCare().addToSavings(moneyForSocialCare);
+		SimUtils.getElderlyCare().addToSavings(moneyForElderlyCare);
+		SimUtils.getFactory().addToSavings(moneyForFactory);
+		
+		removeFromSavings(-getSavings());
+		Logger.logDebug("Does the error come afer this? Then it is in the steps of repast");
+	}
+	
+	public String getDate() {
+		year ++;
+		return Integer.toString(year);
 	}
 	
 	@Override
@@ -37,7 +62,8 @@ public class Council extends Property {
 	
 	@Override
 	public String getLabel() {
-		return "Council, $:" + Math.round(getSavings());
+		return "Council, $: " + Math.round(getSavings()) + "\nSchool $:" + Math.round(moneyForSchool) + "\nSocialCare $:" + Math.round(moneyForSocialCare) + 
+				"\nElderlyCare $:" + Math.round(moneyForElderlyCare) + "\nFactory $:" + Math.round(moneyForFactory) + "\n\nYear: "+getDate();
 	}
 	
 	public int getNumberOfStatus(Status status) {
@@ -68,7 +94,7 @@ public class Council extends Property {
 	}
 	
 	public int getNumberOfHomelessCaretakers() {
-		return getNumberOfStatus(Status.HOMELESS_CARERTAKER);
+		return 0;
 	}
 	
 	public int getNumberOfElderlyCaretakers() {

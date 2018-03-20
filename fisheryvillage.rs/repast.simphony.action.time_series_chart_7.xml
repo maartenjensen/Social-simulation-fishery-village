@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Humans by work</name>
-  <dataSet>Human by status</dataSet>
+  <name>Building savings</name>
+  <dataSet>Buildings savings</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Number</yAxisLabel>
-  <chartTitle>Adult humans by work</chartTitle>
+  <yAxisLabel>Money $</yAxisLabel>
+  <chartTitle>Building savings</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,57 +21,45 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>N Teachers</string>
+      <string>$ Council</string>
       <SeriesData>
-        <label>N Teachers</label>
-        <color>
-          <red>204</red>
-          <green>153</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Factory workers</string>
-      <SeriesData>
-        <label>N Factory workers</label>
+        <label>$ Council</label>
         <color>
           <red>0</red>
-          <green>204</green>
+          <green>0</green>
           <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>N Fishers</string>
+      <string>$ Elderly Care</string>
       <SeriesData>
-        <label>N Fishers</label>
+        <label>$ Elderly Care</label>
         <color>
           <red>255</red>
-          <green>255</green>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>$ Social Care</string>
+      <SeriesData>
+        <label>$ Social Care</label>
+        <color>
+          <red>255</red>
+          <green>200</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>N Unemployed</string>
+      <string>$ Factory</string>
       <SeriesData>
-        <label>N Unemployed</label>
-        <color>
-          <red>153</red>
-          <green>153</green>
-          <blue>153</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Elderly Caretakers</string>
-      <SeriesData>
-        <label>N Elderly Caretakers</label>
+        <label>$ Factory</label>
         <color>
           <red>255</red>
           <green>0</green>
@@ -81,12 +69,12 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>N Workers outside</string>
+      <string>$ School</string>
       <SeriesData>
-        <label>N Workers outside</label>
+        <label>$ School</label>
         <color>
           <red>0</red>
-          <green>0</green>
+          <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>

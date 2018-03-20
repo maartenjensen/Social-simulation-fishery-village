@@ -11,6 +11,11 @@ import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* The village school which has teachers and children
+*
+* @author Maarten Jensen
+*/
 public class School extends Property {
 
 	private int maxChildrenPerTeacher = 10; // TODO Put into constants
@@ -90,7 +95,7 @@ public class School extends Property {
 			if (childrenToRemove == 0)
 				return ;
 		}
-		Logger.logErrorLn("Error no children left to remove, need to still remove:" + childrenToRemove);
+		Logger.logError("Error no children left to remove, need to still remove:" + childrenToRemove);
 	}
 
 	public void removeExcessiveTeachers() {
@@ -100,7 +105,7 @@ public class School extends Property {
 		if (teachersToRemove <= 0)
 			return ;
 		
-		Logger.logOutputLn("Remove so many teachers:" + teachersToRemove);
+		Logger.logInfo("Remove so many teachers:" + teachersToRemove);
 		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
 		for (final Human human: humans) {
 			if (human.getStatus() == Status.TEACHER) {
@@ -110,7 +115,7 @@ public class School extends Property {
 			if (teachersToRemove == 0)
 				return ;
 		}
-		Logger.logErrorLn("Error no teachers left to remove, need to still remove:" + teachersToRemove);
+		Logger.logError("Error no teachers left to remove, need to still remove:" + teachersToRemove);
 	}
 	
 	/**
@@ -130,7 +135,7 @@ public class School extends Property {
 			return paymentAmount;
 		}
 		else if (paymentCount < -1) {
-			Logger.logErrorLn("Error in School, exceeded paymentCount : " + paymentCount);
+			Logger.logError("Error in School, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
 		else {

@@ -5,9 +5,11 @@ import java.util.Random;
 
 import fisheryvillage.municipality.Council;
 import fisheryvillage.property.Boat;
+import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
+import fisheryvillage.property.SocialCare;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -16,6 +18,11 @@ import repast.simphony.space.grid.Grid;
 import repast.simphony.util.SimUtilities;
 import repast.simphony.valueLayer.GridValueLayer;
 
+/**
+* General support class used mainly to retrieve objects in the simulation
+*
+* @author Maarten Jensen
+*/
 public final strictfp class SimUtils {
 
 	// Initialize variables
@@ -40,7 +47,7 @@ public final strictfp class SimUtils {
 	public static Context<Object> getContext() {
 
 		if (masterContext == null)  {
-			Logger.logErrorLn("SimUtils.getContext(): context returned null");
+			Logger.logError("SimUtils.getContext(): context returned null");
 		}
 		return masterContext;
 	}
@@ -49,7 +56,7 @@ public final strictfp class SimUtils {
 	public static Grid<Object> getGrid() {
 		Grid<Object> grid = (Grid<Object>) getContext().getProjection(Constants.ID_GRID);
 		if (grid == null)  {
-			Logger.logErrorLn("SimUtils.getGrid(): grid returned null");
+			Logger.logError("SimUtils.getGrid(): grid returned null");
 		}
 		return grid;
 	}
@@ -58,7 +65,7 @@ public final strictfp class SimUtils {
 	public static ContinuousSpace<Object> getSpace() {
 		ContinuousSpace<Object> space = (ContinuousSpace<Object>) getContext().getProjection(Constants.ID_SPACE);
 		if (space == null)  {
-			Logger.logErrorLn("SimUtils.getSpace(): space returned null");
+			Logger.logError("SimUtils.getSpace(): space returned null");
 		}
 		return space;
 	}
@@ -68,7 +75,7 @@ public final strictfp class SimUtils {
 		
 		Network<Object> network = (Network<Object>) getContext().getProjection(networkId);
 		if (network == null)  {
-			Logger.logErrorLn("SimUtils.getNetwork(): network returned null, ID:" + networkId);
+			Logger.logError("SimUtils.getNetwork(): network returned null, ID:" + networkId);
 		}
 		return network;
 	}
@@ -77,7 +84,7 @@ public final strictfp class SimUtils {
 		
 		GridValueLayer valueLayer = (GridValueLayer) getContext().getValueLayer(Constants.ID_VALUE_LAYER);
 		if (valueLayer == null)  {
-			Logger.logErrorLn("SimUtils.getValueLayer(): valueLayer returned null");
+			Logger.logError("SimUtils.getValueLayer(): valueLayer returned null");
 		}
 		return valueLayer;
 	}
@@ -102,6 +109,14 @@ public final strictfp class SimUtils {
 	
 	public static Factory getFactory() {
 		return getObjectsAll(Factory.class).get(0);
+	}
+	
+	public static SocialCare getSocialCare() {
+		return getObjectsAll(SocialCare.class).get(0);
+	}
+	
+	public static ElderlyCare getElderlyCare() {
+		return getObjectsAll(ElderlyCare.class).get(0);
 	}
 	
 	/**

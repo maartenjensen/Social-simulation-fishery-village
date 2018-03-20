@@ -2,6 +2,11 @@ package fisheryvillage.common;
 
 import java.awt.Font;
 
+/**
+* This class holds many constants used throughout the code
+*
+* @author Maarten Jensen
+*/
 public class Constants {
 	
 	// Initialize important IDs
@@ -21,15 +26,22 @@ public class Constants {
 	public static final int GRID_VILLAGE_START = 18;
 	public static final int INITIAL_POPULATION_SIZE = 40;
 	public static final double MIGRATION_PROBABILITY = 0.01;
-	public static final int TICKS_PER_YEAR = 1;
+	public static final int TIME_TICKS_PER_MONTH = 4;
+	public static final int TIME_MONTHS_PER_YEAR = 12;
 	
 	// Initialize building parameters
 	public static final int NUMBER_OF_HOUSES = 30;
+	public static final double HOUSE_BASIC_PRICE = 1000;
+	public static final double HOUSE_BASIC_MAINTENANCE = 500;
+	public static final double HOUSE_UPGRADE_1_MULT = 2.0;
+	public static final double HOUSE_UPGRADE_2_MULT = 3.0;
 	public static final double PRICE_PER_KG_FISH_UNPROCESSED = 5;
 	public static final double PRICE_PER_KG_FISH_PROCESSED = 15;
 	public static final int FISH_PROCESSING_AMOUNT_PP = 250;
 	public static final int FISH_CATCH_AMOUNT_MIN_PP = 200;
 	public static final int FISH_CATCH_AMOUNT_MAX_PP = 800;
+	public static final int BOAT_BASIC_PRICE = 1000;
+	public static final int BOAT_BASIC_MAINTENANCE = 500;
 	
 	// Initialize population parameters
 	public static final int HUMAN_MIN_CHILDREN_WANTED = 0;
@@ -53,7 +65,7 @@ public class Constants {
 	public static final double COST_SCHOOL_OUTSIDE = 100;
 	public static final double COST_SCHOOL_CHILD = 0;
 	public static final double NETTO_INCOME_PERCENTAGE = 50;
-	public static final double TAX_TO_COUNCIL = 20;
+	public static final double TAX_TO_COUNCIL = 10;
 	
 	// Initialize employee numbers
 	public static final int MAX_FISHERS_PER_BOAT = 6;

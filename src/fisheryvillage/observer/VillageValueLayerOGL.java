@@ -7,6 +7,12 @@ import fisheryvillage.property.PropertyColor;
 import repast.simphony.valueLayer.ValueLayer;
 import repast.simphony.visualizationOGL2D.ValueLayerStyleOGL;
 
+/**
+* This is the value layer class which generates the colorful grid
+* that represents the village, its buildings and its boats.
+*
+* @author Maarten Jensen
+*/
 public class VillageValueLayerOGL implements ValueLayerStyleOGL {
 
 	private ValueLayer layer = null;

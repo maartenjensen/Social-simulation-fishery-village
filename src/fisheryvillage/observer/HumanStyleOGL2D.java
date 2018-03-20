@@ -13,6 +13,11 @@ import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
 import saf.v3d.scene.Position;
 import saf.v3d.scene.VSpatial;
 
+/**
+* Changes human visual layout
+*
+* @author Maarten Jensen
+*/
 public class HumanStyleOGL2D extends DefaultStyleOGL2D {
 	
 	@Override
@@ -32,12 +37,12 @@ public class HumanStyleOGL2D extends DefaultStyleOGL2D {
         			return newSpatial;
         		}
     			else {
-    				Logger.logErrorLn("Getting spatial image for human" + human.getId() + " went wrong.");
+    				Logger.logError("Getting spatial image for human" + human.getId() + " went wrong.");
     				return shapeFactory.createRectangle(6, 6);
     			}
     		}
 	    }
-	    Logger.logErrorLn("Getting spatial went wrong since it is no human.");
+	    Logger.logError("Getting spatial went wrong since it is no human.");
 	    return shapeFactory.createRectangle(6, 6);
 	}
 	

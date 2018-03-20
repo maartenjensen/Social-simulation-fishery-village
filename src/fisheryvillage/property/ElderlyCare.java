@@ -4,6 +4,11 @@ import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* The elderly care is the living place for humans above a certain age threshold.
+*
+* @author Maarten Jensen
+*/
 public class ElderlyCare extends Property {
 	
 	public ElderlyCare(double price, double maintenanceCost, double money, GridPoint location) {

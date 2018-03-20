@@ -9,6 +9,12 @@ import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* An abstraction of schools outside of the village, the humans inside
+* the village have to pay more to get their children to this outside school
+*
+* @author Maarten Jensen
+*/
 public class SchoolOutside extends Property {
 
 	public SchoolOutside(double price, double maintenanceCost, double money, GridPoint location) {

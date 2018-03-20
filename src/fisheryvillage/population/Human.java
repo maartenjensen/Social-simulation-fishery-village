@@ -23,6 +23,11 @@ import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
+/**
+* The human class, without it the village would be a ghost town
+*
+* @author Maarten Jensen
+*/
 public class Human {
 
 	// Variable declaration (initialization in constructor)
@@ -60,7 +65,7 @@ public class Human {
 		
 		final NdPoint pt = SimUtils.getSpace().getLocation(this);
 		if (!SimUtils.getGrid().moveTo(this, (int) pt.getX(), (int) pt.getY())) {
-			Logger.logErrorLn("Human could not be placed, coordinate: " + pt.toString());
+			Logger.logError("Human could not be placed, coordinate: " + pt.toString());
 		}
 	}
 
@@ -74,7 +79,7 @@ public class Human {
 		nettoIncome = 0;
 		
 		yearTick ++;
-		if (yearTick > Constants.TICKS_PER_YEAR) {
+		if (yearTick > 1) {
 			yearTick = 1;
 			age++;
 			setStatusByAge();
@@ -113,7 +118,7 @@ public class Human {
 				newLocation = livingPlace.getFreeLocationExcluded(this);
 			}
 			else {
-				Logger.logErrorLn("Human"+getId()+" has no living place");
+				Logger.logError("Human"+getId()+" has no living place");
 			}
 		}
 		else {
@@ -123,7 +128,7 @@ public class Human {
 					newLocation = workingPlace.getFreeLocationExcluded(this);
 				}
 				else {
-					Logger.logErrorLn("No room in working place to put agent");
+					Logger.logError("No room in working place to put agent");
 				}
 			}
 		}
@@ -161,7 +166,7 @@ public class Human {
 		// Pay children
 		double childPayment = Constants.LIVING_COST_CHILD * multiplier;
 		for (Human child : HumanUtils.getChildrenUnder18(this)) {
-			System.out.println(getId() + " payed child " + child.getId() + " : " + childPayment);
+			Logger.logDebug("H" + id + " payed child " + child.getId() + " : " + childPayment);
 			money -= childPayment;
 			necessaryCost += childPayment;
 			child.giveMoney(childPayment);
@@ -196,12 +201,7 @@ public class Human {
 			ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class); //TODO this is not efficient, look only through job specific buildings
 			for (final Property property : properties) {
 				if (property.getVacancy()) {
-					System.out.println("Human"+getId() + "took the job at : " + property.getLabel());
-					status = property.getJobStatus();
-					if (property instanceof Boat) {
-						Boat boat = (Boat) property;
-						boat.addFisher(id);
-					}
+					actionWorkStartAt(property);
 					break;
 				}
 			}
@@ -211,13 +211,11 @@ public class Human {
 	public void stepRelation() {
 
 		if (isSingle() && age >= Constants.HUMAN_ADULT_AGE && RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_RELATION) {
-			Logger.logOutputLn("Human" + id + "is single");
+			Logger.logInfo("Human" + id + "is single");
 			for (final Human human: SimUtils.getObjectsAllExcluded(Human.class, this)) {
 				if (isSingle() && HumanUtils.isPotentialCouple(human, this) && !human.isLivingOutOfTown()) {
-
-					//if (getHaveDifferentAncestors(human)) {
 					if (!getAncestorsMatch(ancestors, human.getAncestors())) {
-						SimUtils.getNetwork(Constants.ID_NETWORK_COUPLE).addEdge(this, human);
+						actionGetPartner(human);
 					}
 					break;
 				}
@@ -231,10 +229,9 @@ public class Human {
 						&& RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_CHILD) {
 			Human partner = HumanUtils.getPartner(this);
 			if (partner == null) {
-				Logger.logErrorLn("Human.stepFamily(): partner = null");
+				Logger.logError("Human.stepFamily(): partner = null");
 			}
-			HumanUtils.spawnChild(this, partner);
-			childrenWanted--;
+			actionGetChild(partner);
 		}
 	}
 
@@ -280,15 +277,7 @@ public class Human {
 		}
 		
 		if (homelessTick >= 20 && liveOutOfTown == false) {
-			liveOutOfTown = true;
-			SimUtils.getGrid().moveTo(this,  RandomHelper.nextIntFromTo(1, Constants.GRID_VILLAGE_START - 2), 
-					RandomHelper.nextIntFromTo(0, Constants.GRID_HEIGHT - 1));
-					status = Status.OUT_OF_TOWN;
-			
-			if (HumanUtils.getPartner(this) != null) {
-				HumanUtils.getPartner(this).removeSelf();
-			}
-			removeSelf();
+			actionMigrateOutOfTown();
 		}
 	}
 	
@@ -296,10 +285,10 @@ public class Human {
 		
 		status = Status.DEAD;
 		liveOutOfTown = true;
-		Logger.logOutputLn("Remove human" + getId());
+		Logger.logInfo("H" + id + " is removed");
 		Human partner = HumanUtils.getPartner(this);
 		if (partner != null) {
-			Logger.logOutputLn("Remove is alive" + getId());
+			Logger.logInfo("H" + partner.getId() + " is the partner and gets the property of H" + id);
 			Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 			Iterable<RepastEdge<Object>> propertyEdges = networkProperty.getOutEdges(this);
 			for (RepastEdge<Object> propertyEdge : propertyEdges) {
@@ -307,7 +296,7 @@ public class Human {
 			}
 		}
 
-		Logger.logOutputLn("ContextUtils.remove" + getId());
+		Logger.logDebug("ContextUtils.remove" + getId());
 		SimUtils.getContext().remove(this);
 	}
 	
@@ -318,16 +307,15 @@ public class Human {
 	
 	public void actionBuyHouse(House house) {
 		
-		Logger.logOutputLn("Human" + id + "buys a house");
 		money -= house.getPrice();
 		SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, house);
-		Logger.logOutputLn("Human" + id + " bought house:" + HumanUtils.getOwnedHouse(this));
+		Logger.logAction("H" + id + " bought house:" + HumanUtils.getOwnedHouse(this));
 		homelessTick = 0;
 	}
 	
 	public void actionSellHouse(House myHouse) {
 		
-		Logger.logOutputLn("Human" + id + "sells house");
+		Logger.logAction("H" + id + "sells house");
 		Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 		money += myHouse.getPrice(); // Increase money
 		RepastEdge<Object> houseEdge = networkProperty.getEdge(this, myHouse);
@@ -335,12 +323,48 @@ public class Human {
 	}
 	
 	public void actionSellAllProperty() {
-		Logger.logOutputLn("Human" + id + "sell all property");
+		Logger.logAction("H" + id + " sells all property");
 		Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 		Iterable<RepastEdge<Object>> propertyEdges = networkProperty.getEdges(this);
 		for (RepastEdge<Object> propertyEdge : propertyEdges) {
 			networkProperty.removeEdge(propertyEdge);
 		}
+	}
+	
+	public void actionWorkStartAt(Property property) {
+		
+		Logger.logAction("H" + id + " took the job at : " + property.getLabel());
+		status = property.getJobStatus();
+		if (property instanceof Boat) {
+			Boat boat = (Boat) property;
+			boat.addFisher(id);
+		}
+	}
+	
+	public void actionGetPartner(Human newPartner) {
+		Logger.logAction("H" + id + " got a relation with H" + newPartner.getId());
+		SimUtils.getNetwork(Constants.ID_NETWORK_COUPLE).addEdge(this, newPartner);
+	}
+	
+	public void actionGetChild(Human partner) {
+		
+		HumanUtils.spawnChild(this, partner);
+		Logger.logAction("H" + id + "and H" + partner.getId() + " got a child");
+		childrenWanted--;
+	}
+	
+	public void actionMigrateOutOfTown() {
+		
+		Logger.logAction("H" + id + " migrates out of town");
+		liveOutOfTown = true;
+		SimUtils.getGrid().moveTo(this,  RandomHelper.nextIntFromTo(1, Constants.GRID_VILLAGE_START - 2), 
+				RandomHelper.nextIntFromTo(0, Constants.GRID_HEIGHT - 1));
+				status = Status.OUT_OF_TOWN;
+		
+		if (HumanUtils.getPartner(this) != null) {
+			HumanUtils.getPartner(this).removeSelf();
+		}
+		removeSelf();
 	}
 	
 	/*=========================================
@@ -354,7 +378,7 @@ public class Human {
 			return false;
 		}
 		if (SimUtils.getNetwork(Constants.ID_NETWORK_COUPLE).getDegree(this) > 1) {
-			Logger.logErrorLn("Human.isSingle() to much networks!!!");
+			Logger.logError("Human.isSingle() to much networks!!!");
 		}
 		return true;
 	}
@@ -389,12 +413,12 @@ public class Human {
 				ancestors.add(new GridPoint(ancestor.getX() + 1, ancestor.getY()));
 			}
 		}
-		System.out.println(getId() + " child : " + ancestors.toString());
+		Logger.logDebug("H" + id + " ancestors : " + ancestors.toString());
 	}
 
 	public boolean getAncestorsMatch(final ArrayList<GridPoint> ancestors1, final ArrayList<GridPoint> ancestors2) {
 		
-		System.out.println("An1:"+ancestors1.toString() + ", An2:"+ancestors2.toString());
+		Logger.logDebug("An1:"+ancestors1.toString() + ", An2:"+ancestors2.toString());
 		ArrayList<Integer> ancestorsId = new ArrayList<Integer>();
 		for (GridPoint ancestor : ancestors1) {
 			ancestorsId.add(ancestor.getY());
@@ -404,10 +428,10 @@ public class Human {
 		}
 		Set<Integer> ancestorsIdSet = new HashSet<Integer>(ancestorsId);
 		if (ancestorsIdSet.size() != ancestorsId.size()) {
-			Logger.logOutputLn("#Matching ancestors");
+			Logger.logDebug("#Matching ancestors");
 			return true;
 		}
-		Logger.logOutputLn("#No matching ancestors");
+		Logger.logDebug("#No matching ancestors");
 		return false;
 	}
 	

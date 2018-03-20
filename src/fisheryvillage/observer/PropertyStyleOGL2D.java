@@ -11,6 +11,11 @@ import repast.simphony.visualizationOGL2D.DefaultStyleOGL2D;
 import saf.v3d.scene.Position;
 import saf.v3d.scene.VSpatial;
 
+/**
+* Changes property visual layout
+*
+* @author Maarten Jensen
+*/
 public class PropertyStyleOGL2D extends DefaultStyleOGL2D {
 
 	@Override

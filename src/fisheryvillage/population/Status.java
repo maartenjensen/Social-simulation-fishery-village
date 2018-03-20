@@ -1,5 +1,11 @@
 package fisheryvillage.population;
 
+/**
+* The status enum shows the status of a Human. This status
+* is also represented by different icons.
+*
+* @author Maarten Jensen
+*/
 public enum Status {
 	CHILD,
 	ELDER,
@@ -8,7 +14,6 @@ public enum Status {
 	TEACHER,
 	FACTORY_WORKER,
 	FISHER,
-	HOMELESS_CARERTAKER,
 	ELDERLY_CARETAKER,
 	WORK_OUT_OF_TOWN,
 	OUT_OF_TOWN,
