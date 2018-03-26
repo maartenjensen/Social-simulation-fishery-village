@@ -21,24 +21,25 @@ import saf.v3d.scene.VSpatial;
 * can be owned by a human or by the village.
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
-public class Property {
+public class Property { 
 	
 	// Variable declaration (initialization in constructor)
-	private double price;
-	private double maintenanceCost;
+	private int price;
+	private int maintenanceCost;
 	private double savings;
 	private final GridPoint location;
 	private final int width;
 	private final int height;
 	protected final Status jobStatus;
 	private final PropertyColor propertyColor;
-	
+
 	// Variable initialization
 	protected Map<Boolean, VSpatial> spatialImagesOwned = new HashMap<Boolean, VSpatial>();
 	//private boolean active = false;
 
-	public Property(double price, double maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus, PropertyColor propertyColor) {
+	public Property(int price, int maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus, PropertyColor propertyColor) {
 		this.price = price;
 		this.maintenanceCost = maintenanceCost;
 		this.savings = savings;
@@ -66,13 +67,21 @@ public class Property {
 				valueLayer.set(propertyColor.getValueLayerIndex(), location.getX() + i, location.getY() + j);
 			}
 		}
+	}	
+	
+	public int getX() {
+		return location.getX();
 	}
-
-	public double getPrice() {
+	
+	public int getY() {
+		return location.getY();
+	}
+	
+	public int getPrice() {
 		return price;
 	}
 	
-	public double getMaintenanceCost() {
+	public int getMaintenanceCost() {
 		return maintenanceCost;
 	}
 	
@@ -82,7 +91,7 @@ public class Property {
 	
 	public void addToSavings(double money) {
 		if (money < 0) {
-			Logger.logError("addToSavings() should be positive or 0");
+			Logger.logError("addToSavings() should be positive or 0, it was:" + money);
 			return ;
 		}
 		savings += money;
@@ -94,7 +103,7 @@ public class Property {
 	 */
 	public void removeFromSavings(double money) {
 		if (money > 0) {
-			Logger.logError("removeFromSavings() should be negative or 0");
+			Logger.logError("removeFromSavings() should be negative or 0, it was:" + money);
 			return ;
 		}
 		savings += money;

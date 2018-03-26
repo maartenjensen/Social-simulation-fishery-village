@@ -6,7 +6,9 @@ import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
+import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.municipality.Council;
+import fisheryvillage.municipality.EventHall;
 import fisheryvillage.population.Human;
 import fisheryvillage.property.Boat;
 import fisheryvillage.property.CompanyOutside;
@@ -14,6 +16,7 @@ import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
 import fisheryvillage.property.SocialCare;
 import fisheryvillage.property.House;
+import fisheryvillage.property.HouseType;
 import fisheryvillage.property.School;
 import fisheryvillage.property.SchoolOutside;
 import repast.simphony.context.Context;
@@ -36,9 +39,14 @@ import repast.simphony.valueLayer.GridValueLayer;
 * The FisheryVillageContextBuilder builds the repast simulation
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	
+	/*=========================================
+	 * Simulation building
+	 *=========================================
+	 */
 	@Override
 	public Context<Object> build(Context<Object> context) {
 
@@ -62,7 +70,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		final GridValueLayer valueLayer = createValueLayer();
 		context.addValueLayer(valueLayer);
 		generateNature(valueLayer);
-
+		
 		// Create networks
 		Logger.logMain("Create couple and children network");
 		NetworkBuilder<Object> netBuilderCouple = new NetworkBuilder<Object> (Constants.ID_NETWORK_COUPLE, context, false);
@@ -71,155 +79,238 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		netBuilderChildren.buildNetwork();
 		NetworkBuilder<Object> netBuilderProperty = new NetworkBuilder<Object> (Constants.ID_NETWORK_PROPERTY, context, true);
 		netBuilderProperty.buildNetwork();
-
+		
 		// Set Context for SimUtils
 		SimUtils.setContext(context);
 		SimUtils.getGrid();
 		SimUtils.getValueLayer();
 		
 		// Create houses
-		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES + " houses");
-		int x = 0, y = 0;
-		double housePrice = Constants.HOUSE_BASIC_PRICE;
-		double houseMaintenance = Constants.HOUSE_BASIC_MAINTENANCE;
-		for (int i = 0; i < Constants.NUMBER_OF_HOUSES; ++i) {
-			final GridPoint location = new GridPoint(1 + Constants.GRID_VILLAGE_START + x * 5, 1 + y * 3);
-			// Objects of class property are automatically added to the context and the value layer
-			new House(housePrice, houseMaintenance, 0, location); //TODO change house prices and stuff
+		createHouses();
 
-			y++;
-			if (y == 10) {
-				y = 0;
-				x ++;
-				if (x == 1) {
-					housePrice = Math.round(Constants.HOUSE_BASIC_PRICE * Constants.HOUSE_UPGRADE_1_MULT);
-					houseMaintenance = Math.round(Constants.HOUSE_BASIC_MAINTENANCE * Constants.HOUSE_UPGRADE_1_MULT);
-				}
-				else if (x == 2) {
-					housePrice = Math.round(Constants.HOUSE_BASIC_PRICE * Constants.HOUSE_UPGRADE_2_MULT);
-					houseMaintenance = Math.round(Constants.HOUSE_BASIC_MAINTENANCE * Constants.HOUSE_UPGRADE_2_MULT);
-				}
-			}
-		}
-		
 		// Create boats
 		new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
 		new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
 
 		// Create buildings
-		new SocialCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 18, 2));
-		new ElderlyCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 18, 22));
-		//new Graveyard(0, 0, new GridPoint(Constants.GRID_VILLAGE_START + 14, 10));
-		new School(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 18, 12));
-		new Factory(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 24));
-		new Council(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 12));
-		
+		new SocialCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 2));
+		new ElderlyCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 22));
+		new School(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 12));
+		new Factory(1000, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 24));
+		new Council(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 18));
+		new EventHall(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 10));
+
 		// Create buildings outside village
 		new SchoolOutside(0, 0, 0, new GridPoint(1, 12));
 		new CompanyOutside(0, 0, 0, new GridPoint(1, 24));
+
+		// Create ecosystem
+		new Ecosystem(Constants.ECOSYSTEM_INITIAL_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
 		
 		// Create population
 		generatePopulation();
-		
+
 		return context;
 	}
 	
-	@ScheduledMethod(start = 1, interval = 1, priority = 1) // Done before council step
-	public void step() {
+	/*=========================================
+	 * Simulation schedule
+	 *=========================================
+	 */
 
-		Logger.logMain("Before tick");
-		Logger.logMain("----- Tick:"+ RunEnvironment.getInstance().getCurrentSchedule().getTickCount() +"-----");
+	/**
+	 * Step 0 Tick: starting tick, migration
+	 */
+	@ScheduledMethod(start = 1, interval = 1, priority = 0) //Highest priority, so this is activated first
+	public void step0Tick() {
 		
+		Logger.logMain("------------------------------------------------------------------------------");
+		double tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		Logger.logMain("0TICK: Starting tick: "+ tick +", " + SimUtils.getCouncil().getDate());
 		if (Constants.MIGRATION_PROBABILITY > RandomHelper.nextDouble()) {
-			Logger.logMain("-- Spawn random agent --");
-			new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(10, 40),
-					  HumanUtils.getNewHumanId(), 5000, true, false);//TODO constants starting money and age
+			
+			Human human = new Human(SimUtils.getRandomBoolean(),
+									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
+									HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, true);
+			Logger.logMain("-- New human spawned : " + human.getId());
 		}
+	}
+
+	/**
+	 * Step 1 Year: aging and family
+	 */
+	@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_YEAR, priority = -1)
+	public void step1Year() {
 		
-		//final ArrayList<Human> humans = HumanUtils.getHumansAllRandom();	
+		Logger.logMain("1YEAR: aging and family");
+		
 		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
-				
-		Logger.logMain("-- Run Human.stepReset --");
+		Logger.logMain("- Run Human.stepAging");
 		for (final Human human: humans) {
-			human.stepReset();
+			human.stepAging();
 		}
 		
-		Logger.logMain("-- Run Human.stepHousing --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepHousing();
-			}
-		}
-		Logger.logMain("-- Run Human.stepFamily --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepFamily();
-			}
-		}
-		
-		Logger.logMain("-- Run School.removeExcessiveTeachers --");
-		SimUtils.getSchool().removeExcessiveTeachers(); //TODO put this somewhere that is more appropriate
-		
-		Logger.logMain("-- Run Human.stepChildrenSchooling --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepChildrenSchooling();
-			}
-		}
-		Logger.logMain("-- Run Human.stepRelation --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepRelation();
-			}
-		}
-		
-		Logger.logMain("-- Run Boat.stepFish & Boat.stepSellFish --");
+		Logger.logMain("- Run Boat.hasCaptain");
 		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
 		for (Boat boat : boats) {
-			boat.stepFish();
-			boat.stepSellFish();
+			boat.hasCaptain();
 		}
 		
-		Logger.logMain("-- Run Boat.stepProcessFish --");
-		SimUtils.getFactory().stepProcessFish();
-		
-		Logger.logMain("-- Run Human.stepWork --");
+		Logger.logMain("- Run Human.stepFamily");
 		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepWork();
-			}
-		}
-		Logger.logMain("-- Run Human.stepPayStandardCosts --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepPayStandardCosts();
-			}
-		}
-		Logger.logMain("-- Run Human.stepSelectWork --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepSelectWork();
-			}
-		}
-		Logger.logMain("-- Run Human.step --");
-		for (final Human human: humans) {
-			if (!human.isLivingOutOfTown()) {
-				human.stepLocation();
-			}
-		}
-		Logger.logMain("-- Run Human.stepDeath --");
-		for (final Human human: humans) {
-			human.stepDeath();
+			human.stepFamily();
 		}
 	}
 	
-	@ScheduledMethod(start = 1, interval = 1, priority = 0)
-	public void stepCouncil() {
+	/**
+	 * Step 2 month: teacher removal
+	 */
+	@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -2)
+	public void step2Month() {
 		
-		Logger.logMain("-- Run Council.stepDistributeMoney --");
+		Logger.logMain("2MONTH: aging and family");
+		
+		Logger.logMain("- Run School.removeExcessiveTeachers");
+		SimUtils.getSchool().removeExcessiveTeachers(); //TODO put this somewhere that is more appropriate
+		Logger.logMain("- Run ElderlyCare.removeExcessiveCaretakers");
+		SimUtils.getElderlyCare().removeExcessiveCaretakers();
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		Logger.logMain("- Run Human.stepHousing");
+		for (final Human human: humans) {
+			human.stepHousing();
+		}
+		
+		Logger.logMain("- Run Human.stepChildrenSchooling");
+		for (final Human human: humans) {
+			human.stepChildrenSchooling();
+		}
+		Logger.logMain("- Run Human.stepRelation");
+		for (final Human human: humans) {
+			human.stepRelation();
+		}
+	}
+	
+	/**
+	 * Step 3 week: working and social events
+	 */
+	@ScheduledMethod(start = 1, interval = 1, priority = -3)
+	public void step3Tick() {
+		Logger.logMain("3TICK: working and social events");
+		
+		Logger.logMain("- Run EventHall.resetEventHall");
+		SimUtils.getEventHall().stepResetEventHall();
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		Logger.logMain("- Run Human.stepOrganizeSocialEvent");
+		for (final Human human: humans) {
+			human.stepOrganizeSocialEvent();
+		}
+		
+		Logger.logMain("- Run Human.stepAttendSocialEvent");
+		for (final Human human: humans) {
+			human.stepAttendSocialEvent();
+		}
+		
+		Logger.logMain("- Run EventHall.stepPerformSocialEvent");
+		SimUtils.getEventHall().stepPerformSocialEvent();
+		
+		Logger.logMain("- Ecosystem.stepEcosystem");
+		SimUtils.getEcosystem().stepEcosystem();
+		
+		Logger.logMain("- Boat.stepFish");
+		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
+		for (Boat boat : boats) {
+			boat.stepFish();
+		}
+		
+		Logger.logMain("- Run Human.stepDonate");
+		for (final Human human: humans) {
+			human.stepDonate();
+		}
+	}
+	
+	/**
+	 * Step 4 month: monthly payments and death
+	 */
+	@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -4)
+	public void step4Month() {
+		Logger.logMain("4MONTH: fishing/processing, montly payments, work selection, migration/death, council");
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		
+		Logger.logMain("- Boat.stepSellFish");
+		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
+		for (Boat boat : boats) {
+			boat.stepSellFish();
+		}
+				
+		Logger.logMain("- Run Boat.stepProcessFish");
+		SimUtils.getFactory().stepProcessFish();
+		
+		Logger.logMain("- Run Human.stepResetStandardCosts");
+		for (final Human human: humans) {
+			human.stepResetStandardCosts();
+		}
+		
+		Logger.logMain("- Run Human.stepWork");
+		for (final Human human: humans) {
+			human.stepWork();
+		}
+		
+		Logger.logMain("- Run Human.stepPayStandardCosts");
+		for (final Human human: humans) {
+			human.stepPayStandardCosts();
+		}
+		Logger.logMain("- Run Human.stepSelectWork");
+		for (final Human human: humans) {
+			human.stepSelectWork();
+		}
+		
+		Logger.logMain("- Run Council.stepDistributeMoney");
 		SimUtils.getCouncil().stepDistributeMoney();
+		
+		// Human.stepDeath should be the last one before Human.stepLocation
+		Logger.logMain("- Run Human.stepDeath");
+		ArrayList<Integer> humanIds = new ArrayList<Integer>();
+		for (final Human human: humans) {
+			humanIds.add(human.getId());
+		}
+		// Loop through humanIds
+		for (Integer humanId: humanIds) {
+			if (HumanUtils.getHumanById(humanId) != null) {
+				Human human = HumanUtils.getHumanById(humanId);
+				Logger.logDebug("Death step for H" + human.getId());
+				human.stepDeath();
+			}
+			else {
+				Logger.logDebug("NO Death step for H" + humanId);
+			}
+		}
+	}
+	
+	/**
+	 * Step 5 tick: movement
+	 */
+	@ScheduledMethod(start = 1, interval = 1, priority = -5)
+	public void step5Tick() {
+	
+		Logger.logMain("5TICK: human location");
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		Logger.logMain("- Run Human.stepLocation");
+		for (final Human human: humans) {
+			human.stepLocation();
+		}
+
+		Logger.logMain("------------------------------------------------------------------------------");
+		Logger.logMain("End of this step");
 	}
 
+	/*=========================================
+	 * Extra functions
+	 *=========================================
+	 */
 	/** 
 	 * Creates the continuous space for the fishery village.
 	 * @param context
@@ -241,7 +332,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 										Constants.ID_GRID, context,
 										new GridBuilderParameters<Object>(
 										new repast.simphony.space.grid.BouncyBorders(),
-										new SimpleGridAdder<Object>(), true, //TODO check whether multi-occupancy should be allowed
+										new SimpleGridAdder<Object>(), true,
 										Constants.GRID_WIDTH, Constants.GRID_HEIGHT));
 		return grid;
 	}
@@ -262,16 +353,60 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.GRID_WIDTH; i ++) {
 			for (int j = 0; j < Constants.GRID_HEIGHT; j ++) {
 				
-				if (i < Constants.GRID_VILLAGE_START) {
+				if (i < Constants.GRID_VILLAGE_START) { // Rubble
 					valueLayer.set(RandomHelper.nextDoubleFromTo(2.9, 2.99), i, j);
 				}
-				else if (i < Constants.GRID_SEA_START) {
+				else if (i < Constants.GRID_SEA_START) { // Grass
 					valueLayer.set(RandomHelper.nextDoubleFromTo(0.95, 0.99), i, j);
 				}
-				else {
+				else { // Water
 					valueLayer.set(RandomHelper.nextDoubleFromTo(1.9, 1.99), i, j);
 				}
 			}
+		}
+	}
+	
+	private void createHouses() {
+		
+		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES_CHEAP + " cheap houses");
+		int x = 0, y = 0;
+		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_CHEAP; ++i) {
+			
+			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 5, 1 + y * 3);
+			new House(HouseType.CHEAP, Constants.HOUSE_CHEAP_PRICE, Constants.HOUSE_CHEAP_MAINTENANCE, 0, location);
+			
+			if (y == 7) {
+				y = 0;
+				x ++;
+			}
+			else {
+				y ++;
+			}
+		}
+		
+		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES_STANDARD + " standard houses");
+		x = 0;
+		y = 0;
+		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_STANDARD; ++i) {
+			
+			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 13 + x * 6, 2 + y * 5);
+			new House(HouseType.STANDARD, Constants.HOUSE_STANDARD_PRICE, Constants.HOUSE_STANDARD_MAINTENANCE, 0, location);
+			if (y == 4) {
+				y = 0;
+				x ++;
+			}
+			else {
+				y ++;
+			}
+		}
+		
+		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES_EXPENSIVE + " expensive houses");
+		x = 0;
+		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_EXPENSIVE; ++i) {
+			
+			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 7, Constants.GRID_HEIGHT - 6);
+			new House(HouseType.EXPENSIVE, Constants.HOUSE_EXPENSIVE_PRICE, Constants.HOUSE_EXPENSIVE_MAINTENANCE, 0, location);
+			x ++;
 		}
 	}
 	
@@ -281,15 +416,39 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
 
 			// Humans are automatically added to the context and placed in the grid
-			new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_ADULT_AGE, Constants.HUMAN_ELDERLY_AGE),
-					  HumanUtils.getNewHumanId(), RandomHelper.nextDoubleFromTo(2000, 6000), false, false); //TODO constants starting money and age			
+			new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
+					  HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);		
 		}
 		
+		//Logger.setLoggerAll(true, true, false, false, false);
+		Logger.enableLogger();
 		// Humans
-		for (int i = 0; i < 5; i ++) {
-			Logger.logMain("--- Run generation step " + i + " ---");
-			step();
-			stepCouncil();
+		int years = 5;
+		for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
+			Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
+			fullStep(i);
 		}
+		Logger.enableLogger();
+	}
+	
+	/**
+	 * Runs a fullStep, apart from the scheduler.
+	 * Used to generate a starting population that has some properties/children
+	 * @param tick the current tick
+	 */
+	private void fullStep(int tick) {
+		
+		step0Tick();
+		if (tick % Constants.TICKS_PER_YEAR == 1) {
+			step1Year();
+		}
+		if (tick % Constants.TICKS_PER_MONTH == 1) {
+			step2Month();
+		}
+		step3Tick();
+		if (tick % Constants.TICKS_PER_MONTH == 1) {
+			step4Month();
+		}
+		step5Tick();
 	}
 }

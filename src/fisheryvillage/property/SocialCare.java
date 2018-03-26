@@ -1,5 +1,8 @@
 package fisheryvillage.property;
 
+import fisheryvillage.common.Constants;
+import fisheryvillage.common.Logger;
+import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
@@ -10,12 +13,40 @@ import saf.v3d.scene.VSpatial;
 * no/too little income.
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class SocialCare extends Property {
 	
-	public SocialCare(double price, double maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 8, 6, Status.NONE, PropertyColor.HOMELESS_CARE);
+	private double paymentAmount = 0;
+	private int paymentCount = 0;
+	
+	public SocialCare(int price, int maintenanceCost, double money, GridPoint location) {
+		super(price, maintenanceCost, money, location, 11, 8, Status.NONE, PropertyColor.SOCIAL_CARE);
 		addToValueLayer();
+	}
+	
+	/**
+	 * Retrieves the social benefit for unemployed
+	 * @return
+	 */
+	public double getUnemployedBenefit() {
+		
+		if (paymentCount == 0) {
+			paymentCount = SimUtils.getCouncil().getNumberOfUnemployed();
+			paymentAmount = Math.min(Constants.BENEFIT_UNEMPLOYED, getSavings() / paymentCount);
+			paymentCount -= 1;
+			removeFromSavings(-paymentAmount);
+			return paymentAmount;
+		}
+		else if (paymentCount < -1) {
+			Logger.logError("Error in Unemployed, exceeded paymentCount : " + paymentCount);
+			return 0;
+		}
+		else {
+			paymentCount -= 1;
+			removeFromSavings(-paymentAmount);
+			return paymentAmount;
+		}
 	}
 	
 	@Override

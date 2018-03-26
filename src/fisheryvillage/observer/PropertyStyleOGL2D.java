@@ -15,6 +15,7 @@ import saf.v3d.scene.VSpatial;
 * Changes property visual layout
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class PropertyStyleOGL2D extends DefaultStyleOGL2D {
 

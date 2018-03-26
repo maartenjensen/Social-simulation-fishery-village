@@ -7,12 +7,11 @@ import fisheryvillage.population.SchoolType;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.CompanyOutside;
 import fisheryvillage.property.ElderlyCare;
-import fisheryvillage.property.Factory;
-import fisheryvillage.property.SocialCare;
 import fisheryvillage.property.House;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
 import fisheryvillage.property.SchoolOutside;
+import fisheryvillage.property.SocialCare;
 import repast.simphony.context.Context;
 import repast.simphony.space.graph.Network;
 import repast.simphony.space.graph.RepastEdge;
@@ -23,6 +22,7 @@ import repast.simphony.space.grid.GridPoint;
 * Supports the Human class with relevant getter functions
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public final strictfp class HumanUtils {
 
@@ -126,6 +126,22 @@ public final strictfp class HumanUtils {
 		return false;
 	}
 	
+	public static void removeAllEdges(Human human) {
+		
+		removeEdges(human, Constants.ID_NETWORK_COUPLE);
+		removeEdges(human, Constants.ID_NETWORK_CHILDREN);
+		removeEdges(human, Constants.ID_NETWORK_PROPERTY);
+	}
+	
+	public static void removeEdges(Human human, String networkId) {
+		Logger.logDebug("HumanUtils.removeEdges" + networkId);
+		Network<Object> network = SimUtils.getNetwork(networkId);
+		Iterable<RepastEdge<Object>> edges = network.getEdges(human);
+		for (RepastEdge<Object> edge : edges) {
+			network.removeEdge(edge);
+		}
+	}
+	
 	public static Human getPartner(Human human) {
 		
 		final Iterable<RepastEdge<Object>> partnerEdges = SimUtils.getNetwork(Constants.ID_NETWORK_COUPLE).getEdges(human);
@@ -178,13 +194,19 @@ public final strictfp class HumanUtils {
 	public static Property getWorkingPlace(int id, Status status, SchoolType schoolType) {
 		switch(status) {
 		case TEACHER:
-			return SimUtils.getObjectsAll(School.class).get(0);
+			return SimUtils.getSchool();
 		case FACTORY_WORKER:
-			return SimUtils.getObjectsAll(Factory.class).get(0);
+			return SimUtils.getFactory();
+		case FACTORY_BOSS:
+			return SimUtils.getFactory();
 		case FISHER:
 			return SimUtils.getBoat(id); // Can return null when the id is not found
 		case WORK_OUT_OF_TOWN:
 			return SimUtils.getObjectsAll(CompanyOutside.class).get(0);
+		case ELDERLY_CARETAKER:
+			return SimUtils.getElderlyCare();
+		case MAYOR:
+			return SimUtils.getCouncil();
 		case CHILD:
 			if (schoolType == SchoolType.INSIDE_VILLAGE) {
 				return SimUtils.getObjectsAll(School.class).get(0);
@@ -222,7 +244,7 @@ public final strictfp class HumanUtils {
 
 		Context<Object> context = SimUtils.getContext();
 		Logger.logDebug("m." + mother.getId() + ", f." + father.getId() + "spawnChild()");
-		final Human child = new Human(SimUtils.getRandomBoolean(), 0, getNewHumanId(), 0, false, false);
+		final Human child = new Human(SimUtils.getRandomBoolean(), 0, getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
 		Logger.logDebug("Pre child.setAncestors(), An moth:" + mother.getAncestors() + ", an fath:" + father.getAncestors());
 		child.setAncestors(mother.getId(), father.getId(), mother.getAncestors(), father.getAncestors());
 		// Make connection with parents

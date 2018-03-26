@@ -10,8 +10,12 @@ import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.municipality.Council;
+import fisheryvillage.municipality.Event;
+import fisheryvillage.municipality.EventHall;
 import fisheryvillage.property.Boat;
+import fisheryvillage.property.Factory;
 import fisheryvillage.property.House;
+import fisheryvillage.property.HouseType;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -27,6 +31,7 @@ import saf.v3d.scene.VSpatial;
 * The human class, without it the village would be a ghost town
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class Human {
 
@@ -38,7 +43,6 @@ public class Human {
 	private double money;
 	private int childrenWanted;
 	private final boolean foreigner;
-	private boolean liveOutOfTown;
 	
 	// Variable initialization
 	private ArrayList<GridPoint> ancestors = new ArrayList<GridPoint>();
@@ -48,14 +52,14 @@ public class Human {
 	private SchoolType schoolType = SchoolType.NO_SCHOOL;
 	private double nettoIncome = 0;
 	private double necessaryCost = 0;
+	private SocialStatus socialStatus = new SocialStatus(0);
 
-	public Human(boolean gender, int age, int id, double money, boolean foreigner, boolean liveOutOfTown) {
+	public Human(boolean gender, int age, int id, double money, boolean foreigner) {
 		this.gender = gender;
 		this.age = age;
 		this.id = id;
 		this.money = money;
 		this.foreigner = foreigner;
-		this.liveOutOfTown = liveOutOfTown;
 		this.childrenWanted = RandomHelper.nextIntFromTo(Constants.HUMAN_MIN_CHILDREN_WANTED, Constants.HUMAN_MAX_CHILDREN_WANTED);
 		this.yearTick = 1;
 		setStatusByAge();
@@ -71,12 +75,10 @@ public class Human {
 
 	/*=========================================
 	 * Main human steps 
-	 *========================================
+	 *=========================================
 	 */
 	
-	public void stepReset() {
-		necessaryCost = 0;
-		nettoIncome = 0;
+	public void stepAging() {
 		
 		yearTick ++;
 		if (yearTick > 1) {
@@ -101,50 +103,25 @@ public class Human {
 			schoolType = SchoolType.NO_SCHOOL;
 		}
 	}
-	
-	/**
-	 * TODO for now this function makes sure Humans are moved when they are on top of
-	 * each other
-	 */
-	public void stepLocation() {
+
+	public void stepResetStandardCosts() {
 		
-		final Grid<Object> grid = SimUtils.getGrid();
-		GridPoint newLocation = grid.getLocation(this);
-		
-		double currentTick = RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
-		if (currentTick % 2 == 0 | currentTick < 0) {
-			Property livingPlace = HumanUtils.getLivingPlace(this);
-			if (livingPlace != null) {
-				newLocation = livingPlace.getFreeLocationExcluded(this);
-			}
-			else {
-				Logger.logError("Human"+getId()+" has no living place");
-			}
-		}
-		else {
-			Property workingPlace = HumanUtils.getWorkingPlace(id, status, schoolType);
-			if (workingPlace != null){
-				if (workingPlace.getFreeLocationExcluded(this) != null) {
-					newLocation = workingPlace.getFreeLocationExcluded(this);
-				}
-				else {
-					Logger.logError("No room in working place to put agent");
-				}
-			}
-		}
-		grid.moveTo(this, newLocation.getX(), newLocation.getY());
+		necessaryCost = 0;
+		nettoIncome = 0;
 	}
 
 	public void stepWork() {
 		
 		double salary = payTax(getSalary());
+		double benefits = getBenefits();
 		Human partner = HumanUtils.getPartner(this);
 		if (partner != null) {
 			salary /= 2;
-			partner.giveSalaryToPartner(salary);
+			benefits /= 2;
+			partner.giveIncomeToPartner(salary + benefits);
 		}
-		nettoIncome += salary;
-		money += salary;
+		nettoIncome += salary + benefits;
+		money += salary + benefits;
 	}
 
 	public void stepPayStandardCosts() {
@@ -195,11 +172,35 @@ public class Human {
 	}
 
 	public void stepSelectWork() {
-		 
-		if (status == Status.UNEMPLOYED && RandomHelper.nextDouble() < 0.5) { //TODO this probability
+		
+		if ((status == Status.UNEMPLOYED && RandomHelper.nextDouble() < 0.5) || 
+			(status == Status.WORK_OUT_OF_TOWN && RandomHelper.nextDouble() < 0.1) ||
+			(nettoIncome < necessaryCost && money < Constants.HUMAN_MONEY_DANGER_LEVEL && RandomHelper.nextDouble() < 0.25)) { //TODO these probabilities
 			
 			ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class); //TODO this is not efficient, look only through job specific buildings
 			for (final Property property : properties) {
+				// Different rules for boat since it can be owned
+				if (property instanceof Boat && status != Status.FISHER) {
+					if (!((Boat) property).hasCaptain()) {
+						if (money > property.getPrice()) {
+							money -= property.getPrice();
+							SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, property);
+							actionWorkStartAt(property);
+							break; //Breaks are very important. Or else a person could rotate through the jobs in one tick
+						}
+					}
+				}
+				if (property instanceof Factory && status != Status.FACTORY_BOSS) {
+					if (!((Factory) property).hasBoss()) {
+						if (money > property.getPrice()) {
+							money -= property.getPrice();
+							SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, property);
+							Logger.logAction("H" + id + " became the factory boss");
+							status = Status.FACTORY_BOSS;
+							break; //Breaks are very important. Or else a person could rotate through the jobs in one tick
+						}
+					}
+				}
 				if (property.getVacancy()) {
 					actionWorkStartAt(property);
 					break;
@@ -213,13 +214,44 @@ public class Human {
 		if (isSingle() && age >= Constants.HUMAN_ADULT_AGE && RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_RELATION) {
 			Logger.logInfo("Human" + id + "is single");
 			for (final Human human: SimUtils.getObjectsAllExcluded(Human.class, this)) {
-				if (isSingle() && HumanUtils.isPotentialCouple(human, this) && !human.isLivingOutOfTown()) {
+				if (isSingle() && HumanUtils.isPotentialCouple(human, this)) {
 					if (!getAncestorsMatch(ancestors, human.getAncestors())) {
 						actionGetPartner(human);
 					}
 					break;
 				}
 			}
+		}
+	}
+	
+	public void stepOrganizeSocialEvent() {
+		
+		EventHall eventHall = SimUtils.getEventHall();
+		if (RandomHelper.nextDouble() < 0.2 && eventHall.getVacancyForNewEvent() && age >= Constants.HUMAN_ADULT_AGE && age < Constants.HUMAN_ELDERLY_CARE_AGE) {
+			if (RandomHelper.nextDouble() < 0.5) { //TODO make this a value based decision ALSO money based
+				money -= eventHall.createEvent("Free", id);
+			}
+			else {
+				money -= eventHall.createEvent("Commercial", id);
+			}
+		}
+	}
+	
+	public void stepAttendSocialEvent() {
+		
+		EventHall eventHall = SimUtils.getEventHall();
+		if (RandomHelper.nextDouble() < 0.5 && age >= Constants.HUMAN_ADULT_AGE && age < Constants.HUMAN_ELDERLY_CARE_AGE) {
+			ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(id);
+			if (possibleEvents.size() >= 1) {
+				Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
+				money -= eventHall.joinEvent(eventToJoin, id); //TODO check fee
+			}
+		}
+	}
+	
+	public void stepDonate() {
+		if (status == Status.WORK_OUT_OF_TOWN && nettoIncome > necessaryCost && money > 5000) { //TODO make this value based
+			actionDonate(SimUtils.getCouncil(), 100);
 		}
 	}
 	
@@ -236,27 +268,32 @@ public class Human {
 	}
 
 	public void stepHousing() {
-
-		if (RandomHelper.nextDouble() > Constants.HUMAN_PROB_GET_HOUSE) {
+				
+		if (RandomHelper.nextDouble() > Constants.HUMAN_PROB_GET_HOUSE || age < Constants.HUMAN_ADULT_AGE || age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
 			return ;
 		}
-		if (age >= Constants.HUMAN_ADULT_AGE && age < Constants.HUMAN_ELDERLY_CARE_AGE) {
-			
-			if (!HumanUtils.isOwningHouse(this)) {
-				homelessTick ++;
-				for (House house : SimUtils.getPropertyAvailableAllRandom(House.class)) {
-					if (money > house.getPrice()) {
-						actionBuyHouse(house);
-						break;
-					}
+		
+		if (!HumanUtils.isOwningHouse(this) && status != Status.UNEMPLOYED) {
+			homelessTick ++;
+			for (House house : SimUtils.getPropertyAvailableAllRandom(House.class)) {
+				if (money > house.getPrice()) {
+					actionBuyHouse(house);
+					return;
 				}
 			}
-			else if ((!isSingle() && !HumanUtils.isLivingTogetherWithPartner(this))) { // Sell house if in relationship and not single and owns a house
-				actionSellHouse(HumanUtils.getOwnedHouse(this));
+		}
+		
+		House ownedHouse = HumanUtils.getOwnedHouse(this);
+		if (ownedHouse != null) {
+			// Sell house if in relationship and not single and owns a house
+			if (!isSingle() && !HumanUtils.isLivingTogetherWithPartner(this)) { 
+				actionSellHouse(ownedHouse);
+				return;
 			}
-			House ownedHouse = HumanUtils.getOwnedHouse(this);
-			if (age >= Constants.HUMAN_ELDERLY_CARE_AGE && ownedHouse != null) {
-				actionSellHouse(HumanUtils.getOwnedHouse(this));
+			if (nettoIncome < necessaryCost && money < Constants.HUMAN_MONEY_DANGER_LEVEL) {
+				if (ownedHouse.getHouseType() != HouseType.CHEAP) {
+					actionSellHouse(ownedHouse);
+				}
 			}
 		}
 	}
@@ -276,26 +313,63 @@ public class Human {
 			actionSellAllProperty();
 		}
 		
-		if (homelessTick >= 20 && liveOutOfTown == false) {
+		if (homelessTick >= Constants.HOMELESS_TICK) {
 			actionMigrateOutOfTown();
 		}
+	}
+	
+	/**
+	 * TODO for now this function makes sure Humans are moved when they are on top of
+	 * each other
+	 */
+	public void stepLocation() {
+		
+		final Grid<Object> grid = SimUtils.getGrid();
+		GridPoint newLocation = grid.getLocation(this);
+
+		double currentTick = RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		if (currentTick % 2 == 0 | currentTick < 0) {
+			Property livingPlace = HumanUtils.getLivingPlace(this);
+			if (livingPlace != null) {
+				newLocation = livingPlace.getFreeLocationExcluded(this);
+			}
+			else {
+				Logger.logError("Human"+getId()+" has no living place");
+			}
+		}
+		else {
+			Property workingPlace = HumanUtils.getWorkingPlace(id, status, schoolType);
+			if (workingPlace != null){
+				if (workingPlace.getFreeLocationExcluded(this) != null) {
+					newLocation = workingPlace.getFreeLocationExcluded(this);
+				}
+				else {
+					Logger.logError("No room in working place to put agent");
+				}
+			}
+		}
+		grid.moveTo(this, newLocation.getX(), newLocation.getY());
 	}
 	
 	public void removeSelf() {
 		
 		status = Status.DEAD;
-		liveOutOfTown = true;
 		Logger.logInfo("H" + id + " is removed");
 		Human partner = HumanUtils.getPartner(this);
+		
+		Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
+		
 		if (partner != null) {
 			Logger.logInfo("H" + partner.getId() + " is the partner and gets the property of H" + id);
-			Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
+			
 			Iterable<RepastEdge<Object>> propertyEdges = networkProperty.getOutEdges(this);
 			for (RepastEdge<Object> propertyEdge : propertyEdges) {
 				networkProperty.addEdge(partner, propertyEdge.getTarget());
 			}
 		}
-
+		
+		Logger.logDebug("HumanUtils.removeAllEdges" + getId());
+		HumanUtils.removeAllEdges(this);
 		Logger.logDebug("ContextUtils.remove" + getId());
 		SimUtils.getContext().remove(this);
 	}
@@ -303,6 +377,7 @@ public class Human {
 	/*=========================================
 	 * Actions
 	 *========================================
+	 *
 	 */
 	
 	public void actionBuyHouse(House house) {
@@ -331,6 +406,16 @@ public class Human {
 		}
 	}
 	
+	public void actionDonate(Property property, int amount) {
+		Logger.logAction("H" + id + " donated money to : " + property.getLabel());
+		if (money < amount) {
+			Logger.logError("Error money smaller than amount, donation canceled");
+			return ;
+		}
+		money -= amount;
+		property.addToSavings(amount);
+	}
+	
 	public void actionWorkStartAt(Property property) {
 		
 		Logger.logAction("H" + id + " took the job at : " + property.getLabel());
@@ -356,15 +441,28 @@ public class Human {
 	public void actionMigrateOutOfTown() {
 		
 		Logger.logAction("H" + id + " migrates out of town");
-		liveOutOfTown = true;
 		SimUtils.getGrid().moveTo(this,  RandomHelper.nextIntFromTo(1, Constants.GRID_VILLAGE_START - 2), 
 				RandomHelper.nextIntFromTo(0, Constants.GRID_HEIGHT - 1));
-				status = Status.OUT_OF_TOWN;
-		
+				status = Status.DEAD;
+		// Remove partner
 		if (HumanUtils.getPartner(this) != null) {
+			Logger.logInfo("and takes partner H" + HumanUtils.getPartner(this).getId() + " with her/him");
 			HumanUtils.getPartner(this).removeSelf();
 		}
+		// Also remove children
+		for (Human child : HumanUtils.getChildrenUnder18(this)) {
+			Logger.logInfo("and also child H" + child.getId());
+			child.removeSelf();
+		}
 		removeSelf();
+	}
+	
+	public void actionSocialEventAttend() {
+		socialStatus.addSocialLevel(1);
+	}
+	
+	public void actionSocialEventOrganize() {
+		socialStatus.addSocialLevel(3);
 	}
 	
 	/*=========================================
@@ -438,14 +536,31 @@ public class Human {
 	public double getSalary() {
 		switch(status) {
 		case FACTORY_WORKER:
-			return Constants.SALARY_FACTORY_WORKER;
+			return Math.round(SimUtils.getFactory().getFactoryWorkerPayment());
+		case FACTORY_BOSS:
+			return Math.round(SimUtils.getFactory().getFactoryBossPayment());
 		case TEACHER:
 			return Math.round(SimUtils.getSchool().getTeacherPayment());
 		case WORK_OUT_OF_TOWN:
 			return Constants.SALARY_OUTSIDE_WORK;
 		case FISHER:
 			return Math.round(SimUtils.getBoat(id).getFisherPayment());
+		case ELDERLY_CARETAKER:
+			return Math.round(SimUtils.getElderlyCare().getCaretakerPayment());
 		default: // You get nothing
+			return 0;
+		}
+	}
+	
+	public double getBenefits() {
+		switch(status) {
+		case UNEMPLOYED:
+			return Math.round(SimUtils.getSocialCare().getUnemployedBenefit());
+		case ELDER:
+			return Math.round(SimUtils.getElderlyCare().getPension());
+		case ELDEST:
+			return Math.round(SimUtils.getElderlyCare().getPension());
+		default:
 			return 0;
 		}
 	}
@@ -459,7 +574,6 @@ public class Human {
 			
 			return salary * ((100 - (double) RunEnvironment.getInstance().getParameters().getValue(Constants.PARAMETER_PERCENTAGE_TAX)) / 100);//(Constants.NETTO_INCOME_PERCENTAGE / 100);
 		}
-		
 		return salary * ((100 - (double) RunEnvironment.getInstance().getParameters().getValue(Constants.PARAMETER_PERCENTAGE_TAX)) / 100);
 	}
 	
@@ -467,7 +581,6 @@ public class Human {
 	 * Standard getters and setters
 	 *=========================================
 	 */
-	
 	private void setStatusByAge() {
 		
 		if (age < Constants.HUMAN_ADULT_AGE) {
@@ -500,9 +613,9 @@ public class Human {
 		money += gift;
 	}
 	
-	public void giveSalaryToPartner(double salary) {
-		money += salary;
-		nettoIncome += salary;
+	public void giveIncomeToPartner(double income) {
+		money += income;
+		nettoIncome += income;
 	}
 	
 	public int getChildrenWanted() {
@@ -559,13 +672,13 @@ public class Human {
 	public boolean isMan() {
 		return (!gender);
 	}
-
-	public boolean isLivingOutOfTown() {
-		return liveOutOfTown;
-	}
 	
 	public ArrayList<GridPoint> getAncestors() {
 		return ancestors;
+	}
+	
+	public double getSocialLevel() {
+		return socialStatus.getSocialLevel();
 	}
 	
 	/*=========================================
@@ -592,6 +705,15 @@ public class Human {
 	}
 
 	public VSpatial getSpatialImage() {
+
+		if (status == Status.FISHER) {
+			Human captain = SimUtils.getBoat(id).getOwner();
+			if (captain != null) {
+				if (captain.getId() == id) {
+					return spatialImages.get(Status.CAPTAIN);
+				}
+			}
+		}
 		return spatialImages.get(status);
 	}
 

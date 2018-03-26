@@ -6,14 +6,15 @@ import java.awt.Color;
 * An enum for the property color
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public enum PropertyColor {
 	
 	COUNCIL(0, new Color(150, 150, 150)),
 	SCHOOL(1, new Color(240, 230, 185)),
 	HOUSE(2, new Color(230, 210, 175)),
-	HOMELESS_CARE(3, new Color(200, 200, 200)),
-	ELDERLY_CARE(4, new Color(230, 230, 230)),
+	SOCIAL_CARE(3, new Color(200, 200, 200)),
+	ELDERLY_CARE(4, new Color(200, 200, 200)),
 	COMPANY(5, new Color(150, 150, 150)),
 	FACTORY(6, new Color(150, 150, 150)),
 	BOAT(7, new Color(255, 130, 130));

@@ -17,6 +17,7 @@ import saf.v3d.scene.VSpatial;
 * Changes human visual layout
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class HumanStyleOGL2D extends DefaultStyleOGL2D {
 	
@@ -58,10 +59,15 @@ public class HumanStyleOGL2D extends DefaultStyleOGL2D {
 		spatialImages.put(Status.ELDER, createImageFromPath(Constants.ICON_ELDER + append_gender));
 		spatialImages.put(Status.ELDEST, createImageFromPath(Constants.ICON_ELDEST + append_gender));
 		spatialImages.put(Status.FISHER, createImageFromPath(Constants.ICON_FISHER + append_gender));
+		spatialImages.put(Status.CAPTAIN, createImageFromPath(Constants.ICON_CAPTAIN + append_gender));
 		spatialImages.put(Status.FACTORY_WORKER, createImageFromPath(Constants.ICON_PROCESSOR + append_gender));
+		spatialImages.put(Status.FACTORY_BOSS, createImageFromPath(Constants.ICON_FACTORY_BOSS + append_gender));
+		spatialImages.put(Status.MAYOR, createImageFromPath(Constants.ICON_MAYOR + append_gender));
 		spatialImages.put(Status.TEACHER, createImageFromPath(Constants.ICON_TEACHER + append_gender));
 		spatialImages.put(Status.UNEMPLOYED, createImageFromPath(Constants.ICON_UNEMPLOYED + append_gender));
 		spatialImages.put(Status.WORK_OUT_OF_TOWN, createImageFromPath(Constants.ICON_WORKER_OUTSIDE + append_gender));
+		spatialImages.put(Status.DEAD, shapeFactory.createRectangle(3, 3)); //TODO Change this
+		spatialImages.put(Status.NONE, shapeFactory.createCircle(4, 6)); //TODO Change this
 		human.setSpatialImages(spatialImages);
 	}
 	

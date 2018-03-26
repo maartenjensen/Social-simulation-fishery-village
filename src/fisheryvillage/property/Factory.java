@@ -7,6 +7,8 @@ import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
+import repast.simphony.space.graph.Network;
+import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -14,6 +16,7 @@ import saf.v3d.scene.VSpatial;
 * The factory that buys fish from fishers and processes it to sell it again
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class Factory extends Property {
 
@@ -24,14 +27,18 @@ public class Factory extends Property {
 	private int fishUnprocessedKg = 0;
 	private int fishProcessedKg = 0; // Variable only for label
 
-	public Factory(double price, double maintenanceCost, double money, GridPoint location) {
+	public Factory(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 10, 10, Status.FACTORY_WORKER, PropertyColor.FACTORY);
 		addToValueLayer();
 	}
 
 	public int calculatedFishToBuy(int fishProposed) {
-		int fishBought = (int) (Math.min(getSavings(), fishProposed * Constants.PRICE_PER_KG_FISH_UNPROCESSED) / Constants.PRICE_PER_KG_FISH_UNPROCESSED);
-		return fishBought;
+		if (getOwner() != null) { //&& getSavings() > 0
+			//int fishBought = (int) (Math.min(getSavings(), fishProposed * Constants.PRICE_PER_KG_FISH_UNPROCESSED) / Constants.PRICE_PER_KG_FISH_UNPROCESSED);
+			int fishBought = fishProposed;
+			return fishBought;
+		}
+		return 0;
 	}
 
 	/**
@@ -40,20 +47,43 @@ public class Factory extends Property {
 	 */
 	public double buyFish(int fishBought) {
 
-		double moneyPayedForFish = fishBought * Constants.PRICE_PER_KG_FISH_UNPROCESSED;
-		fishUnprocessedKg += fishBought;
-		removeFromSavings(-moneyPayedForFish);
-		return moneyPayedForFish;
+		if (getOwner() != null) {
+			double moneyPayedForFish = fishBought * Constants.PRICE_PER_KG_FISH_UNPROCESSED;
+			fishUnprocessedKg += fishBought;
+			removeFromSavings(-moneyPayedForFish);
+			return moneyPayedForFish;
+		}
+		return 0;
 	}
 
 	public void stepProcessFish() {
 		
 		int fishProcessedKg = getFactoryWorkerCount() * Constants.FISH_PROCESSING_AMOUNT_PP;
-		fishUnprocessedKg -= fishProcessedKg;
-		this.fishProcessedKg = fishProcessedKg;
+		if (fishProcessedKg <= fishUnprocessedKg) {
+			fishUnprocessedKg -= fishProcessedKg;
+			this.fishProcessedKg = fishProcessedKg;
+		}
+		else {
+			fishProcessedKg = fishUnprocessedKg;
+			fishUnprocessedKg = 0;
+			this.fishProcessedKg = fishProcessedKg;
+			fireEmployees(3); //TODO change max employees instead
+		}
 		addToSavings(fishProcessedKg * Constants.PRICE_PER_KG_FISH_PROCESSED);
 	}
 	
+	public void fireEmployees(int number) {
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		for (final Human human: humans) {
+			if (human.getStatus() == Status.FACTORY_WORKER) {
+				human.setStatus(Status.UNEMPLOYED);
+				number -= 1;
+			}
+			if (number == 0)
+				return ;
+		}
+	}
 	
 	public int getFactoryWorkerCount() {
 		
@@ -67,6 +97,13 @@ public class Factory extends Property {
 		return workers;
 	}
 
+	public double getFactoryBossPayment() {
+
+		double bossPayment = Math.min(Constants.SALARY_FACTORY_BOSS, getSavings());
+		removeFromSavings(-bossPayment);
+		return bossPayment;
+	}
+	
 	/**
 	 * Retrieves the payment of the factory worker and subtracts it from the savings
 	 * Should only be called in the work function of Human
@@ -94,16 +131,45 @@ public class Factory extends Property {
 	
 	public boolean getVacancy() {
 		
-		if (getFactoryWorkerCount() < maxEmployees) {
+		if (getFactoryWorkerCount() < maxEmployees && hasBoss()) {
 			return true;
 		}
 		return false;
 	}
 	
+	public boolean hasBoss() {
+		Human owner = getOwner();
+		if (owner == null) {
+			Logger.logDebug("There is no boss! Fire everyone");
+			fireEmployees();
+			return false;
+		}
+		else if (getOwner().getStatus() != Status.FACTORY_BOSS) {
+			Logger.logDebug("Boss " + getOwner().getId() + " is not a boss!");
+			fireEmployees();
+			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
+			RepastEdge<Object> bossEdge = network.getEdge(getOwner(), this);
+			Logger.logDebug("Remove edge: " + bossEdge);
+			SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).removeEdge(bossEdge);
+			return false;
+		}
+		return true;
+	}
+	
+	public void fireEmployees() {
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		for (final Human human: humans) {
+			if (human.getStatus() == Status.FACTORY_WORKER) {
+				human.setStatus(Status.UNEMPLOYED);
+			}
+		}
+	}
+	
 	@Override
 	public VSpatial getSpatial() {
 		
-		if (getFactoryWorkerCount() >= 1) {
+		if (hasBoss()) {
 			return spatialImagesOwned.get(true);
 		}
 		return spatialImagesOwned.get(false);
@@ -111,7 +177,11 @@ public class Factory extends Property {
 	
 	@Override
 	public String getLabel() {
-		return "Factory: W:" + getFactoryWorkerCount() + "/" + maxEmployees + ", $:" + Math.round(getSavings())
+		int bossId = -1;
+		if (getOwner() != null) {
+			bossId = getOwner().getId();
+		}
+		return "Factory: Boss: " + bossId + ", W:" + getFactoryWorkerCount() + "/" + maxEmployees + ", $:" + Math.round(getSavings())
 			 + "\nFish unprocessed (kg): " + fishUnprocessedKg + "\nFish processed (kg): " + fishProcessedKg;
 	}
 }

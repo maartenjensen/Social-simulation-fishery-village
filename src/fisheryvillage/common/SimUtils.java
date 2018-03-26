@@ -3,7 +3,9 @@ package fisheryvillage.common;
 import java.util.ArrayList;
 import java.util.Random;
 
+import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.municipality.Council;
+import fisheryvillage.municipality.EventHall;
 import fisheryvillage.property.Boat;
 import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
@@ -22,6 +24,7 @@ import repast.simphony.valueLayer.GridValueLayer;
 * General support class used mainly to retrieve objects in the simulation
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public final strictfp class SimUtils {
 
@@ -117,6 +120,14 @@ public final strictfp class SimUtils {
 	
 	public static ElderlyCare getElderlyCare() {
 		return getObjectsAll(ElderlyCare.class).get(0);
+	}
+	
+	public static EventHall getEventHall() {
+		return getObjectsAll(EventHall.class).get(0);
+	}
+	
+	public static Ecosystem getEcosystem() {
+		return getObjectsAll(Ecosystem.class).get(0);
 	}
 	
 	/**

@@ -9,6 +9,8 @@ import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
 import repast.simphony.random.RandomHelper;
+import repast.simphony.space.graph.Network;
+import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -17,6 +19,7 @@ import saf.v3d.scene.VSpatial;
 * This is what the fishers use to fish
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class Boat extends Property {
 
@@ -25,22 +28,23 @@ public class Boat extends Property {
 	private int paymentCount = 0;
 	private int fishCaught = 0; //Kilograms
 	private int fishSold = 0;
+	private int fishThrownAway = 0;
 	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
 	
-	public Boat(double price, double maintenanceCost, double money, GridPoint location) {
+	public Boat(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 3, 2, Status.FISHER, PropertyColor.BOAT);
 		addToValueLayer();
 	}
 
 	public int getFisherCount() {
 		
-		removeFishers();
+		removeFishersIds();
 		return fishersIds.size();
 	}
 	
 	public boolean employeeOnBoat(int fisherId) {
 		
-		removeFishers();
+		removeFishersIds();
 		if (fishersIds.contains(fisherId)) {
 			return true;
 		}
@@ -50,15 +54,18 @@ public class Boat extends Property {
 	public boolean getVacancy() {
 		
 		int fishers = getFisherCount();
-		if (fishers < maxFishers) {
+		if (fishers < maxFishers && hasCaptain()) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	public void stepFish() { //TODO make this an influenceable step
 		
-		fishCaught = getFisherCount() * RandomHelper.nextIntFromTo(Constants.FISH_CATCH_AMOUNT_MIN_PP, Constants.FISH_CATCH_AMOUNT_MAX_PP);
+		fishThrownAway = 0;
+		fishSold = 0;
+		int fishToCatch = getFisherCount() * RandomHelper.nextIntFromTo(Constants.FISH_CATCH_AMOUNT_MIN_PP, Constants.FISH_CATCH_AMOUNT_MAX_PP);
+		fishCaught += SimUtils.getEcosystem().fishFish(fishToCatch);
 	}
 	
 	public void stepSellFish() {
@@ -67,15 +74,20 @@ public class Boat extends Property {
 		if (factory != null && fishCaught > 0) {
 			fishSold = factory.calculatedFishToBuy(fishCaught);
 			addToSavings(factory.buyFish(fishSold));
-			//fishCaught -= fishSold; Don't remove it so it can be shown in the label
+			fishThrownAway = fishCaught - fishSold;
 		}
+		else {
+			fishThrownAway = 0;
+			fishSold = 0;
+		}
+		fishCaught = 0;
 	}
 	
 	public void addFisher(int id) {
 		fishersIds.add(id);
 	}
 	
-	public void removeFishers() {
+	public void removeFishersIds() {
 		
 		ArrayList<Integer> fishersIdsToRemove = new ArrayList<Integer>();
 		for (final Integer fisherId: fishersIds) {
@@ -91,6 +103,48 @@ public class Boat extends Property {
 		}
 		if (fishersIdsToRemove.size() > 0) {
 			fishersIds.removeAll(fishersIdsToRemove);
+		}
+	}
+	
+	/**
+	 * Checks whether the boat has an owner (captain)
+	 * if not it fires all the fishers. If the owner 
+	 * is not a fisher it also fires all the fishers
+	 * and deletes the connection with the captain
+	 * @return
+	 */
+	public boolean hasCaptain() { //TODO make some inheritance for the boat property
+		
+		Human owner = getOwner();
+		if (owner == null) {
+			Logger.logDebug("There is no captain! Fire fishers");
+			fireFishers();
+			return false;
+		}
+		else if (getOwner().getStatus() != Status.FISHER) {
+			Logger.logDebug("Captain " + getOwner().getId() + " is not a fisher!");
+			fireFishers();
+			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
+			RepastEdge<Object> captainEdge = network.getEdge(getOwner(), this);
+			Logger.logDebug("Remove edge: " + captainEdge);
+			SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).removeEdge(captainEdge);
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Fire the fishers that belong to this boat
+	 */
+	public void fireFishers() {
+		
+		for (final Integer fisherId: fishersIds) {
+			Human human = HumanUtils.getHumanById(fisherId);
+			if (human != null) {
+				if (human.getStatus() == Status.FISHER) {
+					human.setStatus(Status.UNEMPLOYED);
+				}
+			}
 		}
 	}
 	
@@ -130,6 +184,14 @@ public class Boat extends Property {
 	
 	@Override
 	public String getLabel() {
-		return "Boat C:" + ", F:" + getFisherCount() + ", $:" + Math.round(getSavings()) + "\nFish caught (kg): " + fishCaught + "\nFish sold (kg): " + fishSold;
+		int captainId = -1;
+		int fishCaught = this.fishCaught;
+		if (fishSold + fishThrownAway > 0) {
+			fishCaught = fishSold + fishThrownAway;
+		}
+		if (getOwner() != null) {
+			captainId = getOwner().getId();
+		}
+		return "Boat Captain ID:" + captainId + "\nF:" + getFisherCount() + ", $:" + Math.round(getSavings()) + "\nFish caught (kg):" + fishCaught + "\nFish sold (kg): " + fishSold + "\nFish thrown away (kg): " + fishThrownAway;
 	}
 }

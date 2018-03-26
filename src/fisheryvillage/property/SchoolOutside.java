@@ -14,10 +14,11 @@ import saf.v3d.scene.VSpatial;
 * the village have to pay more to get their children to this outside school
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class SchoolOutside extends Property {
 
-	public SchoolOutside(double price, double maintenanceCost, double money, GridPoint location) {
+	public SchoolOutside(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 8, 5, Status.NONE, PropertyColor.SCHOOL);
 		addToValueLayer();
 	}

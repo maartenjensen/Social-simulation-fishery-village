@@ -15,6 +15,7 @@ import saf.v3d.scene.VSpatial;
 * The village school which has teachers and children
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class School extends Property {
 
@@ -22,8 +23,8 @@ public class School extends Property {
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
-	public School(double price, double maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 8, 5, Status.TEACHER, PropertyColor.SCHOOL);
+	public School(int price, int maintenanceCost, double money, GridPoint location) {
+		super(price, maintenanceCost, money, location, 11, 8, Status.TEACHER, PropertyColor.SCHOOL);
 		addToValueLayer();
 	}
 

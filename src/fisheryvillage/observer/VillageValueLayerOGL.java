@@ -12,6 +12,7 @@ import repast.simphony.visualizationOGL2D.ValueLayerStyleOGL;
 * that represents the village, its buildings and its boats.
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class VillageValueLayerOGL implements ValueLayerStyleOGL {
 
@@ -40,6 +41,9 @@ public class VillageValueLayerOGL implements ValueLayerStyleOGL {
 		else if (value <= 3) { // Outside world
 			int strength = (int) Math.min(254 * (value - 2), 255);
 			return new Color(strength, strength, strength);
+		}
+		else if (value <= 4) { // Darker grass land
+			return new Color(200, (int) Math.min(254 * (value - 3), 255), 160);
 		}
 		else {
 			for (PropertyColor propertyColor : PropertyColor.values()) {

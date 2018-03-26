@@ -3,6 +3,10 @@
   <type>2D</type>
   <styles>
     <entry>
+      <string>fisheryvillage.ecosystem.Ecosystem</string>
+      <string>fisheryvillage.observer.EcosystemStyleOGL2D</string>
+    </entry>
+    <entry>
       <string>fisheryvillage.property.Property</string>
       <string>fisheryvillage.observer.PropertyStyleOGL2D</string>
     </entry>
@@ -12,6 +16,10 @@
     </entry>
   </styles>
   <editedStyles>
+    <entry>
+      <string>fisheryvillage.ecosystem.Ecosystem</string>
+      <null/>
+    </entry>
     <entry>
       <string>fisheryvillage.property.Property</string>
       <null/>
@@ -41,19 +49,23 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>974132876</hashCode>
+    <hashCode>219952229</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>grid</layoutProjection>
   <layoutInterval>0</layoutInterval>
   <layerOrder>
     <entry>
-      <string>fisheryvillage.property.Property</string>
+      <string>fisheryvillage.ecosystem.Ecosystem</string>
       <int>0</int>
     </entry>
     <entry>
-      <string>fisheryvillage.population.Human</string>
+      <string>fisheryvillage.property.Property</string>
       <int>1</int>
+    </entry>
+    <entry>
+      <string>fisheryvillage.population.Human</string>
+      <int>2</int>
     </entry>
   </layerOrder>
   <projections>

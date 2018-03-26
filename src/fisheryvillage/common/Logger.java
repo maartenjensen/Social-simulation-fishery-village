@@ -4,6 +4,7 @@ package fisheryvillage.common;
 * Logs stuff
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public final class Logger {
 
@@ -20,6 +21,14 @@ public final class Logger {
 		logAction = true;
 		logInfo = true;
 		logDebug = true;
+	}
+	
+	public static void setLoggerAll(boolean logErrors, boolean logMain, boolean logAction, boolean logInfo, boolean logDebug) {
+		Logger.logErrors = logErrors;
+		Logger.logMain = logMain;
+		Logger.logAction = logAction;
+		Logger.logInfo = logInfo;
+		Logger.logDebug = logDebug;
 	}
 	
 	public static void setLogErrors(boolean logErrors) {
@@ -40,19 +49,19 @@ public final class Logger {
 	
 	public static void logAction(String output) {
 		if (logAction) {
-			System.out.println("ACTION: " + output);
+			System.out.println("---- ACTION: " + output);
 		}
 	}
 	
 	public static void logInfo(String output) {
 		if (logInfo) {
-			System.out.println("INFO: " + output);
+			System.out.println("----- INFO: " + output);
 		}
 	}
 	
 	public static void logDebug(String output) {
 		if (logDebug) {
-			System.out.println("DEBUG: " + output);
+			System.out.println("------ DEBUG: " + output);
 		}
 	}
 }

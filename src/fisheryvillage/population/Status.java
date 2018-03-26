@@ -5,6 +5,7 @@ package fisheryvillage.population;
 * is also represented by different icons.
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public enum Status {
 	CHILD,
@@ -13,10 +14,12 @@ public enum Status {
 	UNEMPLOYED,
 	TEACHER,
 	FACTORY_WORKER,
+	FACTORY_BOSS,
 	FISHER,
+	MAYOR,
+	CAPTAIN, //TODO Captain is maybe used
 	ELDERLY_CARETAKER,
 	WORK_OUT_OF_TOWN,
-	OUT_OF_TOWN,
 	DEAD,
 	NONE;
 }

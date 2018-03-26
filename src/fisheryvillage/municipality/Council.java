@@ -3,12 +3,12 @@ package fisheryvillage.municipality;
 import java.util.ArrayList;
 
 import fisheryvillage.common.Constants;
-import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.PropertyColor;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -17,53 +17,84 @@ import saf.v3d.scene.VSpatial;
 * elderly care and the factory.
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class Council extends Property {
 
-	private int year = 2000;
 	private double moneyForSchool = 0;
 	private double moneyForSocialCare = 0;
 	private double moneyForElderlyCare = 0;
 	private double moneyForFactory = 0;
 	
-	public Council(double price, double maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 3, 3, Status.NONE, PropertyColor.COUNCIL);
+	public Council(int price, int maintenanceCost, double money, GridPoint location) {
+		super(price, maintenanceCost, money, location, 3, 3, Status.MAYOR, PropertyColor.COUNCIL);
 		addToValueLayer();
 	}
 	
 	//TODO make this dependent on values of residents
 	public void stepDistributeMoney() {
 		
-		double savingsPartition = getSavings() / 4;
+		double savingsPartition = getSavings() / 8;
 		moneyForSchool = savingsPartition;
 		moneyForSocialCare = savingsPartition;
 		moneyForElderlyCare = savingsPartition;
 		moneyForFactory = savingsPartition;
+		
+		if (SimUtils.getSchool().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
+			moneyForSchool += getSavings() / 2;
+		else if (SimUtils.getSocialCare().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
+			moneyForSocialCare += getSavings() / 2;
+		else if (SimUtils.getElderlyCare().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
+			moneyForElderlyCare += getSavings() / 2;
+		else if (SimUtils.getFactory().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
+			moneyForFactory += getSavings() / 2;
 		
 		SimUtils.getSchool().addToSavings(moneyForSchool);
 		SimUtils.getSocialCare().addToSavings(moneyForSocialCare);
 		SimUtils.getElderlyCare().addToSavings(moneyForElderlyCare);
 		SimUtils.getFactory().addToSavings(moneyForFactory);
 		
-		removeFromSavings(-getSavings());
-		Logger.logDebug("Does the error come afer this? Then it is in the steps of repast");
+		removeFromSavings(- (moneyForSchool + moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
+	}
+	
+	public boolean getVacancy() {
+		if (hasMayor()) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean hasMayor() {
+		final ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		for (final Human human: humans) {
+			if (human.getStatus() == Status.MAYOR) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String getDate() {
-		year ++;
-		return Integer.toString(year);
+
+		double tick = RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		int year = (int) Math.floor(tick / Constants.TICKS_PER_YEAR) + 1;
+		int month = (int) Math.floor((tick % Constants.TICKS_PER_YEAR) / Constants.TICKS_PER_MONTH) + 1;
+		int tickInt = (int) (tick % Constants.TICKS_PER_MONTH) + 1;
+		return "Year: " + year + ", month: " + month + ", tick:" + tickInt + "/" + Constants.TICKS_PER_MONTH;
 	}
 	
 	@Override
 	public VSpatial getSpatial() {
-		
-		return spatialImagesOwned.get(true);
+		if (hasMayor()) {
+			return spatialImagesOwned.get(true);
+		}
+		return spatialImagesOwned.get(false);
 	}
 	
 	@Override
 	public String getLabel() {
 		return "Council, $: " + Math.round(getSavings()) + "\nSchool $:" + Math.round(moneyForSchool) + "\nSocialCare $:" + Math.round(moneyForSocialCare) + 
-				"\nElderlyCare $:" + Math.round(moneyForElderlyCare) + "\nFactory $:" + Math.round(moneyForFactory) + "\n\nYear: "+getDate();
+				"\nElderlyCare $:" + Math.round(moneyForElderlyCare) + "\nFactory $:" + Math.round(moneyForFactory) + "\n\n"+getDate();
 	}
 	
 	public int getNumberOfStatus(Status status) {
@@ -90,9 +121,27 @@ public class Council extends Property {
 	}
 	
 	public int getNumberOfFishers() {
-		return getNumberOfStatus(Status.FISHER);
+		return getNumberOfStatus(Status.FISHER) - getNumberOfFisherCaptains();
 	}
 	
+	public int getNumberOfFisherCaptains() {
+		
+		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		int captains = 0;
+		for (Human human : humans) {
+			if (human.getStatus() == Status.FISHER) {
+				Human captain = SimUtils.getBoat(human.getId()).getOwner();
+				if (captain != null) {
+					if (captain.getId() == human.getId()) {
+						captains ++;
+					}
+				}
+				
+			}
+		}
+		return captains;		
+	}
+
 	public int getNumberOfHomelessCaretakers() {
 		return 0;
 	}
@@ -103,6 +152,14 @@ public class Council extends Property {
 	
 	public int getNumberOfWorkersOutside() {
 		return getNumberOfStatus(Status.WORK_OUT_OF_TOWN);
+	}
+	
+	public int getNumberOfMayor() {
+		return getNumberOfStatus(Status.MAYOR);
+	}
+	
+	public int getNumberOfBoss() {
+		return getNumberOfStatus(Status.FACTORY_BOSS);
 	}
 	
 	public int getNumberOfAge(int minimum, int maximum) {

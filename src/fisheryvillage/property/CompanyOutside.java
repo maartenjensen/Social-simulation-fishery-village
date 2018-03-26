@@ -12,12 +12,13 @@ import saf.v3d.scene.VSpatial;
 * An abstraction of all types of work outside the village
 *
 * @author Maarten Jensen
+* @since 2018-02-20
 */
 public class CompanyOutside extends Property {
 
 	private int maxEmployees = 100;
 	
-	public CompanyOutside(double price, double maintenanceCost, double money, GridPoint location) {
+	public CompanyOutside(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 10, 10, Status.WORK_OUT_OF_TOWN, PropertyColor.COMPANY);
 		addToValueLayer();
 	}
