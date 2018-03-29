@@ -24,6 +24,14 @@
         <methodName>getMoney</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
+    <entry>
+      <string>Social status</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Social status</id>
+        <className>fisheryvillage.population.Human</className>
+        <methodName>getSocialLevel</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
   </methodDataSources>
   <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>

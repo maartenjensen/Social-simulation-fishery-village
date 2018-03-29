@@ -41,12 +41,26 @@ public class Boat extends Property {
 		removeFishersIds();
 		return fishersIds.size();
 	}
-	
+
+	public int getFisherAndCaptainCount() {
+		
+		removeFishersIds();
+		if (getOwner() != null) {
+			return fishersIds.size() + 1;
+		}
+		return 0;
+	}
+
 	public boolean employeeOnBoat(int fisherId) {
 		
 		removeFishersIds();
 		if (fishersIds.contains(fisherId)) {
 			return true;
+		}
+		else if (getOwner() != null) {
+			if (getOwner().getId() == fisherId) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -64,7 +78,7 @@ public class Boat extends Property {
 		
 		fishThrownAway = 0;
 		fishSold = 0;
-		int fishToCatch = getFisherCount() * RandomHelper.nextIntFromTo(Constants.FISH_CATCH_AMOUNT_MIN_PP, Constants.FISH_CATCH_AMOUNT_MAX_PP);
+		int fishToCatch = (getFisherCount() + 1) * RandomHelper.nextIntFromTo(Constants.FISH_CATCH_AMOUNT_MIN_PP, Constants.FISH_CATCH_AMOUNT_MAX_PP);
 		fishCaught += SimUtils.getEcosystem().fishFish(fishToCatch);
 	}
 	
@@ -121,8 +135,8 @@ public class Boat extends Property {
 			fireFishers();
 			return false;
 		}
-		else if (getOwner().getStatus() != Status.FISHER) {
-			Logger.logDebug("Captain " + getOwner().getId() + " is not a fisher!");
+		else if (getOwner().getStatus() != Status.CAPTAIN) {
+			Logger.logDebug("Captain " + getOwner().getId() + " is not a captain!");
 			fireFishers();
 			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 			RepastEdge<Object> captainEdge = network.getEdge(getOwner(), this);
@@ -156,7 +170,7 @@ public class Boat extends Property {
 	public double getFisherPayment() {
 		
 		if (paymentCount == 0) {
-			paymentCount = getFisherCount();
+			paymentCount = getFisherCount() + 2; // + 2 for captain
 			paymentAmount = getSavings() / paymentCount;
 			paymentCount -= 1;
 			removeFromSavings(-paymentAmount);
@@ -173,15 +187,50 @@ public class Boat extends Property {
 		}
 	}
 	
+	/**
+	 * Retrieves the payment of the captain by dividing the total savings
+	 * Should only be called in the work function of Human
+	 * Captain gets payed double.
+	 * @return
+	 */
+	public double getCaptainPayment() {
+		
+		if (paymentCount == 0) {
+			paymentCount = getFisherCount() + 2;
+			paymentAmount = getSavings() / paymentCount;
+			paymentCount -= 2;
+			removeFromSavings(-paymentAmount * 2);
+			return paymentAmount * 2;
+		}
+		else if (paymentCount < -1) {
+			Logger.logError("Error in Boat, exceeded paymentCount : " + paymentCount);
+			return 0;
+		}
+		else {
+			paymentCount -= 2;
+			removeFromSavings(-paymentAmount * 2);
+			return paymentAmount * 2;
+		}
+	}
+	
+	@Override
+	public String getName() {
+		
+		if (getOwner() != null) {
+			return "Boat C:" + getOwner().getId() + "; " + getX() + ", " + getY();
+		}
+		return "Boat C: #; " + getX() + ", " + getY();
+	}
+	
 	@Override
 	public VSpatial getSpatial() {
 		
-		if (getFisherCount() >= 1) {
+		if (hasCaptain()) {
 			return spatialImagesOwned.get(true);
 		}
 		return spatialImagesOwned.get(false);
 	}
-	
+
 	@Override
 	public String getLabel() {
 		int captainId = -1;

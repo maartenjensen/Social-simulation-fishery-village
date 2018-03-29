@@ -1,6 +1,10 @@
 package fisheryvillage.common;
 
 import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
+
+import fisheryvillage.population.Status;
 
 /**
 * This class holds many constants used throughout the code
@@ -9,7 +13,7 @@ import java.awt.Font;
 * @since 2018-02-20
 */
 public class Constants {
-	
+
 	// Initialize important IDs
 	public static final String ID_CONTEXT = "fisheryvillage";
 	public static final String ID_SPACE = "space";
@@ -85,12 +89,12 @@ public class Constants {
 	public static final double TAX_TO_COUNCIL = 10;
 	
 	// Initialize employee numbers
-	public static final int MAX_FISHERS_PER_BOAT = 6;
+	public static final int MAX_FISHERS_PER_BOAT = 5;
 	
 	// Initialize salary and benefits parameters
 	public static final double SALARY_TEACHER = 3000;
 	public static final double SALARY_FACTORY_WORKER = 2000;
-	public static final double SALARY_FACTORY_BOSS = 6000;
+	public static final double SALARY_FACTORY_BOSS = 6000; 
 	public static final double SALARY_MAYOR = 4000;
 	public static final double SALARY_OUTSIDE_WORK = 2500;
 	public static final double SALARY_ELDERLY_CARETAKER = 2000;
@@ -105,6 +109,32 @@ public class Constants {
 	public static final String PARAMETER_PERCENTAGE_TAX = "percentageTax";
 	public static final String PARAMETER_TAX_TO_COUNCIL = "percentageTaxToCouncil";
 
+	// Initialize social status
+	// Look at SocialStatus class
+	public static final Map<Status, Integer> SOCIAL_STATUS_WORK = new HashMap<Status, Integer>() 
+		{
+			private static final long serialVersionUID = 1L;
+			{
+				put(Status.CAPTAIN, 75);
+				put(Status.CHILD, 0);
+				put(Status.DEAD, 0);
+				put(Status.ELDER, 0);
+				put(Status.ELDERLY_CARETAKER, 25);
+				put(Status.ELDEST, 0);
+				put(Status.FACTORY_BOSS, 75);
+				put(Status.FACTORY_WORKER, 25);
+				put(Status.FISHER, 50);
+				put(Status.MAYOR, 100);
+				put(Status.NONE, 0);
+				put(Status.TEACHER, 50);
+				put(Status.UNEMPLOYED, 0);
+				put(Status.WORK_OUT_OF_TOWN, 0);
+			}};
+			
+	public static final int SOCIAL_STATUS_EVENT_NONE = 0;
+	public static final int SOCIAL_STATUS_EVENT_ORGANIZE = 75;
+	public static final int SOCIAL_STATUS_EVENT_ATTEND = 25;
+	
 	// Initialize icon paths
 	public static final String ICON_CHILD = "./icons/child";
 	public static final String ICON_TEACHER = "./icons/teacher";

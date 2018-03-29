@@ -167,6 +167,11 @@ public class Factory extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "Factory";
+	}
+	
+	@Override
 	public VSpatial getSpatial() {
 		
 		if (hasBoss()) {
@@ -183,5 +188,6 @@ public class Factory extends Property {
 		}
 		return "Factory: Boss: " + bossId + ", W:" + getFactoryWorkerCount() + "/" + maxEmployees + ", $:" + Math.round(getSavings())
 			 + "\nFish unprocessed (kg): " + fishUnprocessedKg + "\nFish processed (kg): " + fishProcessedKg;
+		// System.out.printf("Value with 3 digits after decimal point %.3f %n", PI); To format a floating decimal number use : .3f
 	}
 }

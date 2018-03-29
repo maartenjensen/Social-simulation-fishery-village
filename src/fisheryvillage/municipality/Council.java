@@ -92,6 +92,11 @@ public class Council extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "Council";
+	}
+	
+	@Override
 	public String getLabel() {
 		return "Council, $: " + Math.round(getSavings()) + "\nSchool $:" + Math.round(moneyForSchool) + "\nSocialCare $:" + Math.round(moneyForSocialCare) + 
 				"\nElderlyCare $:" + Math.round(moneyForElderlyCare) + "\nFactory $:" + Math.round(moneyForFactory) + "\n\n"+getDate();
@@ -121,31 +126,13 @@ public class Council extends Property {
 	}
 	
 	public int getNumberOfFishers() {
-		return getNumberOfStatus(Status.FISHER) - getNumberOfFisherCaptains();
+		return getNumberOfStatus(Status.FISHER);
 	}
 	
-	public int getNumberOfFisherCaptains() {
-		
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		int captains = 0;
-		for (Human human : humans) {
-			if (human.getStatus() == Status.FISHER) {
-				Human captain = SimUtils.getBoat(human.getId()).getOwner();
-				if (captain != null) {
-					if (captain.getId() == human.getId()) {
-						captains ++;
-					}
-				}
-				
-			}
-		}
-		return captains;		
+	public int getNumberOfCaptains() {
+		return getNumberOfStatus(Status.CAPTAIN);		
 	}
 
-	public int getNumberOfHomelessCaretakers() {
-		return 0;
-	}
-	
 	public int getNumberOfElderlyCaretakers() {
 		return getNumberOfStatus(Status.ELDERLY_CARETAKER);
 	}

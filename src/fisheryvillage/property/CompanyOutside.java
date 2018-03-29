@@ -44,6 +44,11 @@ public class CompanyOutside extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "Company outside";
+	}
+	
+	@Override
 	public VSpatial getSpatial() {
 		
 		return spatialImagesOwned.get(true);

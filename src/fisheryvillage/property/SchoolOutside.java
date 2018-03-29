@@ -42,6 +42,11 @@ public class SchoolOutside extends Property {
 	}
 
 	@Override
+	public String getName() {
+		return "SchoolOutside";
+	}
+	
+	@Override
 	public String getLabel() {
 		return "School P:" + getPupilCount();
 	}

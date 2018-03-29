@@ -201,6 +201,8 @@ public final strictfp class HumanUtils {
 			return SimUtils.getFactory();
 		case FISHER:
 			return SimUtils.getBoat(id); // Can return null when the id is not found
+		case CAPTAIN:
+			return SimUtils.getBoat(id); // Can return null when the id is not found
 		case WORK_OUT_OF_TOWN:
 			return SimUtils.getObjectsAll(CompanyOutside.class).get(0);
 		case ELDERLY_CARETAKER:

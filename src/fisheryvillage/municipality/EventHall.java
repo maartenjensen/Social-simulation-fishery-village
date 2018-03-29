@@ -74,6 +74,11 @@ public class EventHall extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "EventHall";
+	}
+	
+	@Override
 	public String getLabel() {
 		String label = "Event hall $: " + getSavings() + "\n";
 		for (Event event : events) {

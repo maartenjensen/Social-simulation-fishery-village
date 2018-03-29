@@ -93,12 +93,15 @@ public final strictfp class SimUtils {
 	}
 	
 	public static Boat getBoat(int fisherId) {
+		
 		ArrayList<Boat> boats = getObjectsAllRandom(Boat.class);
 		for (Boat boat : boats) {
 			if (boat.employeeOnBoat(fisherId)) {
+				Logger.logDebug("SimUtils.getBoat(): H" + fisherId + " is employee on " + boat.getName());
 				return boat;
 			}
 		}
+		Logger.logDebug("SimUtils.getBoat(): H" + fisherId + " is not on a boat");
 		return null;
 	}
 	

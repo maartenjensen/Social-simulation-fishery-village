@@ -92,7 +92,7 @@
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
         <id>N. Captain</id>
         <className>fisheryvillage.municipality.Council</className>
-        <methodName>getNumberOfFisherCaptains</methodName>
+        <methodName>getNumberOfCaptains</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

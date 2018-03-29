@@ -156,6 +156,11 @@ public class School extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "School";
+	}
+	
+	@Override
 	public String getLabel() {
 		return "School T:"+ getTeacherCount() + "/" + Math.ceil(getChildrenCount()/(float) maxChildrenPerTeacher) + ", P:" + getPupilCount() + ", $:" + Math.round(getSavings());
 	}

@@ -43,7 +43,8 @@ public class Human {
 	private double money;
 	private int childrenWanted;
 	private final boolean foreigner;
-	
+	//private DecisionMaker decisionMaker;
+
 	// Variable initialization
 	private ArrayList<GridPoint> ancestors = new ArrayList<GridPoint>();
 	private HashMap<Status, VSpatial> spatialImages = new HashMap<Status, VSpatial>();
@@ -52,7 +53,8 @@ public class Human {
 	private SchoolType schoolType = SchoolType.NO_SCHOOL;
 	private double nettoIncome = 0;
 	private double necessaryCost = 0;
-	private SocialStatus socialStatus = new SocialStatus(0);
+	private double salaryUntaxed = 0;
+	private SocialStatus socialStatus = new SocialStatus(0, 0);
 
 	public Human(boolean gender, int age, int id, double money, boolean foreigner) {
 		this.gender = gender;
@@ -64,6 +66,7 @@ public class Human {
 		this.yearTick = 1;
 		setStatusByAge();
 		this.schoolType = SchoolType.NO_SCHOOL;
+		//decisionMaker = new DecisionMaker();
 		
 		SimUtils.getContext().add(this);
 		
@@ -77,7 +80,6 @@ public class Human {
 	 * Main human steps 
 	 *=========================================
 	 */
-	
 	public void stepAging() {
 		
 		yearTick ++;
@@ -108,11 +110,13 @@ public class Human {
 		
 		necessaryCost = 0;
 		nettoIncome = 0;
+		salaryUntaxed = 0;
 	}
 
 	public void stepWork() {
 		
-		double salary = payTax(getSalary());
+		this.salaryUntaxed = calculateSalary();
+		double salary = payTax(salaryUntaxed);
 		double benefits = getBenefits();
 		Human partner = HumanUtils.getPartner(this);
 		if (partner != null) {
@@ -122,6 +126,9 @@ public class Human {
 		}
 		nettoIncome += salary + benefits;
 		money += salary + benefits;
+		
+		// Set social status
+		socialStatus.setSocialStatusWork(status);
 	}
 
 	public void stepPayStandardCosts() {
@@ -180,12 +187,13 @@ public class Human {
 			ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class); //TODO this is not efficient, look only through job specific buildings
 			for (final Property property : properties) {
 				// Different rules for boat since it can be owned
-				if (property instanceof Boat && status != Status.FISHER) {
+				if (property instanceof Boat && status != Status.CAPTAIN) {
 					if (!((Boat) property).hasCaptain()) {
 						if (money > property.getPrice()) {
+							Logger.logAction("H" + id + " became a captain at : " + property.getName());
 							money -= property.getPrice();
 							SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, property);
-							actionWorkStartAt(property);
+							status = Status.CAPTAIN;
 							break; //Breaks are very important. Or else a person could rotate through the jobs in one tick
 						}
 					}
@@ -208,6 +216,7 @@ public class Human {
 			}
 		}
 	}
+
 	
 	public void stepRelation() {
 
@@ -226,6 +235,7 @@ public class Human {
 	
 	public void stepOrganizeSocialEvent() {
 		
+		socialStatus.setEventNone();
 		EventHall eventHall = SimUtils.getEventHall();
 		if (RandomHelper.nextDouble() < 0.2 && eventHall.getVacancyForNewEvent() && age >= Constants.HUMAN_ADULT_AGE && age < Constants.HUMAN_ELDERLY_CARE_AGE) {
 			if (RandomHelper.nextDouble() < 0.5) { //TODO make this a value based decision ALSO money based
@@ -377,7 +387,6 @@ public class Human {
 	/*=========================================
 	 * Actions
 	 *========================================
-	 *
 	 */
 	
 	public void actionBuyHouse(House house) {
@@ -407,7 +416,7 @@ public class Human {
 	}
 	
 	public void actionDonate(Property property, int amount) {
-		Logger.logAction("H" + id + " donated money to : " + property.getLabel());
+		Logger.logAction("H" + id + " donated money to : " + property.getName());
 		if (money < amount) {
 			Logger.logError("Error money smaller than amount, donation canceled");
 			return ;
@@ -418,7 +427,7 @@ public class Human {
 	
 	public void actionWorkStartAt(Property property) {
 		
-		Logger.logAction("H" + id + " took the job at : " + property.getLabel());
+		Logger.logAction("H" + id + " took the job at : " + property.getName());
 		status = property.getJobStatus();
 		if (property instanceof Boat) {
 			Boat boat = (Boat) property;
@@ -458,11 +467,11 @@ public class Human {
 	}
 	
 	public void actionSocialEventAttend() {
-		socialStatus.addSocialLevel(1);
+		socialStatus.setEventAttendee();
 	}
 	
 	public void actionSocialEventOrganize() {
-		socialStatus.addSocialLevel(3);
+		socialStatus.setEventOrganizer();
 	}
 	
 	/*=========================================
@@ -533,7 +542,8 @@ public class Human {
 		return false;
 	}
 	
-	public double getSalary() {
+	public double calculateSalary() {
+		
 		switch(status) {
 		case FACTORY_WORKER:
 			return Math.round(SimUtils.getFactory().getFactoryWorkerPayment());
@@ -545,6 +555,8 @@ public class Human {
 			return Constants.SALARY_OUTSIDE_WORK;
 		case FISHER:
 			return Math.round(SimUtils.getBoat(id).getFisherPayment());
+		case CAPTAIN:
+			return Math.round(SimUtils.getBoat(id).getCaptainPayment());
 		case ELDERLY_CARETAKER:
 			return Math.round(SimUtils.getElderlyCare().getCaretakerPayment());
 		default: // You get nothing
@@ -681,6 +693,18 @@ public class Human {
 		return socialStatus.getSocialLevel();
 	}
 	
+	public double getSocialLevelWork() {
+		return socialStatus.getWorkLevel();
+	}
+	
+	public double getSocialLevelEvent() {
+		return socialStatus.getEventLevel();
+	}
+	
+	public SocialStatus getSocialStatus() {
+		return socialStatus;
+	}
+	
 	/*=========================================
 	 * Graphics and information
 	 *========================================
@@ -706,14 +730,6 @@ public class Human {
 
 	public VSpatial getSpatialImage() {
 
-		if (status == Status.FISHER) {
-			Human captain = SimUtils.getBoat(id).getOwner();
-			if (captain != null) {
-				if (captain.getId() == id) {
-					return spatialImages.get(Status.CAPTAIN);
-				}
-			}
-		}
 		return spatialImages.get(status);
 	}
 

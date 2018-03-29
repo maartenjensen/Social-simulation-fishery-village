@@ -56,6 +56,11 @@ public class SocialCare extends Property {
 	}
 
 	@Override
+	public String getName() {
+		return "SocialCare";
+	}
+	
+	@Override
 	public String getLabel() {
 		return "Social care $: " + Math.round(getSavings());
 	}	

@@ -135,6 +135,11 @@ public class ElderlyCare extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "ElderlyCare";
+	}
+	
+	@Override
 	public String getLabel() {
 		return "Elderly care" + ", $:" + Math.round(getSavings());
 	}

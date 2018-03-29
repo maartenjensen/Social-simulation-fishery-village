@@ -185,6 +185,10 @@ public class Property {
 	}
 	
 	public String getLabel() {
+		return "Property $" + getSavings();
+	}
+	
+	public String getName() {
 		return "Property";
 	}
 	

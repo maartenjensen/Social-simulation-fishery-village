@@ -62,6 +62,11 @@ public class House extends Property {
 	}
 	
 	@Override
+	public String getName() {
+		return "House " + houseType + ": " + getX() + ", " + getY();
+	}
+	
+	@Override
 	public String getLabel() {
 		return houseType + " $:" + getPrice() + "\nCost $:" + getMaintenanceCost();
 	}
