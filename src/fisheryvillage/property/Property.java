@@ -33,6 +33,7 @@ public class Property {
 	private final int width;
 	private final int height;
 	protected final Status jobStatus;
+	protected String actionName = "none";
 	private final PropertyColor propertyColor;
 
 	// Variable initialization
@@ -87,6 +88,10 @@ public class Property {
 	
 	public double getSavings() {
 		return savings;
+	}
+	
+	public String getActionName() {
+		return actionName;
 	}
 	
 	public void addToSavings(double money) {

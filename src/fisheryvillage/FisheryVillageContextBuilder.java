@@ -416,14 +416,16 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
 
 			// Humans are automatically added to the context and placed in the grid
-			new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
-					  HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);		
+			Human human = new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
+					  				HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
+			Logger.logInfo("Create H" + human.getId() + ", age: " + human.getAge());
 		}
 		
 		//Logger.setLoggerAll(true, true, false, false, false);
 		Logger.enableLogger();
 		// Humans
 		int years = 5;
+		
 		for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
 			Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
 			fullStep(i);

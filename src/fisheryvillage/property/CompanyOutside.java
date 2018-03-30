@@ -21,6 +21,7 @@ public class CompanyOutside extends Property {
 	public CompanyOutside(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 10, 10, Status.WORK_OUT_OF_TOWN, PropertyColor.COMPANY);
 		addToValueLayer();
+		actionName = "Job work outside village";
 	}
 
 	public int getEmployeeCount() {

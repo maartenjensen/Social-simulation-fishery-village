@@ -7,6 +7,7 @@ import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.municipality.Council;
 import fisheryvillage.municipality.EventHall;
 import fisheryvillage.property.Boat;
+import fisheryvillage.property.CompanyOutside;
 import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
 import fisheryvillage.property.Property;
@@ -111,6 +112,10 @@ public final strictfp class SimUtils {
 	
 	public static Council getCouncil() {
 		return getObjectsAll(Council.class).get(0);
+	}
+	
+	public static CompanyOutside getCompanyOutside() {
+		return getObjectsAll(CompanyOutside.class).get(0);
 	}
 	
 	public static Factory getFactory() {

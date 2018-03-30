@@ -34,6 +34,7 @@ public class Boat extends Property {
 	public Boat(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 3, 2, Status.FISHER, PropertyColor.BOAT);
 		addToValueLayer();
+		actionName = "Job fisher";
 	}
 
 	public int getFisherCount() {
@@ -132,12 +133,12 @@ public class Boat extends Property {
 		Human owner = getOwner();
 		if (owner == null) {
 			Logger.logDebug("There is no captain! Fire fishers");
-			fireFishers();
+			//fireFishers();
 			return false;
 		}
 		else if (getOwner().getStatus() != Status.CAPTAIN) {
 			Logger.logDebug("Captain " + getOwner().getId() + " is not a captain!");
-			fireFishers();
+			//fireFishers();
 			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 			RepastEdge<Object> captainEdge = network.getEdge(getOwner(), this);
 			Logger.logDebug("Remove edge: " + captainEdge);

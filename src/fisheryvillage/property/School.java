@@ -26,6 +26,7 @@ public class School extends Property {
 	public School(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 11, 8, Status.TEACHER, PropertyColor.SCHOOL);
 		addToValueLayer();
+		actionName = "Job teacher";
 	}
 
 	public int getTeacherCount() {

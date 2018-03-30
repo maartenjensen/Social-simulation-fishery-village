@@ -30,6 +30,7 @@ public class Factory extends Property {
 	public Factory(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 10, 10, Status.FACTORY_WORKER, PropertyColor.FACTORY);
 		addToValueLayer();
+		actionName = "Job factory worker";
 	}
 
 	public int calculatedFishToBuy(int fishProposed) {
@@ -140,13 +141,13 @@ public class Factory extends Property {
 	public boolean hasBoss() {
 		Human owner = getOwner();
 		if (owner == null) {
-			Logger.logDebug("There is no boss! Fire everyone");
-			fireEmployees();
+			Logger.logInfo("There is no boss! Fire everyone");
+			//fireEmployees();
 			return false;
 		}
 		else if (getOwner().getStatus() != Status.FACTORY_BOSS) {
 			Logger.logDebug("Boss " + getOwner().getId() + " is not a boss!");
-			fireEmployees();
+			//fireEmployees();
 			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 			RepastEdge<Object> bossEdge = network.getEdge(getOwner(), this);
 			Logger.logDebug("Remove edge: " + bossEdge);

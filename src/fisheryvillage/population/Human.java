@@ -184,39 +184,59 @@ public class Human {
 			(status == Status.WORK_OUT_OF_TOWN && RandomHelper.nextDouble() < 0.1) ||
 			(nettoIncome < necessaryCost && money < Constants.HUMAN_MONEY_DANGER_LEVEL && RandomHelper.nextDouble() < 0.25)) { //TODO these probabilities
 			
-			ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class); //TODO this is not efficient, look only through job specific buildings
-			for (final Property property : properties) {
-				// Different rules for boat since it can be owned
-				if (property instanceof Boat && status != Status.CAPTAIN) {
-					if (!((Boat) property).hasCaptain()) {
-						if (money > property.getPrice()) {
-							Logger.logAction("H" + id + " became a captain at : " + property.getName());
-							money -= property.getPrice();
-							SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, property);
-							status = Status.CAPTAIN;
-							break; //Breaks are very important. Or else a person could rotate through the jobs in one tick
-						}
-					}
-				}
-				if (property instanceof Factory && status != Status.FACTORY_BOSS) {
-					if (!((Factory) property).hasBoss()) {
-						if (money > property.getPrice()) {
-							money -= property.getPrice();
-							SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(this, property);
-							Logger.logAction("H" + id + " became the factory boss");
-							status = Status.FACTORY_BOSS;
-							break; //Breaks are very important. Or else a person could rotate through the jobs in one tick
-						}
-					}
-				}
-				if (property.getVacancy()) {
-					actionWorkStartAt(property);
-					break;
-				}
+			ArrayList<String> possibleActions = createWorkPossibleActions();
+			Logger.logAction("H" + id + " possible actions: " + possibleActions);
+			String actionToDo = selectActionFromPossibleActions(possibleActions);
+			Logger.logAction("H" + id + " selected action: " + actionToDo);
+			if (actionToDo != null) {
+				ActionImplementation.executeActionJob(actionToDo, this);
+			}
+			else {
+				Logger.logError("Error no action to execute");
 			}
 		}
 	}
 
+	private String selectActionFromPossibleActions(ArrayList<String> possibleActions) {
+		if (possibleActions.size() > 0) {
+			return possibleActions.get(RandomHelper.nextIntFromTo(0, possibleActions.size() - 1));
+		}
+		else {
+			return null;
+		}
+	}
+	
+	public ArrayList<String> createWorkPossibleActions() {
+		
+		ArrayList<String> possibleActions = new ArrayList<String>();
+		possibleActions.add("Job unemployed");
+		ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class); //TODO this is not efficient, look only through job specific buildings
+		for (final Property property : properties) {
+			// Different rules for boat since it can be owned
+			if (property instanceof Boat && status != Status.CAPTAIN) {
+				if (!((Boat) property).hasCaptain()) {
+					if (money > property.getPrice()) {
+						if (!possibleActions.contains("Job captain")) {
+							possibleActions.add("Job captain");
+						}
+					}
+				}
+			}
+			if (property instanceof Factory && status != Status.FACTORY_BOSS) {
+				if (!((Factory) property).hasBoss()) {
+					if (money > property.getPrice()) {
+						if (!possibleActions.contains("Job factory boss")) {
+							possibleActions.add("Job factory boss");
+						}
+					}
+				}
+			}
+			if (property.getVacancy()) {
+				possibleActions.add(property.getActionName());
+			}
+		}
+		return possibleActions;
+	}
 	
 	public void stepRelation() {
 
@@ -232,7 +252,7 @@ public class Human {
 			}
 		}
 	}
-	
+	 
 	public void stepOrganizeSocialEvent() {
 		
 		socialStatus.setEventNone();
@@ -260,8 +280,20 @@ public class Human {
 	}
 	
 	public void stepDonate() {
+		
+		ArrayList<String> possibleActions = new ArrayList<String>();
+		possibleActions.add("Donate nothing");
 		if (status == Status.WORK_OUT_OF_TOWN && nettoIncome > necessaryCost && money > 5000) { //TODO make this value based
-			actionDonate(SimUtils.getCouncil(), 100);
+			possibleActions.add("Donate to council");
+		}
+		Logger.logAction("H" + id + " possible actions: " + possibleActions);
+		String actionToDo = selectActionFromPossibleActions(possibleActions);
+		Logger.logAction("H" + id + " selected action: " + actionToDo);
+		if (actionToDo != null) {
+			ActionImplementation.executeActionDonate(actionToDo, this);
+		}
+		else {
+			Logger.logError("Error no action to execute");
 		}
 	}
 	
@@ -399,7 +431,7 @@ public class Human {
 	
 	public void actionSellHouse(House myHouse) {
 		
-		Logger.logAction("H" + id + "sells house");
+		Logger.logAction("H" + id + " sells house");
 		Network<Object> networkProperty = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 		money += myHouse.getPrice(); // Increase money
 		RepastEdge<Object> houseEdge = networkProperty.getEdge(this, myHouse);
@@ -412,26 +444,6 @@ public class Human {
 		Iterable<RepastEdge<Object>> propertyEdges = networkProperty.getEdges(this);
 		for (RepastEdge<Object> propertyEdge : propertyEdges) {
 			networkProperty.removeEdge(propertyEdge);
-		}
-	}
-	
-	public void actionDonate(Property property, int amount) {
-		Logger.logAction("H" + id + " donated money to : " + property.getName());
-		if (money < amount) {
-			Logger.logError("Error money smaller than amount, donation canceled");
-			return ;
-		}
-		money -= amount;
-		property.addToSavings(amount);
-	}
-	
-	public void actionWorkStartAt(Property property) {
-		
-		Logger.logAction("H" + id + " took the job at : " + property.getName());
-		status = property.getJobStatus();
-		if (property instanceof Boat) {
-			Boat boat = (Boat) property;
-			boat.addFisher(id);
 		}
 	}
 	
@@ -623,6 +635,10 @@ public class Human {
 	
 	public void giveMoney(double gift) {
 		money += gift;
+	}
+	
+	public void removeMoney(double remove) {
+		money += remove;
 	}
 	
 	public void giveIncomeToPartner(double income) {

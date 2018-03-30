@@ -25,6 +25,7 @@ public class ElderlyCare extends Property {
 	public ElderlyCare(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 11, 8, Status.ELDERLY_CARETAKER, PropertyColor.ELDERLY_CARE);
 		addToValueLayer();
+		actionName = "Job elderly caretaker";
 	}
 	
 	public boolean getVacancy() {

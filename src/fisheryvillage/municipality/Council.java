@@ -29,6 +29,7 @@ public class Council extends Property {
 	public Council(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 3, 3, Status.MAYOR, PropertyColor.COUNCIL);
 		addToValueLayer();
+		actionName = "Job mayor";
 	}
 	
 	//TODO make this dependent on values of residents

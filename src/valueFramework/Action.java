@@ -3,7 +3,7 @@ package valueFramework;
 import java.util.ArrayList;
 
 public class Action {
-
+	
 	private String title;
 	private ArrayList<String> relatedConcreteValues;
 	
