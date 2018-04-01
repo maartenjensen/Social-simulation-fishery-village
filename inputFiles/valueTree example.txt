@@ -1,0 +1,37 @@
+%[Possible Action list splitted with ,]
+%value tree 1
+%waterTank, maxCapacity, minCapacity, maxFilledLevel, minFilledLevel, drainingAmount, minThresould, maxThresould,
+%node title, height, [list of children title slplitted by ,]
+%....
+%value tree 2
+%node title, height, [list of children title slplitted by ,]
+%....
+%value tree 3
+%node title, height, [list of children title slplitted by ,]
+%....
+%value tree 4
+%node title, height, [list of children title slplitted by ,]
+%....
+value tree 1
+waterTank, 100,100,70,20,10,10,10
+Power,[Authority,Wealth]
+Authority,[]
+Wealth,[]
+value tree 2
+waterTank, 100,100,70,20,10,90,90
+Tradition,[Respect for tradition]
+Respect for tradition,[Sustain village,Be part of the community]
+Sustain village,[]
+Be part of the community,[]
+value tree 3
+waterTank, 100,100,70,20,10,90,90
+Universalism,[Unity with nature,Social justice]
+Social justice,[Care for the weak]
+Care for the weak,[]
+Unity with nature,[]
+value tree 4
+waterTank, 100,100,70,20,10,10,10
+Self-direction,[Independent,Freedom]
+Freedom,[Not bound to village jobs]
+Not bound to village jobs,[]
+Independent,[]

@@ -1,7 +1,9 @@
 package fisheryvillage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import common.FrameworkBuilder;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -15,6 +17,7 @@ import fisheryvillage.property.CompanyOutside;
 import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
 import fisheryvillage.property.SocialCare;
+import mas.DecisionMaker;
 import fisheryvillage.property.House;
 import fisheryvillage.property.HouseType;
 import fisheryvillage.property.School;
@@ -34,6 +37,7 @@ import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.valueLayer.GridValueLayer;
+import valueFramework.WaterTank;
 
 /**
 * The FisheryVillageContextBuilder builds the repast simulation
@@ -84,6 +88,14 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.setContext(context);
 		SimUtils.getGrid();
 		SimUtils.getValueLayer();
+		
+		// Create value framework
+		try {
+			createValueFramework();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		// Create houses
 		createHouses();
@@ -348,6 +360,17 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		return valueLayer;
 	}
 
+	private void createValueFramework() throws IOException {
+		
+		//first create value files
+		FrameworkBuilder.readValueTreeFile();
+		ArrayList<WaterTank> waterTanks = new ArrayList<WaterTank>();
+		
+		//then read actions from file
+		FrameworkBuilder.readActionsFromFile("inputFiles\\actionList3.txt");
+		FrameworkBuilder.assginRelatedActionsToConcreteValues();	
+	}
+	
 	private void generateNature(GridValueLayer valueLayer) {
 		
 		for (int i = 0; i < Constants.GRID_WIDTH; i ++) {
@@ -419,17 +442,19 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			Human human = new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
 					  				HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
 			Logger.logInfo("Create H" + human.getId() + ", age: " + human.getAge());
+		
 		}
 		
 		//Logger.setLoggerAll(true, true, false, false, false);
 		Logger.enableLogger();
 		// Humans
-		int years = 5;
-		
+		int years = 30;
+		SimUtils.enableInitializationPhase();
 		for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
 			Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
 			fullStep(i);
 		}
+		SimUtils.disableInitializationPhase();
 		Logger.enableLogger();
 	}
 	

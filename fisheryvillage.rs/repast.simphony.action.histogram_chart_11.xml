@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.HistogramChartDescriptor simphonyVersion="2.5.0">
-  <name>Human Social status</name>
+  <name>Human money distribution</name>
   <dataSet>Human non-aggregate variables</dataSet>
-  <xAxisLabel>Level</xAxisLabel>
-  <yAxisLabel>Count</yAxisLabel>
-  <chartTitle>Social status</chartTitle>
+  <xAxisLabel>Distribution</xAxisLabel>
+  <yAxisLabel>Money</yAxisLabel>
+  <chartTitle>Human money distribution</chartTitle>
   <type>HISTOGRAM</type>
   <background>
     <red>255</red>
@@ -21,13 +21,13 @@
   <showLegend>true</showLegend>
   <histType>DYNAMIC</histType>
   <binCount>20</binCount>
-  <sourceId>Social status</sourceId>
+  <sourceId>Money</sourceId>
   <outOfRange>IGNORE</outOfRange>
   <min>0.0</min>
-  <max>1.0</max>
+  <max>0.0</max>
   <barColor>
-    <red>0</red>
-    <green>255</green>
+    <red>255</red>
+    <green>0</green>
     <blue>0</blue>
     <alpha>255</alpha>
   </barColor>

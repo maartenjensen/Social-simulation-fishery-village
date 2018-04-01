@@ -47,11 +47,14 @@ public class ActionImplementation {
 		case "Job factory worker":
 			actionWorkStartAt(human, SimUtils.getFactory());
 			break;
+		case "Job elderly caretaker":
+			actionWorkStartAt(human, SimUtils.getElderlyCare());
+			break;
 		case "Job work outside village":
 			actionWorkStartAt(human, SimUtils.getCompanyOutside());
 			break;
 		case "Job mayor":
-			actionWorkStartAt(human, SimUtils.getCompanyOutside());
+			actionWorkStartAt(human, SimUtils.getCouncil());
 			break;
 		case "Job unemployed":
 			Logger.logAction("H" + human.getId() + " became unemployed");

@@ -1,0 +1,16 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
+  <name>Building savings</name>
+  <dataSet>Buildings savings</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>$ Council</string>
+    <string>$ Factory</string>
+    <string>$ School</string>
+    <string>$ Elderly Care</string>
+    <string>$ Social Care</string>
+    <string>tick</string>
+  </sourceIds>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\BuildingSavings.txt</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>

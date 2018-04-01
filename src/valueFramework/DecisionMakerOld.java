@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 import repast.simphony.random.RandomHelper;
 
-public class DecisionMaker {
+public class DecisionMakerOld {
 
 	
-	public DecisionMaker() {
+	public DecisionMakerOld() {
 		
 	}
 	

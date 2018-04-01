@@ -33,6 +33,20 @@ public final strictfp class SimUtils {
 	private static final Random random = new Random();
 	private static Context<Object> masterContext = null;
 	
+	private static boolean initializationPhase = false;
+	
+	public static void enableInitializationPhase() {
+		initializationPhase = true;
+	}
+	
+	public static void disableInitializationPhase() {
+		initializationPhase = false;
+	}
+	
+	public static boolean getInitializationPhase() {
+		return initializationPhase;
+	}
+	
 	public static boolean getRandomBoolean() {
 		return random.nextBoolean();
 	}

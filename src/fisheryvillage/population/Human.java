@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import common.FrameworkBuilder;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -18,6 +19,7 @@ import fisheryvillage.property.House;
 import fisheryvillage.property.HouseType;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
+import mas.DecisionMaker;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.NdPoint;
@@ -43,7 +45,7 @@ public class Human {
 	private double money;
 	private int childrenWanted;
 	private final boolean foreigner;
-	//private DecisionMaker decisionMaker;
+	private DecisionMaker decisionMaker;
 
 	// Variable initialization
 	private ArrayList<GridPoint> ancestors = new ArrayList<GridPoint>();
@@ -55,6 +57,7 @@ public class Human {
 	private double necessaryCost = 0;
 	private double salaryUntaxed = 0;
 	private SocialStatus socialStatus = new SocialStatus(0, 0);
+	private String jobTitle = "NONE";
 
 	public Human(boolean gender, int age, int id, double money, boolean foreigner) {
 		this.gender = gender;
@@ -66,7 +69,12 @@ public class Human {
 		this.yearTick = 1;
 		setStatusByAge();
 		this.schoolType = SchoolType.NO_SCHOOL;
-		//decisionMaker = new DecisionMaker();
+
+		decisionMaker = new DecisionMaker(id);
+		FrameworkBuilder.decisionMakerList.add(decisionMaker);
+		
+		decisionMaker.assignPossibleActions(FrameworkBuilder.allPossibleActions);
+		decisionMaker.createValueTrees();
 		
 		SimUtils.getContext().add(this);
 		
@@ -180,24 +188,65 @@ public class Human {
 
 	public void stepSelectWork() {
 		
-		if ((status == Status.UNEMPLOYED && RandomHelper.nextDouble() < 0.5) || 
-			(status == Status.WORK_OUT_OF_TOWN && RandomHelper.nextDouble() < 0.1) ||
-			(nettoIncome < necessaryCost && money < Constants.HUMAN_MONEY_DANGER_LEVEL && RandomHelper.nextDouble() < 0.25)) { //TODO these probabilities
-			
-			ArrayList<String> possibleActions = createWorkPossibleActions();
-			Logger.logAction("H" + id + " possible actions: " + possibleActions);
-			String actionToDo = selectActionFromPossibleActions(possibleActions);
-			Logger.logAction("H" + id + " selected action: " + actionToDo);
-			if (actionToDo != null) {
-				ActionImplementation.executeActionJob(actionToDo, this);
+		if (age < Constants.HUMAN_ADULT_AGE || age >= Constants.HUMAN_ELDERLY_AGE) {
+			return ;
+		}
+		
+		if (SimUtils.getInitializationPhase()) {
+			boolean searchWork = false;
+			if (status == Status.WORK_OUT_OF_TOWN && RandomHelper.nextDouble() < 0.1) {
+				searchWork = true;
 			}
-			else {
-				Logger.logError("Error no action to execute");
+			else if (status == Status.UNEMPLOYED && RandomHelper.nextDouble() < 0.5) {
+				searchWork = true;
 			}
+			else if (nettoIncome < necessaryCost && money < Constants.HUMAN_MONEY_DANGER_LEVEL && RandomHelper.nextDouble() < 0.25) {
+				searchWork = true;
+			}
+			if (!searchWork) {
+				return ;
+			}
+		}
+
+		ArrayList<String> possibleActions = createWorkPossibleActions();
+		Logger.logInfo("H" + id + " possible actions: " + possibleActions);
+		String actionToDo = null;
+		if (!SimUtils.getInitializationPhase()) {
+			actionToDo = selectActionFromPossibleActionsJob(possibleActions);
+		}
+		else {
+			actionToDo = selectActionFromPossibleActions(possibleActions);
+		}
+		Logger.logInfo("H" + id + " selected action: " + actionToDo);
+		if (actionToDo != null) {
+			jobTitle = actionToDo;
+			ActionImplementation.executeActionJob(actionToDo, this);
+		}
+		else {
+			Logger.logError("Error no action to execute");
 		}
 	}
 
+	private String selectActionFromPossibleActionsJob(ArrayList<String> possibleActions) {
+		
+		ArrayList<String> selectedActions = decisionMaker.actionSelectionFromPossibleActions(possibleActions);
+		if (selectedActions.size() >= 2 && selectedActions.contains("Job unemployed")) {
+			selectedActions.remove("Job unemployed");
+		}
+		String selectedAction = selectedActions.get(RandomHelper.nextIntFromTo(0, selectedActions.size() - 1));
+		Logger.logInfo("H" + id + " jobTitle: " + jobTitle + ", selected action:" + selectedAction + " from actions: " + selectedActions);
+		if (selectedActions.contains(jobTitle) && jobTitle != "Job unemployed") {
+			selectedAction = jobTitle;
+		}
+		// Drain tanks
+		for (String treeName : decisionMaker.getValueTrees().keySet()) {
+			decisionMaker.getValueTrees().get(treeName).getWaterTank().draining();
+		}
+		return selectedAction;
+	}
+	
 	private String selectActionFromPossibleActions(ArrayList<String> possibleActions) {
+		
 		if (possibleActions.size() > 0) {
 			return possibleActions.get(RandomHelper.nextIntFromTo(0, possibleActions.size() - 1));
 		}
@@ -566,9 +615,17 @@ public class Human {
 		case WORK_OUT_OF_TOWN:
 			return Constants.SALARY_OUTSIDE_WORK;
 		case FISHER:
-			return Math.round(SimUtils.getBoat(id).getFisherPayment());
+			if (SimUtils.getBoat(id) != null) {
+				return Math.round(SimUtils.getBoat(id).getFisherPayment());
+			}
+			Logger.logError("Human.calculateSalary: H" + id + " no boat for fisher");
+			return 0;
 		case CAPTAIN:
-			return Math.round(SimUtils.getBoat(id).getCaptainPayment());
+			if (SimUtils.getBoat(id) != null) {
+				return Math.round(SimUtils.getBoat(id).getCaptainPayment());
+			}
+			Logger.logError("Human.calculateSalary: H" + id + " no boat for captain");
+			return 0;
 		case ELDERLY_CARETAKER:
 			return Math.round(SimUtils.getElderlyCare().getCaretakerPayment());
 		default: // You get nothing
