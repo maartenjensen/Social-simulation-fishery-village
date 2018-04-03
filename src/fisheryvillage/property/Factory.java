@@ -20,7 +20,7 @@ import saf.v3d.scene.VSpatial;
 */
 public class Factory extends Property {
 
-	private int maxEmployees = 20;
+	private int maxEmployees = Constants.FACTORY_INITIAL_MAX_EMPLOYEES;
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
@@ -31,6 +31,20 @@ public class Factory extends Property {
 		super(price, maintenanceCost, money, location, 10, 10, Status.FACTORY_WORKER, PropertyColor.FACTORY);
 		addToValueLayer();
 		actionName = "Job factory worker";
+	}
+	
+	public int getFishUnprocessed() {
+		return fishUnprocessedKg;
+	}
+	
+	public int getMaxEmployees() {
+		return maxEmployees;
+	}
+	
+	public void setVariables(int maxEmployees, int fishUnprocessed) {
+		
+		this.maxEmployees = maxEmployees;
+		this.fishUnprocessedKg = fishUnprocessed;
 	}
 
 	public int calculatedFishToBuy(int fishProposed) {
@@ -63,12 +77,18 @@ public class Factory extends Property {
 		if (fishProcessedKg <= fishUnprocessedKg) {
 			fishUnprocessedKg -= fishProcessedKg;
 			this.fishProcessedKg = fishProcessedKg;
+			if (getFactoryWorkerCount() == maxEmployees && maxEmployees < Constants.FACTORY_MAX_EMPLOYEES) {
+				maxEmployees ++;
+			}
 		}
 		else {
 			fishProcessedKg = fishUnprocessedKg;
 			fishUnprocessedKg = 0;
 			this.fishProcessedKg = fishProcessedKg;
-			fireEmployees(3); //TODO change max employees instead
+			fireEmployees(1);
+			if (maxEmployees > Constants.FACTORY_MIN_EMPLOYEES) {
+				maxEmployees --;
+			}
 		}
 		addToSavings(fishProcessedKg * Constants.PRICE_PER_KG_FISH_PROCESSED);
 	}

@@ -23,8 +23,6 @@ public class FrameworkBuilder {
 	public static Map<String, RandomTree> allValueTrees = new HashMap<String, RandomTree>();
 	public static Map<String, RandomTree> globalValueTrees = new HashMap<String, RandomTree>();
 	
-	
-	
 	public static final int numOfAbstractValues = 4;
 	public static int valueNumber = 0;
 	public static int humanId = 0;

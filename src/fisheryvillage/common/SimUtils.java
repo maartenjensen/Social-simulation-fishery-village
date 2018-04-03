@@ -35,6 +35,32 @@ public final strictfp class SimUtils {
 	
 	private static boolean initializationPhase = false;
 	
+	private static int newPropertyId = 0;
+
+	/**
+	 * This returns a new Id. ++ is used after the variable to make sure
+	 * the current newHumanId is returned
+	 * @return a new unused id for a resident
+	 */
+	public static int getNewPropertyId() {
+		return newPropertyId++;
+	}
+
+	public static void resetPropertyId() {
+		newPropertyId = 0;
+	}
+	
+	public static Property getPropertyById(int id) {
+		
+		ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class);
+		for (Property property : properties) {
+			if (property.getId() == id) {
+				return property;
+			}
+		}
+		return null;
+	}
+	
 	public static void enableInitializationPhase() {
 		initializationPhase = true;
 	}

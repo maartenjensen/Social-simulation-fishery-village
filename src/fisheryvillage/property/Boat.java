@@ -171,7 +171,10 @@ public class Boat extends Property {
 	public double getFisherPayment() {
 		
 		if (paymentCount == 0) {
-			paymentCount = getFisherCount() + 2; // + 2 for captain
+			paymentCount = getFisherCount();
+			if (hasCaptain()) {
+				paymentCount += 2;
+			}
 			paymentAmount = getSavings() / paymentCount;
 			paymentCount -= 1;
 			removeFromSavings(-paymentAmount);

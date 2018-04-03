@@ -3,6 +3,7 @@ package fisheryvillage.municipality;
 import java.util.ArrayList;
 
 import fisheryvillage.common.Constants;
+import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
@@ -176,4 +177,20 @@ public class Council extends Property {
 	public int getNumberOfElderlyOld() {
 		return getNumberOfAge(Constants.HUMAN_ELDERLY_CARE_AGE, Integer.MAX_VALUE);
 	}
+	
+	public int getSocialStatusRange() {
+		
+		int min = Integer.MAX_VALUE;
+		int max = 0;
+		
+		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		for (Human human: humans) {
+			min = Math.min(min, human.getSocialLevelCombined());
+			max = Math.max(max, human.getSocialLevelCombined());
+		}
+		
+		Logger.logDebug("Check unsatisfied universalist, min:" + min + ", max:" + max);
+		return Math.abs(max - min);
+	}
+	
 }

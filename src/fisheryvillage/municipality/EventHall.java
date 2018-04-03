@@ -80,9 +80,9 @@ public class EventHall extends Property {
 	
 	@Override
 	public String getLabel() {
-		String label = "Event hall $: " + getSavings() + "\n";
+		String label = "Event hall $: " + getSavings() + "|";
 		for (Event event : events) {
-			label += event.toString() + "\n";
+			label += event.toString() + "|";
 		}
 		return label;
 	}
@@ -91,4 +91,5 @@ public class EventHall extends Property {
 	public VSpatial getSpatial() {
 		return spatialImagesOwned.get(true);
 	}
+
 }

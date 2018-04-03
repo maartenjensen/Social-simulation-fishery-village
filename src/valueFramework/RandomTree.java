@@ -8,10 +8,10 @@ import java.util.Random;
 import common.FrameworkBuilder;
 
 
-public class RandomTree  implements Comparable<RandomTree>{
-	private WaterTank waterTank;
+public class RandomTree {
+
 	private Node root;
-	
+	private WaterTank waterTank;
 	
 	public void createChildren(int depth, int numOfChildren, Node parent){		
 		if (depth == 0){
@@ -31,24 +31,16 @@ public class RandomTree  implements Comparable<RandomTree>{
 			createChildren(depth-1, numofGrandChildren, newChild);
 		}				
 	}
-	
+	/*
 	public Node randomTreeBuilder(int maxDepth, int maxNumOfChildren, String title){
-		setWaterTank(new WaterTank());
+  		setWaterTank(new WaterTank(title));
 		root = new Node(title, null);
 		Random rand = new Random();
 	    int depth = rand.nextInt(maxDepth) + 1;
 	    int numofChildren = rand.nextInt(maxNumOfChildren) + 1;
 	    createChildren(depth, numofChildren, root);
 	    return root;
-	}
-
-	public WaterTank getWaterTank() {
-		return waterTank;
-	}
-
-	public void setWaterTank(WaterTank waterTank) {
-		this.waterTank = waterTank;
-	}
+	}*/
 			
 	public Node getRoot() {
 		return root;
@@ -57,25 +49,28 @@ public class RandomTree  implements Comparable<RandomTree>{
 	public void setRoot(Node root) {
 		this.root = root;
 	}
-
-	@Override
-	public int compareTo(RandomTree other) {
-		return Double.compare(waterTank.getPriorityPercentage(),other.waterTank.getPriorityPercentage());
-	}
-
-	public Node randomTreeBuilder(int depth, String rootTitle,
-			List<String> childrenNames) {
-		setWaterTank(new WaterTank());
+/*
+	public Node randomTreeBuilder(int depth, String rootTitle, List<String> childrenNames) {
+		
+		setWaterTank(new WaterTank(rootTitle));
 		root = new Node(rootTitle, null);
 		Random rand = new Random();
 	    createChildren(depth, childrenNames.size(), root);
 	    return root;
-	}
+	}*/
 
+	public void setWaterTank(WaterTank waterTank) {
+		this.waterTank = waterTank;
+	}
+	
+	public WaterTank getWaterTank() {
+		return waterTank;
+	}
+	
 	public Node randomTreeBuilderFromFile(String rootTitle,
 			List<String> treeInfo, String waterTankInfo) {
 		
-		setWaterTank(new WaterTank(waterTankInfo));
+		setWaterTank(new WaterTank(waterTankInfo, rootTitle));
 		root = new Node(rootTitle, null);
 		Node crrNode;
 		int depth;

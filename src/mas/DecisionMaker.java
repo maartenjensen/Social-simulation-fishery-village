@@ -14,6 +14,7 @@ import java.util.Vector;
 
 import common.Facility;
 import common.Log;
+import fisheryvillage.common.Logger;
 import repast.simphony.random.RandomHelper;
 import common.FrameworkBuilder;
 import valueFramework.*;
@@ -21,7 +22,7 @@ import valueFramework.*;
 public class DecisionMaker {
 	private ArrayList<Action> possibleActions;
 	private Map<String, RandomTree> valueTrees;
-	private int Id;
+	private Map<String, WaterTank> waterTanks;
 
 	/*public HumanAgent() {
 		Id = FrameworkBuilder.humanId;
@@ -35,67 +36,66 @@ public class DecisionMaker {
 	public DecisionMaker(int id) {
 //		Id = Variables.humanId;
 		valueTrees = new HashMap<String, RandomTree>();
+		waterTanks = new HashMap<String, WaterTank>();
 		FrameworkBuilder.humanId++;		
 		possibleActions = new ArrayList<Action>();
 	}
 	
-	/*private void createYourOwnRandomValueTrees() {
-		RandomTree tree = new RandomTree();
-		Node root = tree.randomTreeBuilder(5, 3,
-				Integer.toString(FrameworkBuilder.valueNumber));
-		System.out.println("****** this is root " + root.getValueName());
-		valueTrees.put(root.getValueName(), tree);
-	}*/
-
-	/*public RandomTree createValueTrees(List<String> treeInfo) {
-		List<String> items = Arrays.asList(treeInfo.get(0).split("\\s*,\\s*"));//ignore while space after comma
-		//TODO: check the split sql
-		
-		
-		RandomTree tree = new RandomTree();
-		Node root = tree.randomTreeBuilderFromFile(items.get(0), treeInfo);
-		System.out.println("****** this is root " + root.getValueName());
-		valueTrees.put(root.getValueName(), tree);
-		return tree;
-	}*/
+	
 
 	//TODO: now it is the same as global value trees in the FrameworkBuilder. 
 	//But, it can be different for each agent
 	public void createValueTrees(){
 		for(String rootName: FrameworkBuilder.globalValueTrees.keySet()){
-			valueTrees.put(rootName, FrameworkBuilder.globalValueTrees.get(rootName));
+			
+			RandomTree rt = FrameworkBuilder.globalValueTrees.get(rootName);
+			rt.getWaterTank().setRelatedAbstractValue(rt.getRoot().getValueName());
+			WaterTank wt = waterCopyWaterTank(rt.getWaterTank());
+			valueTrees.put(rootName, rt);
+			waterTanks.put(rootName, wt);
+			Logger.logDebug("Create rt: " + rt.getRoot().getValueName());
 		}
-		
 	}
+	
+	public void drainTanks() {
+		for (String key : waterTanks.keySet()) {
+			waterTanks.get(key).draining();
+		}
+	}
+	
+	public WaterTank waterCopyWaterTank(WaterTank wt) {
+		WaterTank newWaterTank = new WaterTank(wt.getCapacity(), RandomHelper.nextIntFromTo(0, (int) wt.getCapacity()), 
+											   wt.getThreshould(), wt.getDrainingAmount(), wt.getRelatedAbstractValue());
+
+		Logger.logDebug("WaterTank " + newWaterTank.getRelatedAbstractValue() + ", dra:" + newWaterTank.getDrainingAmount() + ", incr:" + newWaterTank.getIncreasingAmount() + ", cap:" + newWaterTank.getCapacity() + ", thr: " + newWaterTank.getThreshould());
+		return newWaterTank;
+	}
+	
 	// @SuppressWarnings("unchecked")
 	// @ScheduledMethod(start = 1, interval = 1, shuffle = true)
 	// TODO: call it in a loop in the main function for test
 	public void step() {
+		
 		ArrayList<Action> possibleActions = new ArrayList<Action>();
-//		Log.printActions(this.Id, possibleActions);
-
 		possibleActions = selectPossibleActionsBasedonPerspective();
 		ArrayList<RandomTree> relatedAbstractValue = selectAbstractValuesAccordingToActions(possibleActions);
 
 		ArrayList<Action> filterdActions = new ArrayList<Action>();
-		filterdActions = (ArrayList<Action>) filterActionsAccordingToTheMostImportantValue(
-				possibleActions, relatedAbstractValue)[0];
+		filterdActions = (ArrayList<Action>) filterActionsAccordingToTheMostImportantValue(possibleActions, relatedAbstractValue)[0];
 		
-		Object[] shouldChangeType = filterActionsAccordingToTheMostImportantValue(
-				possibleActions, relatedAbstractValue);
-		System.out.println("\n\n@@@@@\tfinal action set : ");
+		Object[] shouldChangeType = filterActionsAccordingToTheMostImportantValue(possibleActions, relatedAbstractValue);
+		System.out.println("Final action set : ");
 		ArrayList<Action>selectedActions = (ArrayList<Action>) shouldChangeType[0];
-		RandomTree relatedValues = (RandomTree) shouldChangeType[1];
-		Log.printActions(-1, selectedActions);
-		if(relatedValues!=null)
-			System.out.println("accoring to this value " + relatedValues.getRoot().getValueName());
+		RandomTree selectedVal = (RandomTree) shouldChangeType[1];
+		Log.printActions(selectedActions);
+		if(selectedVal!=null)
+			System.out.println("accoring to this value " + selectedVal.getRoot().getValueName());
 		
 		Action pickedAction = pickAnActionRandomly(selectedActions);
-		System.out.println("[[[[[[[[ before increasing level of  " + relatedValues.getRoot().getValueName() + ", level is : "
-				+ relatedValues.getWaterTank().getFilledLevel());
-		relatedValues.getWaterTank().increasingLevel();
-		System.out.println("]]]]]]]] after increasing level of  " + relatedValues.getRoot().getValueName() + ", level is : "
-				+ relatedValues.getWaterTank().getFilledLevel());
+
+		waterTanks.get(selectedVal.getRoot().getValueName()).increasingLevel();
+		System.out.println("after increasing level of  " + waterTanks.get(selectedVal.getRoot().getValueName()).getRelatedAbstractValue() + ", level is : "
+				+ waterTanks.get(selectedVal.getRoot().getValueName()).getFilledLevel());
 	}
 
 	public ArrayList<String> actionSelectionFromPossibleActions(ArrayList<String> possibleActionsIn) {
@@ -106,30 +106,25 @@ public class DecisionMaker {
 
 		for(Action action : allActions) {
 			if (possibleActionsIn.contains(action.getTitle())) {
-				System.out.println("add Action object:" + action.getTitle());
 				possibleActions.add(action);
 			}
 		}
 		ArrayList<RandomTree> relatedAbstractValue = selectAbstractValuesAccordingToActions(possibleActions);
 
-		ArrayList<Action> filterdActions = new ArrayList<Action>();
-		filterdActions = (ArrayList<Action>) filterActionsAccordingToTheMostImportantValue(
-				possibleActions, relatedAbstractValue)[0];
 		
 		Object[] shouldChangeType = filterActionsAccordingToTheMostImportantValue(
 				possibleActions, relatedAbstractValue);
-		System.out.println("\n\n@@@@@\tfinal action set : ");
+		System.out.println("Final action set : ");
 		ArrayList<Action>selectedActions = (ArrayList<Action>) shouldChangeType[0];
-		RandomTree relatedValues = (RandomTree) shouldChangeType[1];
-		Log.printActions(-1, selectedActions);
-		if(relatedValues!=null)
-			System.out.println("accoring to this value " + relatedValues.getRoot().getValueName());
+		RandomTree selectedVal = (RandomTree) shouldChangeType[1];
+		Log.printActions(selectedActions);
+		if(selectedVal!=null)
+			System.out.println("accoring to this value " + selectedVal.getRoot().getValueName());
 		
-		System.out.println("[[[[[[[[ before increasing level of  " + relatedValues.getRoot().getValueName() + ", level is : "
-				+ relatedValues.getWaterTank().getFilledLevel());
-		relatedValues.getWaterTank().increasingLevel();
-		System.out.println("]]]]]]]] after increasing level of  " + relatedValues.getRoot().getValueName() + ", level is : "
-				+ relatedValues.getWaterTank().getFilledLevel());
+		waterTanks.get(selectedVal.getRoot().getValueName()).increasingLevel();
+		
+		System.out.println("After increasing level of  " + waterTanks.get(selectedVal.getRoot().getValueName()).getRelatedAbstractValue() + ", level is : "
+				+ waterTanks.get(selectedVal.getRoot().getValueName()).getFilledLevel());
 		//System.out.println("Final decided action:" + pickedAction.getTitle());
 		ArrayList<String> selectedActionsTitles = new ArrayList<String>();
 		for (Action selectedAction : selectedActions) {
@@ -161,10 +156,10 @@ public class DecisionMaker {
 		RandomTree returnedValues = null;
 		if (selectedValues == null | possibleActionsSet == null)
 			return null;
-		ArrayList<RandomTree> prioritizedAbstractValues = prioritizingValues(selectedValues);
-		System.out.println("prioritized abstract values : "
-				+ selectedValues.size());
-		Log.printAbstractValues(this.Id, prioritizedAbstractValues);
+		ArrayList<RandomTree> prioritizedAbstractValues = prioritizingWaterTanks(selectedValues);
+		
+		System.out.println("prioritized abstract values : "	+ selectedValues.size());
+		Log.printAbstractValues(prioritizedAbstractValues);
 		/*double prvPrio = -100;
 		double crrPrio = prioritizedAbstractValues.get(0).getWaterTank()
 				.getPriorityPercentage();*/
@@ -185,16 +180,41 @@ public class DecisionMaker {
 		}
 		
 		System.out.println("\t\t	in filterAction Function : related actions are : ");
-		Log.printActions(-1, returnedActions);
-		Object[] returnedResults = new Object[] { returnedActions,
-				returnedValues };
+		Log.printActions(returnedActions);
+		Object[] returnedResults = new Object[] { returnedActions,	returnedValues };
 		return returnedResults;
 	}
 
-	private ArrayList<RandomTree> prioritizingValues(
-			ArrayList<RandomTree> selectedValues) {
-//		Collections.sort(selectedValues);		
-		return Facility.sort(selectedValues);
+	
+	public ArrayList<RandomTree> prioritizingWaterTanks(ArrayList<RandomTree> rts) {
+		
+		ArrayList<WaterTank> unsortedWaterTanks = new ArrayList<WaterTank>();
+		for(int i = 0; i < rts.size(); i++) {			
+			if(waterTanks.keySet().contains(rts.get(i).getRoot().getValueName())) {
+				unsortedWaterTanks.add(rts.get(i).getWaterTank());
+				System.out.println("WT " + unsortedWaterTanks.get(i) + " :");
+			}
+		}
+		
+		ArrayList<RandomTree> sortedValueTrees = new ArrayList<RandomTree>();
+		ArrayList<WaterTank>  sortedWaterTanks = Facility.sort(unsortedWaterTanks);
+		for(int i =0; i < sortedWaterTanks.size(); i++) {
+			sortedValueTrees.add(valueTrees.get(sortedWaterTanks.get(i).getRelatedAbstractValue()));
+			Logger.logDebug("a new value tree has been added to the sortedValueTrees : " + sortedWaterTanks.get(i).getRelatedAbstractValue() );
+			Logger.logDebug(", and the root is : " + valueTrees.get(sortedWaterTanks.get(i).getRelatedAbstractValue()).getRoot().getValueName());
+		}
+		return sortedValueTrees;
+	}
+	
+	public WaterTank mostImportantValue() {
+		
+		/*ArrayList<WaterTank> wt = new ArrayList<WaterTank>();
+		for (String k: waterTanks.keySet()) {
+			 wt.add(waterTanks.get(k));
+		}
+		
+		return Facility.sort(wt).get(0);*/
+		return Facility.sort(new ArrayList<WaterTank>(waterTanks.values())).get(0);
 	}
 
 	private ArrayList<Action> selectPossibleActionsBasedonPerspective() {
@@ -217,7 +237,7 @@ public class DecisionMaker {
 		// applicable here.
 		System.out
 				.println("\npossibleActions in selectAbstractValuesAccordingToActions before selection: ");
-		Log.printActions(this.Id, possibleActionsSet);
+		Log.printActions(possibleActionsSet);
 		ArrayList<RandomTree> outValues = new ArrayList<RandomTree>();
 		for (int i = 0; i < possibleActionsSet.size(); i++) {
 			ArrayList<RandomTree> val = findAbstractValues(possibleActionsSet
@@ -230,7 +250,7 @@ public class DecisionMaker {
 
 		System.out
 				.println("\nvalues : in selectAbstractValuesAccordingToActions after selection: ");
-		Log.printAbstractValues(this.Id, outValues);
+		Log.printAbstractValues(outValues);
 
 		return outValues;
 	}
@@ -265,7 +285,7 @@ public class DecisionMaker {
 		return rndTrees;
 	}
 
-	private ArrayList<Action> selectActionsAccordingToTheMostImportantValue(
+	/*private ArrayList<Action> selectActionsAccordingToTheMostImportantValue(
 			ArrayList<Action> possibleActionsSet) {
 		ArrayList<Action> filteredActions = new ArrayList<Action>();
 		// TODO: first select only values that are linked to the possibleActions
@@ -277,7 +297,7 @@ public class DecisionMaker {
 		double tempLevel;
 		for (RandomTree node : valueTrees.values()) {
 			tempLevel = node.getWaterTank().getFilledLevel();
-			if (tempLevel < lowestLevel /* && lowestValue < secondLowest */) {
+			if (tempLevel < lowestLevel  && lowestValue < secondLowest ) {
 				lowestLevel = tempLevel;
 				lowestValue = node;
 				secondLowestLevel = lowestLevel;
@@ -344,7 +364,7 @@ public class DecisionMaker {
 							+ secondLowestValue.getRoot().getValueName());
 		}
 		return null;
-	}
+	}*/
 
 	private ArrayList<Action> filterActions(ArrayList<Action> possibleActions,
 			RandomTree lowestValue) {
@@ -376,4 +396,13 @@ public class DecisionMaker {
 		this.valueTrees = valueTrees;
 	}
 
+	@Override
+	public String toString() {
+		String string = "";
+		for (String key: waterTanks.keySet()) {
+			string += waterTanks.get(key).getRelatedAbstractValue().charAt(0) + ":" +
+					waterTanks.get(key).getFilledLevel() + "/" + waterTanks.get(key).getThreshould() + ", ";
+		}
+		return string;
+	}
 }

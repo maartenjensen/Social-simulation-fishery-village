@@ -3,10 +3,11 @@ package common;
 import java.util.ArrayList;
 
 import valueFramework.RandomTree;
+import valueFramework.WaterTank;
 
 public class Facility {
 	
-	public static ArrayList<RandomTree> sort(ArrayList<RandomTree> whole) {
+	public static ArrayList<WaterTank> sort(ArrayList<WaterTank> whole) {
 		if(whole.size()==0)
 		{
 			System.out.println("the input array to sort is empty");
@@ -15,15 +16,15 @@ public class Facility {
         return mergeSort(whole);
     }
  
-	private static ArrayList<RandomTree> mergeSort(ArrayList<RandomTree> whole) {
-	    ArrayList<RandomTree> left = new ArrayList<RandomTree>();
-	    ArrayList<RandomTree> right = new ArrayList<RandomTree>();
+	private static ArrayList<WaterTank> mergeSort(ArrayList<WaterTank> whole) {
+	    ArrayList<WaterTank> left = new ArrayList<WaterTank>();
+	    ArrayList<WaterTank> right = new ArrayList<WaterTank>();
 	    int center;
 	 
 	    if (whole.size() == 1) {   
-	    	System.out.println("IN SORT FUNCTION :  value "  + whole.get(0).getRoot().getValueName() + ", priority is " + 
+	    	/*System.out.println("IN SORT FUNCTION :  value "  + whole.get(0).getValueName() + ", priority is " + 
 	    			whole.get(0).getWaterTank().getPriorityPercentage() + ", water Level is : " + whole.get(0).getWaterTank().getFilledLevel() +
-	    			", threshold is : " + whole.get(0).getWaterTank().getThreshould());
+	    			", threshold is : " + whole.get(0).getWaterTank().getThreshould());*/
 	        return whole;
 	    } else {
 	        center = whole.size()/2;
@@ -46,7 +47,7 @@ public class Facility {
 	    }
 	    return whole;
 	}
-	private static void merge(ArrayList<RandomTree> left, ArrayList<RandomTree> right, ArrayList<RandomTree> whole) {
+	private static void merge(ArrayList<WaterTank> left, ArrayList<WaterTank> right, ArrayList<WaterTank> whole) {
 	    int leftIndex = 0;
 	    int rightIndex = 0;
 	    int wholeIndex = 0;
@@ -56,7 +57,7 @@ public class Facility {
 	    // or right.get(rightIndex) and adding it at both.get(bothIndex).
 	    while (leftIndex < left.size() && rightIndex < right.size()) {
 //	        if ( (left.get(leftIndex).compareTo(right.get(rightIndex))) < 0) {
-	    	if((left.get(leftIndex).getWaterTank().getPriorityPercentage()) < (right.get(rightIndex).getWaterTank().getPriorityPercentage())){
+	    	if((left.get(leftIndex).getPriorityPercentage()) < (right.get(rightIndex).getPriorityPercentage())){
 	            whole.set(wholeIndex, left.get(leftIndex));
 	            leftIndex++;
 	        } else {
@@ -66,7 +67,7 @@ public class Facility {
 	        wholeIndex++;
 	    }
 	 
-	    ArrayList<RandomTree> rest;
+	    ArrayList<WaterTank> rest;
 	    int restIndex;
 	    if (leftIndex >= left.size()) {
 	        // The left ArrayList has been use up...

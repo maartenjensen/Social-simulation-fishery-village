@@ -28,6 +28,7 @@ import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
+import valueFramework.WaterTank;
 
 /**
 * The human class, without it the village would be a ghost town
@@ -41,7 +42,6 @@ public class Human {
 	private final boolean gender; // man = false; woman = true;
 	private final int id;
 	private int age;
-	private int yearTick;
 	private double money;
 	private int childrenWanted;
 	private final boolean foreigner;
@@ -60,16 +60,53 @@ public class Human {
 	private String jobTitle = "NONE";
 
 	public Human(boolean gender, int age, int id, double money, boolean foreigner) {
+		
 		this.gender = gender;
 		this.age = age;
 		this.id = id;
 		this.money = money;
 		this.foreigner = foreigner;
 		this.childrenWanted = RandomHelper.nextIntFromTo(Constants.HUMAN_MIN_CHILDREN_WANTED, Constants.HUMAN_MAX_CHILDREN_WANTED);
-		this.yearTick = 1;
 		setStatusByAge();
 		this.schoolType = SchoolType.NO_SCHOOL;
 
+		decisionMaker = new DecisionMaker(id);
+		FrameworkBuilder.decisionMakerList.add(decisionMaker);
+		
+		decisionMaker.assignPossibleActions(FrameworkBuilder.allPossibleActions);
+		decisionMaker.createValueTrees();
+		
+		SimUtils.getContext().add(this);
+		
+		final NdPoint pt = SimUtils.getSpace().getLocation(this);
+		if (!SimUtils.getGrid().moveTo(this, (int) pt.getX(), (int) pt.getY())) {
+			Logger.logError("Human could not be placed, coordinate: " + pt.toString());
+		}
+	}
+	
+	public Human(boolean gender, int age, int id, double money, boolean foreigner, int childrenWanted,
+				 int homelessTick, double nettoIncome, double necessaryCost, String jobTitle, Status status, int boatId) {
+		
+		this.gender = gender;
+		this.age = age;
+		this.id = id;
+		this.money = money;
+		this.foreigner = foreigner;
+		this.childrenWanted = childrenWanted;
+		setStatusByAge();
+		this.schoolType = SchoolType.NO_SCHOOL;
+		this.homelessTick = homelessTick;
+		this.nettoIncome = nettoIncome;
+		this.necessaryCost = necessaryCost;
+		this.jobTitle = jobTitle;
+		this.status = status;
+		socialStatus.setSocialStatusWork(status);
+		if (status == Status.FISHER && boatId != -1) {
+			
+			Boat boat = (Boat) SimUtils.getPropertyById(boatId);
+			boat.addFisher(id);
+		}
+		
 		decisionMaker = new DecisionMaker(id);
 		FrameworkBuilder.decisionMakerList.add(decisionMaker);
 		
@@ -90,12 +127,8 @@ public class Human {
 	 */
 	public void stepAging() {
 		
-		yearTick ++;
-		if (yearTick > 1) {
-			yearTick = 1;
-			age++;
-			setStatusByAge();
-		}
+		age++;
+		setStatusByAge();
 	}
 
 	public void stepChildrenSchooling() {
@@ -121,6 +154,10 @@ public class Human {
 		salaryUntaxed = 0;
 	}
 
+	public void stepSocialStatusDrain() {
+		socialStatus.drainSocialStatus();
+	}
+	
 	public void stepWork() {
 		
 		this.salaryUntaxed = calculateSalary();
@@ -227,6 +264,13 @@ public class Human {
 		}
 	}
 
+	public void stepDrainTanks() {
+		
+		Logger.logDebug("VALUES H" + id + " - " + getDcString());
+		decisionMaker.drainTanks();
+		Logger.logDebug("VALUES H" + id + " - " + getDcString());
+	}
+	
 	private String selectActionFromPossibleActionsJob(ArrayList<String> possibleActions) {
 		
 		ArrayList<String> selectedActions = decisionMaker.actionSelectionFromPossibleActions(possibleActions);
@@ -237,10 +281,6 @@ public class Human {
 		Logger.logInfo("H" + id + " jobTitle: " + jobTitle + ", selected action:" + selectedAction + " from actions: " + selectedActions);
 		if (selectedActions.contains(jobTitle) && jobTitle != "Job unemployed") {
 			selectedAction = jobTitle;
-		}
-		// Drain tanks
-		for (String treeName : decisionMaker.getValueTrees().keySet()) {
-			decisionMaker.getValueTrees().get(treeName).getWaterTank().draining();
 		}
 		return selectedAction;
 	}
@@ -302,37 +342,71 @@ public class Human {
 		}
 	}
 	 
-	public void stepOrganizeSocialEvent() {
+	public void stepSocialEvent() {
 		
-		socialStatus.setEventNone();
-		EventHall eventHall = SimUtils.getEventHall();
-		if (RandomHelper.nextDouble() < 0.2 && eventHall.getVacancyForNewEvent() && age >= Constants.HUMAN_ADULT_AGE && age < Constants.HUMAN_ELDERLY_CARE_AGE) {
-			if (RandomHelper.nextDouble() < 0.5) { //TODO make this a value based decision ALSO money based
-				money -= eventHall.createEvent("Free", id);
-			}
-			else {
-				money -= eventHall.createEvent("Commercial", id);
-			}
+		if (age < Constants.HUMAN_ADULT_AGE && age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			return ;
 		}
-	}
-	
-	public void stepAttendSocialEvent() {
 		
+		WaterTank waterTank = decisionMaker.mostImportantValue();
 		EventHall eventHall = SimUtils.getEventHall();
-		if (RandomHelper.nextDouble() < 0.5 && age >= Constants.HUMAN_ADULT_AGE && age < Constants.HUMAN_ELDERLY_CARE_AGE) {
-			ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(id);
+		ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(id);
+		
+		switch(waterTank.getRelatedAbstractValue()) {
+		case "Tradition":
 			if (possibleEvents.size() >= 1) {
+				Logger.logAction("JOIN EVENT - H" + id + " Tradition");
 				Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
-				money -= eventHall.joinEvent(eventToJoin, id); //TODO check fee
+				money -= eventHall.joinEvent(eventToJoin, id);
+				waterTank.increasingLevel(0.2);
 			}
-		}
+			break;
+		case "Power":
+			if (socialStatus.getBelowAverage()) {
+				
+				if (eventHall.getVacancyForNewEvent()) {
+					Logger.logAction("CREATE EVENT C - H" + id + " Power");
+					money -= eventHall.createEvent("Commercial", id);
+					waterTank.increasingLevel();
+				}
+				else {
+					if (possibleEvents.size() >= 1) {
+						Logger.logAction("JOIN EVENT - H" + id + " Power");
+						Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
+						money -= eventHall.joinEvent(eventToJoin, id);
+						waterTank.increasingLevel(0.2);
+					}
+				}
+			}
+			break;
+		case "Self-direction":
+			if (eventHall.getVacancyForNewEvent()) {
+				if (RandomHelper.nextDouble() < 0.5) {
+					Logger.logAction("CREATE EVENT F - H" + id + " Self-direction");
+					money -= eventHall.createEvent("Free", id);
+				}
+				else {
+					Logger.logAction("CREATE EVENT C - H" + id + " Self-direction");
+					money -= eventHall.createEvent("Commercial", id);
+				}
+				waterTank.increasingLevel();
+			}
+			break;
+		case "Universalism":
+			if (socialStatus.getUnsatisfiedUniversalist() && eventHall.getVacancyForNewEvent()) {
+				Logger.logAction("CREATE EVENT F - H" + id + " Universalism");
+				money -= eventHall.createEvent("Free", id);
+				waterTank.increasingLevel();
+			}
+			break;
+		}		
 	}
 	
 	public void stepDonate() {
 		
 		ArrayList<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("Donate nothing");
-		if (status == Status.WORK_OUT_OF_TOWN && nettoIncome > necessaryCost && money > 5000) { //TODO make this value based
+		if (nettoIncome > necessaryCost && money > 5000) { //TODO make this value based
 			possibleActions.add("Donate to council");
 		}
 		Logger.logAction("H" + id + " possible actions: " + possibleActions);
@@ -774,6 +848,10 @@ public class Human {
 		return socialStatus.getEventLevel();
 	}
 	
+	public int getSocialLevelCombined() {
+		return socialStatus.getCombinedLevel();
+	}
+	
 	public SocialStatus getSocialStatus() {
 		return socialStatus;
 	}
@@ -791,6 +869,10 @@ public class Human {
 		return schoolType.toString();
 	}
 	
+	public String getDcString() {
+		return decisionMaker.toString();
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("Human (" + id + "), location %s", SimUtils.getGrid().getLocation(this));
@@ -799,6 +881,15 @@ public class Human {
 	public String getLabel() {
 
 		return Integer.toString(id) + "|" + age;
+	}
+	//
+	public String getHumanVarsAsString() {
+		int boatId = -1;
+		if (status == Status.FISHER) {
+			boatId = SimUtils.getBoat(id).getId();
+		}
+		return id + "," + age + "," + gender + "," + money + "," + childrenWanted + "," + foreigner +
+			   "," + homelessTick + "," + nettoIncome + "," + necessaryCost + "," + jobTitle + "," + status.name() + "," + boatId; 
 	}
 
 	public VSpatial getSpatialImage() {

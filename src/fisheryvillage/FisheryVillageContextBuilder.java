@@ -7,6 +7,7 @@ import common.FrameworkBuilder;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
+import fisheryvillage.common.PopulationBuilder;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.municipality.Council;
@@ -16,12 +17,11 @@ import fisheryvillage.property.Boat;
 import fisheryvillage.property.CompanyOutside;
 import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.Factory;
-import fisheryvillage.property.SocialCare;
-import mas.DecisionMaker;
 import fisheryvillage.property.House;
 import fisheryvillage.property.HouseType;
 import fisheryvillage.property.School;
 import fisheryvillage.property.SchoolOutside;
+import fisheryvillage.property.SocialCare;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
 import repast.simphony.context.space.graph.NetworkBuilder;
@@ -101,14 +101,17 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		createHouses();
 
 		// Create boats
-		new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
-		new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
+		Boat boat1 = new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
+		boat1.setId(SimUtils.getNewPropertyId());
+		Boat boat2 = new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
+		boat2.setId(SimUtils.getNewPropertyId());
 
 		// Create buildings
 		new SocialCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 2));
 		new ElderlyCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 22));
 		new School(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 12));
-		new Factory(1000, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 24));
+		Factory factory = new Factory(1000, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 24));
+		factory.setId(SimUtils.getNewPropertyId());
 		new Council(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 18));
 		new EventHall(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 10));
 
@@ -208,22 +211,30 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	 */
 	@ScheduledMethod(start = 1, interval = 1, priority = -3)
 	public void step3Tick() {
+		
 		Logger.logMain("3TICK: working and social events");
 		
 		Logger.logMain("- Run EventHall.resetEventHall");
 		SimUtils.getEventHall().stepResetEventHall();
 		
 		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
-		Logger.logMain("- Run Human.stepOrganizeSocialEvent");
-		for (final Human human: humans) {
-			human.stepOrganizeSocialEvent();
+		if (!SimUtils.getInitializationPhase()) {
+			Logger.logMain("- Run Human.stepDrainTanks");
+			for (final Human human: humans) {
+				human.stepDrainTanks();
+			}
 		}
 		
-		Logger.logMain("- Run Human.stepAttendSocialEvent");
+		Logger.logMain("- Run Human.stepSocialStatusDrain");
 		for (final Human human: humans) {
-			human.stepAttendSocialEvent();
+			human.stepSocialStatusDrain();
 		}
 		
+		Logger.logMain("- Run Human.stepSocialEvent");
+		for (final Human human: humans) {
+			human.stepSocialEvent();
+		}
+
 		Logger.logMain("- Run EventHall.stepPerformSocialEvent");
 		SimUtils.getEventHall().stepPerformSocialEvent();
 		
@@ -396,8 +407,8 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_CHEAP; ++i) {
 			
 			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 5, 1 + y * 3);
-			new House(HouseType.CHEAP, Constants.HOUSE_CHEAP_PRICE, Constants.HOUSE_CHEAP_MAINTENANCE, 0, location);
-			
+			House house = new House(HouseType.CHEAP, Constants.HOUSE_CHEAP_PRICE, Constants.HOUSE_CHEAP_MAINTENANCE, 0, location);
+			house.setId(SimUtils.getNewPropertyId());
 			if (y == 7) {
 				y = 0;
 				x ++;
@@ -413,7 +424,8 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_STANDARD; ++i) {
 			
 			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 13 + x * 6, 2 + y * 5);
-			new House(HouseType.STANDARD, Constants.HOUSE_STANDARD_PRICE, Constants.HOUSE_STANDARD_MAINTENANCE, 0, location);
+			House house = new House(HouseType.STANDARD, Constants.HOUSE_STANDARD_PRICE, Constants.HOUSE_STANDARD_MAINTENANCE, 0, location);
+			house.setId(SimUtils.getNewPropertyId());
 			if (y == 4) {
 				y = 0;
 				x ++;
@@ -428,32 +440,51 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_EXPENSIVE; ++i) {
 			
 			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 7, Constants.GRID_HEIGHT - 6);
-			new House(HouseType.EXPENSIVE, Constants.HOUSE_EXPENSIVE_PRICE, Constants.HOUSE_EXPENSIVE_MAINTENANCE, 0, location);
+			House house = new House(HouseType.EXPENSIVE, Constants.HOUSE_EXPENSIVE_PRICE, Constants.HOUSE_EXPENSIVE_MAINTENANCE, 0, location);
+			house.setId(SimUtils.getNewPropertyId());
 			x ++;
 		}
 	}
 	
 	private void generatePopulation() {
 		
-		Logger.logMain("Create " + Constants.INITIAL_POPULATION_SIZE + " humans");
-		for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
-
-			// Humans are automatically added to the context and placed in the grid
-			Human human = new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
-					  				HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
-			Logger.logInfo("Create H" + human.getId() + ", age: " + human.getAge());
+		boolean generatePopulationFromFile = true;
+		PopulationBuilder populationBuilder = new PopulationBuilder();
 		
-		}
-		
-		//Logger.setLoggerAll(true, true, false, false, false);
-		Logger.enableLogger();
-		// Humans
-		int years = 30;
+		// Disable value based framework for initialization
 		SimUtils.enableInitializationPhase();
-		for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
-			Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
-			fullStep(i);
+		
+		if (generatePopulationFromFile) {
+			Logger.logMain("Generate " + Constants.INITIAL_POPULATION_SIZE + " humans");
+			populationBuilder.generatePopulation("./output", "population");
 		}
+		else
+		{
+			Logger.logMain("Create " + Constants.INITIAL_POPULATION_SIZE + " humans");
+			for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
+	
+				// Humans are automatically added to the context and placed in the grid
+				Human human = new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
+						  				HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
+				Logger.logInfo("Create H" + human.getId() + ", age: " + human.getAge());
+			}
+			
+			//Logger.setLoggerAll(true, true, false, false, false);
+			Logger.enableLogger();
+			// Humans
+			int years = 50;
+			for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
+				Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
+				fullStep(i);
+			}
+			
+			// Save population	
+			populationBuilder.savePopulation("./output", "population");
+		}
+		
+		// Do a location step
+		step5Tick();
+		// To do a value based run
 		SimUtils.disableInitializationPhase();
 		Logger.enableLogger();
 	}

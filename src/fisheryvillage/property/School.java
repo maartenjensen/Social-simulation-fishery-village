@@ -146,7 +146,7 @@ public class School extends Property {
 			return paymentAmount;
 		}
 	}
-
+	
 	@Override
 	public VSpatial getSpatial() {
 		

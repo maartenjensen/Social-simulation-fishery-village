@@ -35,6 +35,7 @@ public class Property {
 	protected final Status jobStatus;
 	protected String actionName = "none";
 	private final PropertyColor propertyColor;
+	private int id = -1;
 
 	// Variable initialization
 	protected Map<Boolean, VSpatial> spatialImagesOwned = new HashMap<Boolean, VSpatial>();
@@ -56,6 +57,16 @@ public class Property {
 		}
 	}
 
+	public void setId(int id) {
+		if (this.id == -1) {
+			this.id = id;
+		}
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
 	public void addToValueLayer() {
 
 		GridValueLayer valueLayer = SimUtils.getValueLayer();
@@ -187,6 +198,10 @@ public class Property {
 			return spatialImagesOwned.get(false);
 		}
 		return spatialImagesOwned.get(true);
+	}
+	
+	public void setSavings(double savings) {
+		this.savings = savings;
 	}
 	
 	public String getLabel() {

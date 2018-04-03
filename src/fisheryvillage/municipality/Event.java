@@ -82,9 +82,10 @@ public class Event {
 	
 	public String toString() {
 		
-		String string = "Event " + eventType + " - organizer: " + organizerId + "\nAttendees [" + attendeesIds.size() + "/" + maxAttendees + "]: ";
+		//String string = "Event " + eventType + " - organizer: " + organizerId + "\nAttendees [" + attendeesIds.size() + "/" + maxAttendees + "]: ";
+		String string = eventType + " - O:" + organizerId + ", A[" + attendeesIds.size() + "/" + maxAttendees + "]: ";
 		for (int attendee : attendeesIds) {
-			string += Integer.toString(attendee) + ", ";
+			string += Integer.toString(attendee) + ",";
 		}
 		return string;
 	}

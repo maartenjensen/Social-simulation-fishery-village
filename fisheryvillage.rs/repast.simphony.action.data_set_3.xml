@@ -1,63 +1,51 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Buildings savings</name>
-  <type>AGGREGATE</type>
+  <name>Human non-aggregate variables</name>
+  <type>NON_AGGREGATE</type>
+  <sourceType>fisheryvillage.population.Human</sourceType>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>4.0</interval>
+    <interval>1.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1614299654</hashCode>
+    <hashCode>1987264256</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>$ Council</string>
+      <string>Money</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Council</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getSavings</methodName>
-        <aggType>SUM</aggType>
+        <id>Money</id>
+        <className>fisheryvillage.population.Human</className>
+        <methodName>getMoney</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>$ Factory</string>
+      <string>SocialLevelEvent</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Factory</id>
-        <className>fisheryvillage.property.Factory</className>
-        <methodName>getSavings</methodName>
-        <aggType>SUM</aggType>
+        <id>SocialLevelEvent</id>
+        <className>fisheryvillage.population.Human</className>
+        <methodName>getSocialLevelEvent</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>$ School</string>
+      <string>SocialLevelWork</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ School</id>
-        <className>fisheryvillage.property.School</className>
-        <methodName>getSavings</methodName>
-        <aggType>SUM</aggType>
+        <id>SocialLevelWork</id>
+        <className>fisheryvillage.population.Human</className>
+        <methodName>getSocialLevelWork</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>$ Elderly Care</string>
+      <string>SocialLevelCombined</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Elderly Care</id>
-        <className>fisheryvillage.property.ElderlyCare</className>
-        <methodName>getSavings</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>$ Social Care</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Social Care</id>
-        <className>fisheryvillage.property.SocialCare</className>
-        <methodName>getSavings</methodName>
-        <aggType>SUM</aggType>
+        <id>SocialLevelCombined</id>
+        <className>fisheryvillage.population.Human</className>
+        <methodName>getSocialLevelCombined</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

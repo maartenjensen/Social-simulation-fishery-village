@@ -90,6 +90,9 @@ public class Constants {
 	
 	// Initialize employee numbers
 	public static final int MAX_FISHERS_PER_BOAT = 5;
+	public static final int FACTORY_INITIAL_MAX_EMPLOYEES = 10;
+	public static final int FACTORY_MAX_EMPLOYEES = 50;
+	public static final int FACTORY_MIN_EMPLOYEES = 3;
 	
 	// Initialize salary and benefits parameters
 	public static final double SALARY_TEACHER = 3000;
