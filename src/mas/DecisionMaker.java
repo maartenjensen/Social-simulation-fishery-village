@@ -191,8 +191,8 @@ public class DecisionMaker {
 		ArrayList<WaterTank> unsortedWaterTanks = new ArrayList<WaterTank>();
 		for(int i = 0; i < rts.size(); i++) {			
 			if(waterTanks.keySet().contains(rts.get(i).getRoot().getValueName())) {
-				unsortedWaterTanks.add(rts.get(i).getWaterTank());
-				System.out.println("WT " + unsortedWaterTanks.get(i) + " :");
+				unsortedWaterTanks.add(waterTanks.get(rts.get(i).getRoot().getValueName()));
+				System.out.println("WT " + unsortedWaterTanks.get(i).getRelatedAbstractValue() + " :" + unsortedWaterTanks.get(i).getFilledLevel());
 			}
 		}
 		
@@ -396,6 +396,32 @@ public class DecisionMaker {
 		this.valueTrees = valueTrees;
 	}
 
+	public double getSelfDirectionThreshold() {
+		return waterTanks.get("Self-direction").getThreshould();
+	}
+	
+	public boolean getIsSatisfied() {
+		int satisfiedValues = 0;
+		for (String key: waterTanks.keySet()) {
+			WaterTank wt = waterTanks.get(key);
+			if (wt.getFilledLevel() > wt.getThreshould()) {
+				satisfiedValues ++;
+			}
+		}
+		if (satisfiedValues > waterTanks.size() / 2) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean isSelfDirectionSatisfied() {
+
+		if (waterTanks.get("Self-direction").getFilledLevel() >= waterTanks.get("Self-direction").getThreshould()) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public String toString() {
 		String string = "";

@@ -19,6 +19,10 @@ import saf.v3d.scene.VSpatial;
 public class EventHall extends Property {
 
 	ArrayList<Event> events = new ArrayList<Event>();
+	int countUniversalism = 0;
+	int countTradition = 0;
+	int countPower = 0;
+	int countSelfDirection = 0;
 	
 	public EventHall(int price, int maintenanceCost, double money, GridPoint location) {
 		super(price, maintenanceCost, money, location, 5, 3, Status.NONE, PropertyColor.COUNCIL);
@@ -71,6 +75,41 @@ public class EventHall extends Property {
 	
 	public void stepResetEventHall() {
 		events.clear();
+		
+		countUniversalism = 0;
+		countTradition = 0;
+		countPower = 0;
+		countSelfDirection = 0;
+	}
+	
+	public void increaseUniversalism() {
+		countUniversalism ++;
+	}
+	
+	public void increaseTradition() {
+		countTradition ++;
+	}
+	
+	public void increasePower() {
+		countPower ++;
+	}
+	
+	public void increaseSelfDirection() {
+		countSelfDirection ++;
+	}
+	
+	public int getUniversalism() {
+		return countUniversalism;
+	}
+	
+	public int getTradition() {
+		return countTradition;
+	}
+	public int getPower() {
+		return countPower;
+	}
+	public int getSelfDirection() {
+		return countSelfDirection;
 	}
 	
 	@Override

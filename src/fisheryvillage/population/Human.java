@@ -299,6 +299,7 @@ public class Human {
 		
 		ArrayList<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("Job unemployed");
+		
 		ArrayList<Property> properties = SimUtils.getObjectsAllRandom(Property.class); //TODO this is not efficient, look only through job specific buildings
 		for (final Property property : properties) {
 			// Different rules for boat since it can be owned
@@ -323,6 +324,11 @@ public class Human {
 			if (property.getVacancy()) {
 				possibleActions.add(property.getActionName());
 			}
+		}
+		
+		if (!possibleActions.contains(jobTitle) && !jobTitle.equals("NONE")) {
+			possibleActions.add(jobTitle);
+			Logger.logInfo("H" + id + ", status=" + status + ", title=" + jobTitle);
 		}
 		return possibleActions;
 	}
@@ -359,6 +365,7 @@ public class Human {
 				Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
 				money -= eventHall.joinEvent(eventToJoin, id);
 				waterTank.increasingLevel(0.2);
+				eventHall.increaseTradition();
 			}
 			break;
 		case "Power":
@@ -368,6 +375,7 @@ public class Human {
 					Logger.logAction("CREATE EVENT C - H" + id + " Power");
 					money -= eventHall.createEvent("Commercial", id);
 					waterTank.increasingLevel();
+					eventHall.increasePower();
 				}
 				else {
 					if (possibleEvents.size() >= 1) {
@@ -375,6 +383,7 @@ public class Human {
 						Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
 						money -= eventHall.joinEvent(eventToJoin, id);
 						waterTank.increasingLevel(0.2);
+						eventHall.increasePower();
 					}
 				}
 			}
@@ -387,8 +396,9 @@ public class Human {
 				}
 				else {
 					Logger.logAction("CREATE EVENT C - H" + id + " Self-direction");
-					money -= eventHall.createEvent("Commercial", id);
+					money -= eventHall.createEvent("Commercial", id);	
 				}
+				eventHall.increaseSelfDirection();
 				waterTank.increasingLevel();
 			}
 			break;
@@ -397,6 +407,7 @@ public class Human {
 				Logger.logAction("CREATE EVENT F - H" + id + " Universalism");
 				money -= eventHall.createEvent("Free", id);
 				waterTank.increasingLevel();
+				eventHall.increaseUniversalism();
 			}
 			break;
 		}		
@@ -418,6 +429,7 @@ public class Human {
 		else {
 			Logger.logError("Error no action to execute");
 		}
+		
 	}
 	
 	public void stepFamily() {
@@ -479,6 +491,12 @@ public class Human {
 		}
 		
 		if (homelessTick >= Constants.HOMELESS_TICK) {
+			actionMigrateOutOfTown();
+		}
+		else if (!decisionMaker.isSelfDirectionSatisfied() && RandomHelper.nextDouble() < 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()))
+		{
+			Logger.logAction("H" + id + " moves out because he/she is not happy : " + 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()));
+			Logger.logInfo("H" + id + getDcString());
 			actionMigrateOutOfTown();
 		}
 	}

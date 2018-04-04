@@ -1,0 +1,15 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
+  <name>Social event motivation</name>
+  <dataSet>Social event motivation</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>Event Tradition</string>
+    <string>Event Power</string>
+    <string>Event Universalism</string>
+    <string>Event Self-direction</string>
+  </sourceIds>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\SocialEventMotivation.txt</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>
