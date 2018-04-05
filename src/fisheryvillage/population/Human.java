@@ -162,7 +162,8 @@ public class Human {
 		
 		this.salaryUntaxed = calculateSalary();
 		double salary = payTax(salaryUntaxed);
-		double benefits = getBenefits();
+		double benefits = calculateBenefits();
+		double extra_benefits = calculateExtraBenefits();
 		Human partner = HumanUtils.getPartner(this);
 		if (partner != null) {
 			salary /= 2;
@@ -170,7 +171,7 @@ public class Human {
 			partner.giveIncomeToPartner(salary + benefits);
 		}
 		nettoIncome += salary + benefits;
-		money += salary + benefits;
+		money += salary + benefits + extra_benefits;
 		
 		// Set social status
 		socialStatus.setSocialStatusWork(status);
@@ -195,7 +196,7 @@ public class Human {
 		// Pay children
 		double childPayment = Constants.LIVING_COST_CHILD * multiplier;
 		for (Human child : HumanUtils.getChildrenUnder18(this)) {
-			Logger.logDebug("H" + id + " payed child " + child.getId() + " : " + childPayment);
+			Logger.logProb("H" + id + " payed child " + child.getId() + " : " + childPayment, 0.05);
 			money -= childPayment;
 			necessaryCost += childPayment;
 			child.giveMoney(childPayment);
@@ -254,9 +255,8 @@ public class Human {
 		else {
 			actionToDo = selectActionFromPossibleActions(possibleActions);
 		}
-		Logger.logInfo("H" + id + " selected action: " + actionToDo);
+		//Logger.logInfo("H" + id + " selected action: " + actionToDo);
 		if (actionToDo != null) {
-			jobTitle = actionToDo;
 			ActionImplementation.executeActionJob(actionToDo, this);
 		}
 		else {
@@ -266,9 +266,9 @@ public class Human {
 
 	public void stepDrainTanks() {
 		
-		Logger.logDebug("VALUES H" + id + " - " + getDcString());
+		Logger.logProb("VALUES BEFOR H" + id + " - " + getDcString(), 0.05);
 		decisionMaker.drainTanks();
-		Logger.logDebug("VALUES H" + id + " - " + getDcString());
+		Logger.logProb("VALUES AFTER H" + id + " - " + getDcString(), 0.05);
 	}
 	
 	private String selectActionFromPossibleActionsJob(ArrayList<String> possibleActions) {
@@ -278,10 +278,10 @@ public class Human {
 			selectedActions.remove("Job unemployed");
 		}
 		String selectedAction = selectedActions.get(RandomHelper.nextIntFromTo(0, selectedActions.size() - 1));
-		Logger.logInfo("H" + id + " jobTitle: " + jobTitle + ", selected action:" + selectedAction + " from actions: " + selectedActions);
 		if (selectedActions.contains(jobTitle) && jobTitle != "Job unemployed") {
 			selectedAction = jobTitle;
 		}
+		Logger.logInfo("H" + id + " jobTitle: " + jobTitle + ", selected action:" + selectedAction + " from actions: " + selectedActions);
 		return selectedAction;
 	}
 	
@@ -350,7 +350,7 @@ public class Human {
 	 
 	public void stepSocialEvent() {
 		
-		if (age < Constants.HUMAN_ADULT_AGE && age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+		if (age < Constants.HUMAN_ADULT_AGE || age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
 			return ;
 		}
 		
@@ -371,10 +371,10 @@ public class Human {
 		case "Power":
 			if (socialStatus.getBelowAverage()) {
 				
-				if (eventHall.getVacancyForNewEvent()) {
+				if (eventHall.getVacancyForNewEvent() && money > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
 					Logger.logAction("CREATE EVENT C - H" + id + " Power");
 					money -= eventHall.createEvent("Commercial", id);
-					waterTank.increasingLevel();
+					waterTank.increasingLevel(2);
 					eventHall.increasePower();
 				}
 				else {
@@ -389,7 +389,7 @@ public class Human {
 			}
 			break;
 		case "Self-direction":
-			if (eventHall.getVacancyForNewEvent()) {
+			if (eventHall.getVacancyForNewEvent() && money > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
 				if (RandomHelper.nextDouble() < 0.5) {
 					Logger.logAction("CREATE EVENT F - H" + id + " Self-direction");
 					money -= eventHall.createEvent("Free", id);
@@ -399,37 +399,121 @@ public class Human {
 					money -= eventHall.createEvent("Commercial", id);	
 				}
 				eventHall.increaseSelfDirection();
-				waterTank.increasingLevel();
+				waterTank.increasingLevel(2);
 			}
 			break;
 		case "Universalism":
 			if (socialStatus.getUnsatisfiedUniversalist() && eventHall.getVacancyForNewEvent()) {
 				Logger.logAction("CREATE EVENT F - H" + id + " Universalism");
 				money -= eventHall.createEvent("Free", id);
-				waterTank.increasingLevel();
+				waterTank.increasingLevel(2);
 				eventHall.increaseUniversalism();
 			}
 			break;
 		}		
 	}
 	
+	public void stepSocialEventOld() {
+		
+		if (age < Constants.HUMAN_ADULT_AGE || age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			return ;
+		}
+		
+		EventHall eventHall = SimUtils.getEventHall();
+		
+		if (eventHall.getVacancyForNewEvent() && RandomHelper.nextDouble() < 0.2) {
+			if (RandomHelper.nextDouble() > 0.5) {
+				Logger.logAction("CREATE EVENT C - H" + id);
+				money -= eventHall.createEvent("Commercial", id);
+			}
+			else {
+				Logger.logAction("CREATE EVENT F - H" + id);
+				money -= eventHall.createEvent("Free", id);
+			}
+		}
+		else if (RandomHelper.nextDouble() < 0.9) {
+			ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(id);
+			if (possibleEvents.size() >= 1) {
+				Logger.logAction("JOIN EVENT - H" + id);
+				Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
+				money -= eventHall.joinEvent(eventToJoin, id);
+			}
+		}
+	}
+	
 	public void stepDonate() {
+		
+		if (age < Constants.HUMAN_ADULT_AGE || age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			return ;
+		}
 		
 		ArrayList<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("Donate nothing");
-		if (nettoIncome > necessaryCost && money > 5000) { //TODO make this value based
+		if ((nettoIncome > necessaryCost && money > Constants.DONATE_MONEY_MINIMUM_SAVINGS) || money > Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
 			possibleActions.add("Donate to council");
 		}
-		Logger.logAction("H" + id + " possible actions: " + possibleActions);
-		String actionToDo = selectActionFromPossibleActions(possibleActions);
-		Logger.logAction("H" + id + " selected action: " + actionToDo);
+		Logger.logInfo("H" + id + " possible actions: " + possibleActions);
+		String actionToDo = "Donate nothing";
+		if (SimUtils.getInitializationPhase()) {
+			actionToDo = selectActionFromPossibleActions(possibleActions);
+		}
+		else {
+			actionToDo = selectActionFromPossibleActionsDonate(possibleActions);
+		}
 		if (actionToDo != null) {
 			ActionImplementation.executeActionDonate(actionToDo, this);
 		}
 		else {
 			Logger.logError("Error no action to execute");
 		}
+	}
+	
+	private String selectActionFromPossibleActionsDonate(ArrayList<String> possibleActions) {
 		
+		if (possibleActions.size() == 0) {
+			return null;
+		}
+		
+		WaterTank waterTank = decisionMaker.mostImportantValue();
+		if (possibleActions.size() == 1){
+			if (waterTank.getRelatedAbstractValue().equals("Power")) {
+				Logger.logInfo("DONATE NOT - H" + id + " Power (no money)");
+				waterTank.increasingLevel(0.2);
+				SimUtils.getCouncil().increasePower();
+			}
+			else if (waterTank.getRelatedAbstractValue().equals("Self-direction")) {
+				Logger.logInfo("DONATE NOT - H" + id + " Self-direction (no money)");
+				waterTank.increasingLevel(0.2);
+				SimUtils.getCouncil().increaseSelfDirection();
+			}
+			return "Donate nothing";
+		}
+		
+		switch(waterTank.getRelatedAbstractValue()) {
+		case "Tradition":
+			Logger.logInfo("DONATE - H" + id + " Tradition");
+			waterTank.increasingLevel(0.2);
+			SimUtils.getCouncil().increaseTradition();
+			return "Donate to council";
+		case "Power":
+			Logger.logInfo("DONATE NOT - H" + id + " Power");
+			waterTank.increasingLevel(0.2);
+			SimUtils.getCouncil().increasePower();
+			return "Donate nothing";
+		case "Self-direction":
+			Logger.logInfo("DONATE NOT - H" + id + " Self-direction");
+			waterTank.increasingLevel(0.2);
+			SimUtils.getCouncil().increaseSelfDirection();
+			return "Donate nothing";
+		case "Universalism":
+			Logger.logInfo("DONATE - H" + id + " Universalism");
+			waterTank.increasingLevel(0.2);
+			SimUtils.getCouncil().increaseUniversalism();
+			return "Donate to council";
+		default:
+			Logger.logError("Error no correct value from watertank: " + waterTank.getRelatedAbstractValue());
+		}	
+		return "Donate nothing"; 
 	}
 	
 	public void stepFamily() {
@@ -490,14 +574,30 @@ public class Human {
 			actionSellAllProperty();
 		}
 		
+		if (age < Constants.HUMAN_ADULT_AGE || age >= Constants.HUMAN_ELDERLY_CARE_AGE)
+			return ;
+		
 		if (homelessTick >= Constants.HOMELESS_TICK) {
 			actionMigrateOutOfTown();
+			return ;
 		}
-		else if (!decisionMaker.isSelfDirectionSatisfied() && RandomHelper.nextDouble() < 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()))
-		{
-			Logger.logAction("H" + id + " moves out because he/she is not happy : " + 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()));
-			Logger.logInfo("H" + id + getDcString());
-			actionMigrateOutOfTown();
+		if (!SimUtils.getInitializationPhase()) {
+			if (!decisionMaker.getIsSatisfied() && RandomHelper.nextDouble() < 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()))
+			{
+				Logger.logAction("H" + id + " moves out because he/she is not happy : " + 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()));
+				Logger.logInfo("H" + id + getDcString());
+				actionMigrateOutOfTown();
+			}
+		}
+		else {
+			if (status == Status.WORK_OUT_OF_TOWN && RandomHelper.nextDouble() < (1.0 / 300)) {
+				Logger.logAction("H" + id + " moves out because he/she has an outside job");
+				actionMigrateOutOfTown();
+			}
+			else if (status == Status.UNEMPLOYED && RandomHelper.nextDouble() < (1.0 / (4 * 1200))) {
+				Logger.logAction("H" + id + " moves out because he/she is unemployed");
+				actionMigrateOutOfTown();
+			}
 		}
 	}
 	
@@ -725,7 +825,7 @@ public class Human {
 		}
 	}
 	
-	public double getBenefits() {
+	public double calculateBenefits() {
 		switch(status) {
 		case UNEMPLOYED:
 			return Math.round(SimUtils.getSocialCare().getUnemployedBenefit());
@@ -736,6 +836,20 @@ public class Human {
 		default:
 			return 0;
 		}
+	}
+	
+	public double calculateExtraBenefits() {
+		
+		if (money < 0) {
+			if (SimUtils.getSocialCare().getSavings() > 0) {
+				
+				double amountOfMoney = Math.min(Constants.BENEFIT_UNEMPLOYED, SimUtils.getSocialCare().getSavings());
+				SimUtils.getSocialCare().removeFromSavings(amountOfMoney);
+				return amountOfMoney;
+				
+			}
+		}
+		return 0;
 	}
 	
 	//TODO in this function change the parameter to something that is defined before hand
@@ -874,6 +988,33 @@ public class Human {
 		return socialStatus;
 	}
 	
+	public String getJobTitle() {
+		return jobTitle;
+	}
+	
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+	
+	public double getUniversalismImportanceDistribution() {
+		return decisionMaker.getUniversalismImportanceDistribution();
+	}
+	
+	public double getLevelUniversalism() {
+		return decisionMaker.getWaterTankLevel("Universalism");
+	}
+	
+	public double getLevelTradition() {
+		return decisionMaker.getWaterTankLevel("Tradition");
+	}
+	
+	public double getLevelSelfDirection() {
+		return decisionMaker.getWaterTankLevel("Self-direction");
+	}
+	
+	public double getLevelPower() {
+		return decisionMaker.getWaterTankLevel("Power");
+	}
 	/*=========================================
 	 * Graphics and information
 	 *========================================

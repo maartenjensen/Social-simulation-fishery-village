@@ -20,7 +20,7 @@ public class Log {
 		Logger.logDebug("PrintAbstractValues size:" + relatedAbstractValue.size() );
 		Logger.logDebug(", root:" + relatedAbstractValue.get(0).getRoot());
 		for(RandomTree rt: relatedAbstractValue)
-			System.out.print( "abstractValue " + rt.getRoot().getValueName() + ",\t");
+			System.out.print( "abstractValue " + rt.getRoot().getValueName() + ", ");
 		System.out.println("");
 	}
 

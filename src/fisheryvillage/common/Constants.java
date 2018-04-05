@@ -52,7 +52,7 @@ public class Constants {
 	public static final int FISH_CATCH_AMOUNT_MAX_PP = 200;
 	public static final int BOAT_BASIC_PRICE = 1000;
 	public static final int BOAT_BASIC_MAINTENANCE = 100;
-	public static final int BUILDING_MONEY_DANGER_LEVEL = 15000;
+	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
 	
 	// Initialize population generate parameters
 	public static final int HUMAN_INIT_STARTING_MONEY = 5000;
@@ -86,7 +86,7 @@ public class Constants {
 	public static final double COST_SCHOOL_OUTSIDE = 100;
 	public static final double COST_SCHOOL_CHILD = 0;
 	public static final double NETTO_INCOME_PERCENTAGE = 50;
-	public static final double TAX_TO_COUNCIL = 10;
+	public static final double TAX_TO_COUNCIL = 5;
 	
 	// Initialize employee numbers
 	public static final int MAX_FISHERS_PER_BOAT = 5;
@@ -102,7 +102,13 @@ public class Constants {
 	public static final double SALARY_OUTSIDE_WORK = 2500;
 	public static final double SALARY_ELDERLY_CARETAKER = 2000;
 	public static final double BENEFIT_UNEMPLOYED = 800;
-	public static final double BENEFIT_ELDERLY = 1000;
+	public static final double BENEFIT_ELDERLY = 500;
+	
+	// Initialize donation
+	public static final double DONATE_FACTOR_OF_LEFT_OVER_MONEY = 0.1;
+	public static final double DONATE_MONEY_MINIMUM_SAVINGS = 5000;
+	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 100000;
+	public static final double DONATE_MONEY_WITHOUT_INCOME = 50;
 	
 	// Initialize event parameters
 	public static final double EVENT_PERCENT_TOO_ABSENT = 25;

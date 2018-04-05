@@ -138,7 +138,7 @@ public final strictfp class SimUtils {
 		ArrayList<Boat> boats = getObjectsAllRandom(Boat.class);
 		for (Boat boat : boats) {
 			if (boat.employeeOnBoat(fisherId)) {
-				Logger.logDebug("SimUtils.getBoat(): H" + fisherId + " is employee on " + boat.getName());
+				//Logger.logP("SimUtils.getBoat(): H" + fisherId + " is employee on " + boat.getName());
 				return boat;
 			}
 		}

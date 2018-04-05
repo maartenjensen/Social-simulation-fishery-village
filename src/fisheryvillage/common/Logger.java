@@ -1,5 +1,7 @@
 package fisheryvillage.common;
 
+import repast.simphony.random.RandomHelper;
+
 /**
 * Logs stuff
 *
@@ -14,6 +16,7 @@ public final class Logger {
 	private static boolean logAction = false;
 	private static boolean logInfo = false;
 	private static boolean logDebug = false;
+	private static boolean logProb = false;
 	
 	public static void enableLogger() {
 		logErrors = true;
@@ -21,14 +24,16 @@ public final class Logger {
 		logAction = true;
 		logInfo = true;
 		logDebug = true;
+		logProb = true;
 	}
 	
-	public static void setLoggerAll(boolean logErrors, boolean logMain, boolean logAction, boolean logInfo, boolean logDebug) {
+	public static void setLoggerAll(boolean logErrors, boolean logMain, boolean logAction, boolean logInfo, boolean logDebug, boolean logProb) {
 		Logger.logErrors = logErrors;
 		Logger.logMain = logMain;
 		Logger.logAction = logAction;
 		Logger.logInfo = logInfo;
 		Logger.logDebug = logDebug;
+		Logger.logProb = logProb;
 	}
 	
 	public static void setLogErrors(boolean logErrors) {
@@ -62,6 +67,12 @@ public final class Logger {
 	public static void logDebug(String output) {
 		if (logDebug) {
 			System.out.println("------ DEBUG: " + output);
+		}
+	}
+	
+	public static void logProb(String output, double prob) {
+		if (logProb && RandomHelper.nextDouble() < prob) {
+			System.out.println("------ PROB" + prob + ": " + output);
 		}
 	}
 }

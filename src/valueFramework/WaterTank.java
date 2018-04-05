@@ -127,7 +127,7 @@ public WaterTank(String waterTankInfo, String relatedAbstractValue) {
 	public void increasingLevel(double multiply){//TODO: level of satisfaction?
 		double oldFilledLevel = filledLevel;
 		filledLevel = Math.min(capacity, filledLevel + increasingAmount * multiply);
-		System.out.println("Increase water tank, oldLevel: " + oldFilledLevel + ", increase: " + increasingAmount + ", newLevel:" + filledLevel);
+		System.out.println("Increase water tank, oldLevel: " + oldFilledLevel + ", increase: " + increasingAmount * multiply + ", newLevel:" + filledLevel);
 	}
 	
 	public double getCapacity() {

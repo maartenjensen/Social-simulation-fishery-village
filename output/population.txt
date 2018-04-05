@@ -1,74 +1,62 @@
 %id,age,gender,money,childrenWanted,foreigner,homelessTick,nettoIncome,necessaryCost,jobTitle
-0,82,false,367859.0,3,false,0,1000.0,300.0,Job work outside village,ELDEST,-1
-1,77,true,1099485.5,0,false,0,1000.0,550.0,Job fisher,ELDEST,-1
-2,88,true,568205.75,0,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-6,71,false,1107485.5,1,false,0,1000.0,550.0,Job factory boss,ELDER,-1
-8,82,true,283822.0,0,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-10,77,false,734576.5,5,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-11,81,true,159969.75,1,false,0,1000.0,800.0,Job fisher,ELDEST,-1
-15,71,false,114969.75,3,false,0,1000.0,800.0,Job teacher,ELDER,-1
-16,87,true,446138.0,5,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-17,84,false,449638.0,1,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-20,86,true,523042.0,0,false,0,1000.0,300.0,Job elderly caretaker,ELDEST,-1
-21,75,false,734068.75,0,false,0,1000.0,1050.0,Job captain,ELDEST,-1
-22,85,false,466450.5,3,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-29,76,true,731603.0,0,false,0,1000.0,300.0,Job captain,ELDEST,-1
-31,82,true,470100.0,0,false,0,1000.0,300.0,Job mayor,ELDEST,-1
-35,70,true,435637.0,5,false,0,1000.0,1050.0,Job fisher,ELDER,-1
-36,81,false,457646.0,4,false,0,1000.0,300.0,Job teacher,ELDEST,-1
-37,86,false,280322.0,6,false,0,1000.0,300.0,Job fisher,ELDEST,-1
-39,84,false,524246.0,0,false,0,1000.0,300.0,Job work outside village,ELDEST,-1
-40,48,true,283886.75,0,false,0,750.0,550.0,Job elderly caretaker,ELDERLY_CARETAKER,-1
-41,48,true,31217.0,0,false,0,539.0,800.0,Job mayor,MAYOR,-1
-42,48,true,245606.25,0,false,0,977.5,800.0,Job fisher,FISHER,31
-43,48,false,285386.75,3,false,0,750.0,550.0,Job factory worker,FACTORY_WORKER,-1
-44,47,true,361699.25,0,false,0,1555.0,600.0,Job captain,CAPTAIN,-1
-45,47,false,237355.75,0,false,0,977.5,800.0,Job work outside village,WORK_OUT_OF_TOWN,-1
-46,47,true,343971.5,0,false,0,1116.5,550.0,Job fisher,FISHER,31
-47,46,false,24817.0,0,false,0,539.0,800.0,Job fisher,FISHER,32
-48,46,true,47299.75,0,false,0,1077.5,1062.5,Job fisher,FISHER,31
-49,46,false,356149.25,5,false,0,1555.0,600.0,Job unemployed,UNEMPLOYED,-1
-50,45,true,74707.5,0,false,0,1077.5,812.5,Job factory worker,FACTORY_WORKER,-1
-51,45,false,332121.5,5,false,0,1116.5,550.0,Job fisher,FISHER,32
-52,45,true,16428.5,0,false,0,750.0,1062.5,Job elderly caretaker,ELDERLY_CARETAKER,-1
-53,44,true,109555.25,0,false,0,1164.0,1075.0,Job fisher,FISHER,32
-54,44,true,288020.5,0,false,0,2077.5,637.5,Job fisher,FISHER,31
-55,43,true,331112.75,2,false,0,1289.0,725.0,Job teacher,TEACHER,-1
-56,42,false,43999.75,3,false,0,1077.5,1062.5,Job factory worker,FACTORY_WORKER,-1
-57,41,false,60757.5,3,false,0,1077.5,812.5,Job fisher,FISHER,31
-58,40,true,170525.75,0,false,0,1702.75,850.0,Job captain,CAPTAIN,-1
-59,39,true,157035.75,0,false,0,1164.0,550.0,Job fisher,FISHER,32
-60,38,false,119737.25,1,false,0,1164.0,1075.0,Job work outside village,WORK_OUT_OF_TOWN,-1
-61,29,false,-7791.5,2,false,0,750.0,1062.5,Job unemployed,UNEMPLOYED,-1
-62,27,true,69750.0,5,false,0,900.0,637.5,Job factory worker,UNEMPLOYED,-1
-63,25,false,173155.5,5,false,0,2077.5,637.5,Job factory boss,FACTORY_BOSS,-1
-64,25,true,31100.0,3,false,0,1000.0,1300.0,Job factory worker,FACTORY_WORKER,-1
-65,24,false,101812.75,0,false,0,1289.0,725.0,Job fisher,FISHER,32
-66,23,true,88050.0,5,false,0,1500.0,800.0,Job teacher,TEACHER,-1
-67,22,true,4600.0,1,false,0,1000.0,1800.0,Job factory worker,FACTORY_WORKER,-1
-68,20,false,42757.25,0,false,0,1164.0,550.0,Job work outside village,WORK_OUT_OF_TOWN,-1
-69,20,false,52561.25,2,false,0,1702.75,850.0,Job work outside village,WORK_OUT_OF_TOWN,-1
-70,19,true,23600.0,4,false,0,1000.0,800.0,Job factory worker,FACTORY_WORKER,-1
-71,19,true,3250.0,6,false,0,1250.0,1300.0,Job work outside village,WORK_OUT_OF_TOWN,-1
-72,19,false,25650.0,0,false,0,900.0,637.5,Job factory worker,FACTORY_WORKER,-1
-73,18,true,13250.0,0,false,0,1000.0,800.0,Job factory worker,FACTORY_WORKER,-1
-74,18,true,8350.0,0,false,0,1250.0,1300.0,Job work outside village,WORK_OUT_OF_TOWN,-1
-75,17,false,5000.0,3,false,0,0.0,150.0,NONE,CHILD,-1
-76,16,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
-77,14,false,5000.0,5,false,0,0.0,150.0,NONE,CHILD,-1
-78,13,true,5000.0,0,false,0,0.0,150.0,NONE,CHILD,-1
-79,12,false,5000.0,5,false,0,0.0,150.0,NONE,CHILD,-1
-80,11,false,5000.0,1,false,0,0.0,150.0,NONE,CHILD,-1
-81,10,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
-82,8,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
-83,8,false,5000.0,5,false,0,0.0,150.0,NONE,CHILD,-1
-84,7,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
-85,7,false,5000.0,4,false,0,0.0,150.0,NONE,CHILD,-1
-86,6,true,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
-87,6,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
-88,5,true,5000.0,4,false,0,0.0,150.0,NONE,CHILD,-1
-89,2,true,5000.0,3,false,0,0.0,150.0,NONE,CHILD,-1
-90,1,false,5000.0,5,false,0,0.0,150.0,NONE,CHILD,-1
-91,0,true,5000.0,4,false,0,0.0,150.0,NONE,CHILD,-1
-92,0,true,5000.0,3,false,0,0.0,150.0,NONE,CHILD,-1
-93,0,true,5000.0,0,false,0,0.0,150.0,NONE,CHILD,-1
+0,79,true,72356.3500000001,0,false,0,500.0,1050.0,Job fisher,ELDEST,-1
+5,77,false,88964.67499999996,5,false,0,500.0,300.0,Job mayor,ELDEST,-1
+6,82,true,66982.12499999996,0,false,0,500.0,300.0,Job elderly caretaker,ELDEST,-1
+7,87,true,27615.5,0,false,0,500.0,300.0,Job factory worker,ELDEST,-1
+8,74,false,66178.15000000005,0,false,0,500.0,1050.0,Job captain,ELDER,-1
+15,78,false,18307.525000000023,1,false,0,500.0,300.0,Job fisher,ELDEST,-1
+16,77,false,64613.999999999956,3,false,0,500.0,300.0,Job fisher,ELDEST,-1
+17,81,true,148380.5,0,false,0,500.0,550.0,Job fisher,ELDEST,-1
+19,84,true,22777.474999999977,0,false,0,500.0,300.0,Job fisher,ELDEST,-1
+20,69,true,440846.95000000123,0,false,0,500.0,550.0,Job fisher,ELDER,-1
+22,82,true,227863.10000000027,0,false,0,500.0,550.0,Job teacher,ELDEST,-1
+24,69,false,443902.4250000012,3,false,0,500.0,550.0,Job factory boss,ELDER,-1
+25,72,false,145714.24999999997,1,false,0,500.0,550.0,Job factory worker,ELDER,-1
+26,79,true,90012.17500000003,0,false,0,500.0,300.0,Job captain,ELDEST,-1
+27,80,true,74471.04999999999,3,false,0,375.0,1050.0,Job fisher,ELDEST,-1
+28,70,false,225133.4000000002,6,false,0,500.0,550.0,Job captain,ELDER,-1
+30,83,true,42620.00000000003,4,false,0,500.0,300.0,Job fisher,ELDEST,-1
+31,89,true,55170.90000000007,2,false,0,500.0,300.0,Job fisher,ELDEST,-1
+34,84,false,20351.349999999995,4,false,0,500.0,300.0,Job fisher,ELDEST,-1
+40,48,false,84374.07499999987,3,false,0,1082.75,550.0,Job fisher,FISHER,31
+41,48,false,89596.25,2,false,0,500.0,550.0,Job factory worker,FACTORY_WORKER,-1
+42,48,true,27279.100000000006,0,false,0,1018.75,800.0,Job fisher,FISHER,32
+44,48,false,27599.19999999999,2,false,0,1018.75,800.0,Job fisher,FISHER,31
+46,47,false,104533.94999999997,6,false,0,1622.25,600.0,Job captain,CAPTAIN,-1
+48,47,true,82231.15,0,false,0,1082.75,550.0,Job factory worker,FACTORY_WORKER,-1
+49,47,true,90673.75,0,false,0,500.0,550.0,Job mayor,MAYOR,-1
+51,47,true,105866.57499999995,0,false,0,1622.25,600.0,Job teacher,TEACHER,-1
+53,46,true,139909.5499999999,0,false,0,1018.75,550.0,Job fisher,FISHER,31
+55,46,true,52130.650000000045,0,false,0,1018.75,800.0,Job fisher,FISHER,31
+57,45,false,137473.92500000002,2,false,0,1018.75,550.0,Job fisher,FISHER,32
+58,44,true,19913.62499999999,3,false,0,561.0,725.0,Job fisher,FISHER,32
+59,43,true,74107.75000000012,1,false,0,1601.75,950.0,Job captain,CAPTAIN,-1
+60,40,false,53242.60000000008,5,false,0,1018.75,800.0,Job fisher,FISHER,32
+61,29,true,40018.75,0,false,0,1250.0,900.0,Job factory worker,FACTORY_WORKER,-1
+62,28,false,37076.25,0,false,0,1250.0,900.0,Job teacher,TEACHER,-1
+63,28,false,51354.374999999985,5,false,0,1601.75,950.0,Job fisher,FISHER,32
+64,28,false,5193.89999999999,0,false,0,561.0,725.0,Job elderly caretaker,ELDERLY_CARETAKER,-1
+65,27,false,31843.75,3,false,0,1000.0,725.0,Job factory worker,FACTORY_WORKER,-1
+67,26,true,30058.75,0,false,0,1000.0,725.0,Job factory worker,FACTORY_WORKER,-1
+68,25,true,49915.0,0,false,0,2000.0,975.0,Job factory boss,FACTORY_BOSS,-1
+69,25,false,48377.5,5,false,0,2000.0,975.0,Job factory worker,FACTORY_WORKER,-1
+70,62,false,16601.92500000001,6,true,0,375.0,1050.0,Job elderly caretaker,ELDERLY_CARETAKER,-1
+71,22,true,16236.900000000005,2,false,0,1082.75,637.5,Job fisher,FISHER,31
+72,19,false,12554.949999999997,2,false,0,1082.75,637.5,Job factory worker,FACTORY_WORKER,-1
+73,18,true,8970.0,3,false,0,1250.0,800.0,Job work outside village,WORK_OUT_OF_TOWN,-1
+74,9,true,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
+75,9,true,5000.0,6,false,0,0.0,150.0,NONE,CHILD,-1
+76,8,true,5000.0,4,false,0,0.0,150.0,NONE,CHILD,-1
+77,7,true,5000.0,0,false,0,0.0,150.0,NONE,CHILD,-1
+78,7,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
+79,7,false,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
+80,6,false,5000.0,0,false,0,0.0,150.0,NONE,CHILD,-1
+81,6,false,5000.0,5,false,0,0.0,150.0,NONE,CHILD,-1
+82,5,false,5000.0,6,false,0,0.0,150.0,NONE,CHILD,-1
+83,65,true,4789.0,6,true,0,500.0,800.0,Job factory worker,ELDER,-1
+84,4,true,5000.0,2,false,0,0.0,150.0,NONE,CHILD,-1
+85,3,true,5000.0,3,false,0,0.0,150.0,NONE,CHILD,-1
+86,2,false,5000.0,0,false,0,0.0,150.0,NONE,CHILD,-1
+87,2,false,5000.0,0,false,0,0.0,150.0,NONE,CHILD,-1
+88,1,false,5000.0,6,false,0,0.0,150.0,NONE,CHILD,-1
+89,0,true,5000.0,4,false,0,0.0,150.0,NONE,CHILD,-1

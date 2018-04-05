@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Humans by age cluster</name>
-  <dataSet>Human by age</dataSet>
+  <name>Human avg values</name>
+  <dataSet>Human avg values</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Number</yAxisLabel>
-  <chartTitle>Humans by age cluster</chartTitle>
+  <yAxisLabel>Level</yAxisLabel>
+  <chartTitle>Human average value</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,48 +21,48 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>N [0 - 17]</string>
+      <string>Avg tradition level</string>
       <SeriesData>
-        <label>N [0 - 17]</label>
-        <color>
-          <red>204</red>
-          <green>255</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N [75 - ...]</string>
-      <SeriesData>
-        <label>N [75 - ...]</label>
+        <label>Avg tradition level</label>
         <color>
           <red>0</red>
           <green>0</green>
-          <blue>153</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N [18 - 64]</string>
-      <SeriesData>
-        <label>N [18 - 64]</label>
-        <color>
-          <red>0</red>
-          <green>255</green>
           <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>N [65 - 74]</string>
+      <string>Avg power level</string>
       <SeriesData>
-        <label>N [65 - 74]</label>
+        <label>Avg power level</label>
+        <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Avg self-direction level</string>
+      <SeriesData>
+        <label>Avg self-direction level</label>
         <color>
           <red>0</red>
-          <green>102</green>
+          <green>255</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Avg universalism level</string>
+      <SeriesData>
+        <label>Avg universalism level</label>
+        <color>
+          <red>255</red>
+          <green>0</green>
           <blue>255</blue>
           <alpha>255</alpha>
         </color>

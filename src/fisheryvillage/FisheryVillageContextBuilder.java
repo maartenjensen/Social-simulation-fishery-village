@@ -149,6 +149,12 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 									HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, true);
 			Logger.logMain("-- New human spawned : " + human.getId());
 		}
+		/*
+		if (tick == 2400) {
+			Logger.logMain("-- 50 years have passed, save population");
+			PopulationBuilder populationBuilder = new PopulationBuilder();
+			populationBuilder.savePopulation("./output", "population");
+		}*/
 	}
 
 	/**
@@ -216,6 +222,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		Logger.logMain("- Run EventHall.resetEventHall");
 		SimUtils.getEventHall().stepResetEventHall();
+		SimUtils.getCouncil().resetCounts();
 		
 		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
 		if (!SimUtils.getInitializationPhase()) {
@@ -232,7 +239,12 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		Logger.logMain("- Run Human.stepSocialEvent");
 		for (final Human human: humans) {
-			human.stepSocialEvent();
+			if (!SimUtils.getInitializationPhase()) {
+				human.stepSocialEvent();
+			}
+			else {
+				human.stepSocialEventOld();
+			}
 		}
 
 		Logger.logMain("- Run EventHall.stepPerformSocialEvent");
@@ -303,7 +315,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (Integer humanId: humanIds) {
 			if (HumanUtils.getHumanById(humanId) != null) {
 				Human human = HumanUtils.getHumanById(humanId);
-				Logger.logDebug("Death step for H" + human.getId());
+				Logger.logProb("Death step for H" + human.getId(), 0.01);
 				human.stepDeath();
 			}
 			else {
@@ -472,14 +484,14 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			//Logger.setLoggerAll(true, true, false, false, false);
 			Logger.enableLogger();
 			// Humans
-			int years = 50;
+			int years = 0;
 			for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
 				Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
 				fullStep(i);
 			}
 			
 			// Save population	
-			populationBuilder.savePopulation("./output", "population");
+			//populationBuilder.savePopulation("./output", "population");
 		}
 		
 		// Do a location step

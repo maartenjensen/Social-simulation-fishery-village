@@ -1,34 +1,34 @@
 <repast.simphony.chart2.engine.HistogramChartDescriptor simphonyVersion="2.5.0">
-  <name>Social level combined</name>
+  <name>Human money distribution</name>
   <dataSet>Human non-aggregate variables</dataSet>
-  <xAxisLabel>Amount</xAxisLabel>
-  <yAxisLabel>Count</yAxisLabel>
-  <chartTitle>Social level combined</chartTitle>
+  <xAxisLabel>Distribution</xAxisLabel>
+  <yAxisLabel>Money</yAxisLabel>
+  <chartTitle>Human money distribution</chartTitle>
   <type>HISTOGRAM</type>
   <background>
-    <red>192</red>
-    <green>192</green>
-    <blue>192</blue>
-    <alpha>255</alpha>
-  </background>
-  <gridLineColor>
     <red>255</red>
     <green>255</green>
     <blue>255</blue>
     <alpha>255</alpha>
+  </background>
+  <gridLineColor>
+    <red>204</red>
+    <green>204</green>
+    <blue>204</blue>
+    <alpha>255</alpha>
   </gridLineColor>
   <showGrid>true</showGrid>
   <showLegend>true</showLegend>
-  <histType>STATIC</histType>
-  <binCount>25</binCount>
-  <sourceId>SocialLevelCombined</sourceId>
+  <histType>DYNAMIC</histType>
+  <binCount>20</binCount>
+  <sourceId>Money</sourceId>
   <outOfRange>IGNORE</outOfRange>
   <min>0.0</min>
-  <max>175.0</max>
+  <max>0.0</max>
   <barColor>
-    <red>51</red>
-    <green>255</green>
-    <blue>51</blue>
+    <red>255</red>
+    <green>0</green>
+    <blue>0</blue>
     <alpha>255</alpha>
   </barColor>
 </repast.simphony.chart2.engine.HistogramChartDescriptor>

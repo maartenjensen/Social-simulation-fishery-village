@@ -75,7 +75,6 @@ public class EventHall extends Property {
 	
 	public void stepResetEventHall() {
 		events.clear();
-		
 		countUniversalism = 0;
 		countTradition = 0;
 		countPower = 0;
@@ -98,18 +97,24 @@ public class EventHall extends Property {
 		countSelfDirection ++;
 	}
 	
-	public int getUniversalism() {
-		return countUniversalism;
+	public double getUniversalism() {
+		int adultCount = SimUtils.getCouncil().getNumberOfAdultsAndElderlyYoung();
+		return countUniversalism / (double) adultCount;
 	}
 	
-	public int getTradition() {
-		return countTradition;
+	public double getTradition() {
+		int adultCount = SimUtils.getCouncil().getNumberOfAdultsAndElderlyYoung();
+		return countTradition / (double) adultCount;
 	}
-	public int getPower() {
-		return countPower;
+	
+	public double getPower() {
+		int adultCount = SimUtils.getCouncil().getNumberOfAdultsAndElderlyYoung();
+		return countPower / (double) adultCount;
 	}
-	public int getSelfDirection() {
-		return countSelfDirection;
+	
+	public double getSelfDirection() {
+		int adultCount = SimUtils.getCouncil().getNumberOfAdultsAndElderlyYoung();
+		return countSelfDirection / (double) adultCount;
 	}
 	
 	@Override
