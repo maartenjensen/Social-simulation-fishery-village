@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import common.FrameworkBuilder;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -19,7 +18,6 @@ import fisheryvillage.property.House;
 import fisheryvillage.property.HouseType;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.School;
-import mas.DecisionMaker;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.NdPoint;
@@ -28,7 +26,9 @@ import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
-import valueFramework.WaterTank;
+import valueframework.DecisionMaker;
+import valueframework.ValuedAction;
+import valueframework.WaterTank;
 
 /**
 * The human class, without it the village would be a ghost town
@@ -70,11 +70,7 @@ public class Human {
 		setStatusByAge();
 		this.schoolType = SchoolType.NO_SCHOOL;
 
-		decisionMaker = new DecisionMaker(id);
-		FrameworkBuilder.decisionMakerList.add(decisionMaker);
-		
-		decisionMaker.assignPossibleActions(FrameworkBuilder.allPossibleActions);
-		decisionMaker.createValueTrees();
+		decisionMaker = new DecisionMaker();
 		
 		SimUtils.getContext().add(this);
 		
@@ -107,11 +103,7 @@ public class Human {
 			boat.addFisher(id);
 		}
 		
-		decisionMaker = new DecisionMaker(id);
-		FrameworkBuilder.decisionMakerList.add(decisionMaker);
-		
-		decisionMaker.assignPossibleActions(FrameworkBuilder.allPossibleActions);
-		decisionMaker.createValueTrees();
+		decisionMaker = new DecisionMaker();
 		
 		SimUtils.getContext().add(this);
 		
@@ -250,7 +242,11 @@ public class Human {
 		Logger.logInfo("H" + id + " possible actions: " + possibleActions);
 		String actionToDo = null;
 		if (!SimUtils.getInitializationPhase()) {
-			actionToDo = selectActionFromPossibleActionsJob(possibleActions);
+			ValuedAction selectedAction = selectActionFromPossibleActionsJob(possibleActions);
+			if (selectedAction != null) {
+				actionToDo = selectedAction.getTitle();
+				decisionMaker.agentExecutesValuedAction(selectedAction);
+			}
 		}
 		else {
 			actionToDo = selectActionFromPossibleActions(possibleActions);
@@ -266,22 +262,34 @@ public class Human {
 
 	public void stepDrainTanks() {
 		
-		Logger.logProb("VALUES BEFOR H" + id + " - " + getDcString(), 0.05);
+		//Logger.logProb("VALUES BEFOR H" + id + " - " + getDcString(), 0.05);
 		decisionMaker.drainTanks();
-		Logger.logProb("VALUES AFTER H" + id + " - " + getDcString(), 0.05);
+		//Logger.logProb("VALUES AFTER H" + id + " - " + getDcString(), 0.05);
 	}
 	
-	private String selectActionFromPossibleActionsJob(ArrayList<String> possibleActions) {
+	private ValuedAction selectActionFromPossibleActionsJob(ArrayList<String> possibleActions) {
 		
-		ArrayList<String> selectedActions = decisionMaker.actionSelectionFromPossibleActions(possibleActions);
-		if (selectedActions.size() >= 2 && selectedActions.contains("Job unemployed")) {
-			selectedActions.remove("Job unemployed");
+		ArrayList<ValuedAction> filteredActions = decisionMaker.agentFilterActionsBasedOnValues(possibleActions);
+		//Remove unemployed if there are more options
+		if (filteredActions.size() >= 2) {
+			for (ValuedAction valuedAction : filteredActions) {
+				if (valuedAction.getTitle().equals("Job unemployed")) {
+					filteredActions.remove(valuedAction);
+					break;
+				}
+			}
 		}
-		String selectedAction = selectedActions.get(RandomHelper.nextIntFromTo(0, selectedActions.size() - 1));
-		if (selectedActions.contains(jobTitle) && jobTitle != "Job unemployed") {
-			selectedAction = jobTitle;
+		// Select a random job from the filtered jobs, but keep previous job if it is not unemployed
+		ValuedAction selectedAction = filteredActions.get(RandomHelper.nextIntFromTo(0, filteredActions.size() - 1));
+		if (jobTitle != "Job unemployed") {
+			for (ValuedAction valuedAction : filteredActions) {
+				if (valuedAction.getTitle().equals(jobTitle)) {
+					selectedAction = valuedAction;
+					break;
+				}
+			}
 		}
-		Logger.logInfo("H" + id + " jobTitle: " + jobTitle + ", selected action:" + selectedAction + " from actions: " + selectedActions);
+		Logger.logInfo("H" + id + " jobTitle: " + jobTitle + ", selected action:" + selectedAction + " from actions: " + filteredActions);
 		return selectedAction;
 	}
 	

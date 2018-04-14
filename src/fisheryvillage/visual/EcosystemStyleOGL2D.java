@@ -1,4 +1,4 @@
-package fisheryvillage.observer;
+package fisheryvillage.visual;
 
 import java.awt.Font;
 

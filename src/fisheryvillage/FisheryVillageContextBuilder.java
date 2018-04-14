@@ -1,13 +1,10 @@
 package fisheryvillage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-import common.FrameworkBuilder;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
-import fisheryvillage.common.PopulationBuilder;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.municipality.Council;
@@ -37,7 +34,7 @@ import repast.simphony.space.grid.GridBuilderParameters;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.valueLayer.GridValueLayer;
-import valueFramework.WaterTank;
+import valueframework.common.FrameworkBuilder;
 
 /**
 * The FisheryVillageContextBuilder builds the repast simulation
@@ -56,6 +53,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 
 		// Reset human id
 		HumanUtils.resetHumanId();
+		SimUtils.resetPropertyId();
 		Logger.enableLogger();
 		
 		// Add context to this ID
@@ -69,7 +67,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		final ContinuousSpace<Object> space = createContinuousSpace(context);
 		@SuppressWarnings("unused")
 		final Grid<Object> grid = createGrid(context);
-		
+
 		// Create value layer
 		final GridValueLayer valueLayer = createValueLayer();
 		context.addValueLayer(valueLayer);
@@ -90,34 +88,26 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.getValueLayer();
 		
 		// Create value framework
-		try {
-			createValueFramework();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		FrameworkBuilder.initialize();
 		
 		// Create houses
 		createHouses();
 
 		// Create boats
-		Boat boat1 = new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
-		boat1.setId(SimUtils.getNewPropertyId());
-		Boat boat2 = new Boat(Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
-		boat2.setId(SimUtils.getNewPropertyId());
+		new Boat(SimUtils.getNewPropertyId(), Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
+		new Boat(SimUtils.getNewPropertyId(), Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
 
 		// Create buildings
-		new SocialCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 2));
-		new ElderlyCare(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 22));
-		new School(0, 0, 10000, new GridPoint(Constants.GRID_VILLAGE_START + 25, 12));
-		Factory factory = new Factory(1000, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 24));
-		factory.setId(SimUtils.getNewPropertyId());
-		new Council(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 18));
-		new EventHall(0, 0, 10000, new GridPoint(Constants.GRID_SEA_START - 11, 10));
+		new SocialCare(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 2));
+		new ElderlyCare(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 22));
+		new School(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 12));
+		new Factory(SimUtils.getNewPropertyId(), 1000, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 24));
+		new Council(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 18));
+		new EventHall(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 10));
 
 		// Create buildings outside village
-		new SchoolOutside(0, 0, 0, new GridPoint(1, 12));
-		new CompanyOutside(0, 0, 0, new GridPoint(1, 24));
+		new SchoolOutside(SimUtils.getNewPropertyId(), 0, 0, 0, new GridPoint(1, 12));
+		new CompanyOutside(SimUtils.getNewPropertyId(), 0, 0, 0, new GridPoint(1, 24));
 
 		// Create ecosystem
 		new Ecosystem(Constants.ECOSYSTEM_INITIAL_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
@@ -132,7 +122,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	 * Simulation schedule
 	 *=========================================
 	 */
-
 	/**
 	 * Step 0 Tick: starting tick, migration
 	 */
@@ -383,17 +372,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		return valueLayer;
 	}
 
-	private void createValueFramework() throws IOException {
-		
-		//first create value files
-		FrameworkBuilder.readValueTreeFile();
-		ArrayList<WaterTank> waterTanks = new ArrayList<WaterTank>();
-		
-		//then read actions from file
-		FrameworkBuilder.readActionsFromFile("inputFiles\\actionList3.txt");
-		FrameworkBuilder.assginRelatedActionsToConcreteValues();	
-	}
-	
 	private void generateNature(GridValueLayer valueLayer) {
 		
 		for (int i = 0; i < Constants.GRID_WIDTH; i ++) {
@@ -419,8 +397,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_CHEAP; ++i) {
 			
 			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 5, 1 + y * 3);
-			House house = new House(HouseType.CHEAP, Constants.HOUSE_CHEAP_PRICE, Constants.HOUSE_CHEAP_MAINTENANCE, 0, location);
-			house.setId(SimUtils.getNewPropertyId());
+			new House(SimUtils.getNewPropertyId(), HouseType.CHEAP, Constants.HOUSE_CHEAP_PRICE, Constants.HOUSE_CHEAP_MAINTENANCE, 0, location);
 			if (y == 7) {
 				y = 0;
 				x ++;
@@ -436,8 +413,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_STANDARD; ++i) {
 			
 			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 13 + x * 6, 2 + y * 5);
-			House house = new House(HouseType.STANDARD, Constants.HOUSE_STANDARD_PRICE, Constants.HOUSE_STANDARD_MAINTENANCE, 0, location);
-			house.setId(SimUtils.getNewPropertyId());
+			new House(SimUtils.getNewPropertyId(), HouseType.STANDARD, Constants.HOUSE_STANDARD_PRICE, Constants.HOUSE_STANDARD_MAINTENANCE, 0, location);
 			if (y == 4) {
 				y = 0;
 				x ++;
@@ -452,8 +428,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_EXPENSIVE; ++i) {
 			
 			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 7, Constants.GRID_HEIGHT - 6);
-			House house = new House(HouseType.EXPENSIVE, Constants.HOUSE_EXPENSIVE_PRICE, Constants.HOUSE_EXPENSIVE_MAINTENANCE, 0, location);
-			house.setId(SimUtils.getNewPropertyId());
+			new House(SimUtils.getNewPropertyId(), HouseType.EXPENSIVE, Constants.HOUSE_EXPENSIVE_PRICE, Constants.HOUSE_EXPENSIVE_MAINTENANCE, 0, location);
 			x ++;
 		}
 	}

@@ -24,8 +24,8 @@ public class EventHall extends Property {
 	int countPower = 0;
 	int countSelfDirection = 0;
 	
-	public EventHall(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 5, 3, Status.NONE, PropertyColor.COUNCIL);
+	public EventHall(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 5, 3, Status.NONE, PropertyColor.COUNCIL);
 		addToValueLayer();
 	}
 	
@@ -41,7 +41,7 @@ public class EventHall extends Property {
 		}
 		return false;
 	}
-	
+
 	public int createEvent(String eventType, int organizerId) {
 		
 		Event event = new Event(eventType, organizerId);

@@ -1,4 +1,4 @@
-package fisheryvillage.observer;
+package fisheryvillage.visual;
 
 import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.visualizationOGL2D.DefaultEdgeStyleOGL2D;

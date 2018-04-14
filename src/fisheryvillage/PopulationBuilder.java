@@ -1,4 +1,4 @@
-package fisheryvillage.common;
+package fisheryvillage;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -10,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import fisheryvillage.common.Constants;
+import fisheryvillage.common.HumanUtils;
+import fisheryvillage.common.Logger;
+import fisheryvillage.common.SimUtils;
 import fisheryvillage.municipality.Council;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;

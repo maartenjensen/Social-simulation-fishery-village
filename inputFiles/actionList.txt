@@ -6,5 +6,5 @@ Job factory worker,Sustain village,Be part of the community
 Job factory boss,Sustain village,Be part of the community,Authority,Wealth,Independent
 Job mayor,Sustain village,Be part of the community,Authority,Wealth,Independent
 Job elderly caretaker,Sustain village,Be part of the community,Care for the weak
-Job work outside village,Freedom,Independent
+Job work outside village,Not bound to village jobs,Independent
 Job unemployed,Be part of the community

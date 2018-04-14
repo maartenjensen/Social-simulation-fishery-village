@@ -18,8 +18,8 @@ import saf.v3d.scene.VSpatial;
 */
 public class SchoolOutside extends Property {
 
-	public SchoolOutside(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 8, 5, Status.NONE, PropertyColor.SCHOOL);
+	public SchoolOutside(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 8, 5, Status.NONE, PropertyColor.SCHOOL);
 		addToValueLayer();
 	}
 	

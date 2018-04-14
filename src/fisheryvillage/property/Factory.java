@@ -27,8 +27,8 @@ public class Factory extends Property {
 	private int fishUnprocessedKg = 0;
 	private int fishProcessedKg = 0; // Variable only for label
 
-	public Factory(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 10, 10, Status.FACTORY_WORKER, PropertyColor.FACTORY);
+	public Factory(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 10, 10, Status.FACTORY_WORKER, PropertyColor.FACTORY);
 		addToValueLayer();
 		actionName = "Job factory worker";
 	}

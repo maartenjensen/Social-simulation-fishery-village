@@ -23,8 +23,8 @@ public class School extends Property {
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
-	public School(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 11, 8, Status.TEACHER, PropertyColor.SCHOOL);
+	public School(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 11, 8, Status.TEACHER, PropertyColor.SCHOOL);
 		addToValueLayer();
 		actionName = "Job teacher";
 	}

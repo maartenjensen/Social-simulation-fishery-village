@@ -1,13 +1,10 @@
-package valueFramework;
+package valueframework;
 
 
-import java.nio.ReadOnlyBufferException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
 
 public class Node
 {
@@ -17,13 +14,6 @@ public class Node
 
     public ArrayList<Action> relatedActions;
     //this list has only value when the node is a leaf in a value tree; otherwise, it is null.
-    
-	
-    /*public Node(String value)
-    {
-        this.children = new ArrayList<>();
-        this.setValueName(value);
-    }*/
     
     public void randomlyAssignActions(ArrayList<Action> alist){
     	Collections.shuffle(alist);
@@ -41,7 +31,7 @@ public class Node
     
     public Node(String value, Node parentIn)
     {
-        this.children = new ArrayList<>();
+        this.children = new ArrayList<Node>();
         this.setValueName(value);
         this.setParent(parentIn);
         

@@ -18,8 +18,8 @@ public class House extends Property {
 
 	HouseType houseType;
 	
-	public House(HouseType houseType, int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 4, 2, Status.NONE, PropertyColor.HOUSE);
+	public House(int id, HouseType houseType, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 4, 2, Status.NONE, PropertyColor.HOUSE);
 		this.houseType = houseType;
 		addGardenToValueLayer();
 		addToValueLayer();

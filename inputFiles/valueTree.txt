@@ -1,16 +1,6 @@
-%[Possible Action list splitted with ,]
 %value tree 1
 %waterTank, maxCapacity, minCapacity, maxFilledLevel, minFilledLevel, drainingAmount, minThresould, maxThresould,
-%node title, height, [list of children title slplitted by ,]
-%....
-%value tree 2
-%node title, height, [list of children title slplitted by ,]
-%....
-%value tree 3
-%node title, height, [list of children title slplitted by ,]
-%....
-%value tree 4
-%node title, height, [list of children title slplitted by ,]
+%node title, [list of children title separated by ","]
 %....
 value tree 1
 waterTank, 100,100,70,20,5,10,10

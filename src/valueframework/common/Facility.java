@@ -1,11 +1,10 @@
-package common;
+package valueframework.common;
 
 import java.util.ArrayList;
 
-import valueFramework.RandomTree;
-import valueFramework.WaterTank;
+import valueframework.WaterTank;
 
-public class Facility {
+public final class Facility {
 	
 	public static ArrayList<WaterTank> sort(ArrayList<WaterTank> whole) {
 		if(whole.size()==0)

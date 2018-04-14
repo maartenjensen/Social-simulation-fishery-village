@@ -1,8 +1,6 @@
 package fisheryvillage.municipality;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
@@ -42,8 +40,8 @@ public class Council extends Property {
 	private int elderlyCount = 1;
 	private int factoryCount = 1;
 	
-	public Council(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 3, 3, Status.MAYOR, PropertyColor.COUNCIL);
+	public Council(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 3, 3, Status.MAYOR, PropertyColor.COUNCIL);
 		addToValueLayer();
 		actionName = "Job mayor";
 	}

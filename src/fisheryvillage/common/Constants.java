@@ -12,7 +12,7 @@ import fisheryvillage.population.Status;
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class Constants {
+public final class Constants {
 
 	// Initialize important IDs
 	public static final String ID_CONTEXT = "fisheryvillage";
@@ -53,6 +53,8 @@ public class Constants {
 	public static final int BOAT_BASIC_PRICE = 1000;
 	public static final int BOAT_BASIC_MAINTENANCE = 100;
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
+	
+	public static final int BUILDING_INITIAL_MONEY = 10000;
 	
 	// Initialize population generate parameters
 	public static final int HUMAN_INIT_STARTING_MONEY = 5000;

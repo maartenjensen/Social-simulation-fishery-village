@@ -4,15 +4,15 @@
   <styles>
     <entry>
       <string>fisheryvillage.ecosystem.Ecosystem</string>
-      <string>fisheryvillage.observer.EcosystemStyleOGL2D</string>
+      <string>fisheryvillage.visual.EcosystemStyleOGL2D</string>
     </entry>
     <entry>
       <string>fisheryvillage.property.Property</string>
-      <string>fisheryvillage.observer.PropertyStyleOGL2D</string>
+      <string>fisheryvillage.visual.PropertyStyleOGL2D</string>
     </entry>
     <entry>
       <string>fisheryvillage.population.Human</string>
-      <string>fisheryvillage.observer.HumanStyleOGL2D</string>
+      <string>fisheryvillage.visual.HumanStyleOGL2D</string>
     </entry>
   </styles>
   <editedStyles>
@@ -32,13 +32,13 @@
   <netStyles>
     <entry>
       <string>couple network</string>
-      <string>repast.simphony.visualization.editedStyle.EditedEdgeStyle2D</string>
+      <string>repast.simphony.visualizationOGL2D.DefaultEdgeStyleOGL2D</string>
     </entry>
   </netStyles>
   <editedNetStyles>
     <entry>
       <string>couple network</string>
-      <string>couplenetwork.style_3.xml</string>
+      <null/>
     </entry>
   </editedNetStyles>
   <frequency>ON_MOVE</frequency>
@@ -49,7 +49,7 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>219952229</hashCode>
+    <hashCode>-1538139872</hashCode>
   </schedParams>
   <layoutClassName>foo.bar.baz</layoutClassName>
   <layoutProjection>grid</layoutProjection>
@@ -124,7 +124,7 @@
     <blue>255</blue>
     <alpha>255</alpha>
   </backgroundColor>
-  <valueLayerStyleName>fisheryvillage.observer.VillageValueLayerOGL</valueLayerStyleName>
+  <valueLayerStyleName>fisheryvillage.visual.VillageValueLayerOGL</valueLayerStyleName>
   <valueLayers>
     <string>village value layer</string>
   </valueLayers>

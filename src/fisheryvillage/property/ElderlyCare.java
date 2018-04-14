@@ -22,8 +22,8 @@ public class ElderlyCare extends Property {
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
-	public ElderlyCare(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 11, 8, Status.ELDERLY_CARETAKER, PropertyColor.ELDERLY_CARE);
+	public ElderlyCare(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 11, 8, Status.ELDERLY_CARETAKER, PropertyColor.ELDERLY_CARE);
 		addToValueLayer();
 		actionName = "Job elderly caretaker";
 	}

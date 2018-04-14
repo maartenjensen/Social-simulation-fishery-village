@@ -31,8 +31,8 @@ public class Boat extends Property {
 	private int fishThrownAway = 0;
 	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
 	
-	public Boat(int price, int maintenanceCost, double money, GridPoint location) {
-		super(price, maintenanceCost, money, location, 3, 2, Status.FISHER, PropertyColor.BOAT);
+	public Boat(int id, int price, int maintenanceCost, double money, GridPoint location) {
+		super(id, price, maintenanceCost, money, location, 3, 2, Status.FISHER, PropertyColor.BOAT);
 		addToValueLayer();
 		actionName = "Job fisher";
 	}

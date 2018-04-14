@@ -41,7 +41,9 @@ public class Property {
 	protected Map<Boolean, VSpatial> spatialImagesOwned = new HashMap<Boolean, VSpatial>();
 	//private boolean active = false;
 
-	public Property(int price, int maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus, PropertyColor propertyColor) {
+	public Property(int id, int price, int maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus, PropertyColor propertyColor) {
+		
+		this.id = id;
 		this.price = price;
 		this.maintenanceCost = maintenanceCost;
 		this.savings = savings;
@@ -54,12 +56,6 @@ public class Property {
 		SimUtils.getContext().add(this);
 		if (!SimUtils.getGrid().moveTo(this, location.getX(), location.getY())) {
 			Logger.logError("Property could not be placed, coordinate: " + location);
-		}
-	}
-
-	public void setId(int id) {
-		if (this.id == -1) {
-			this.id = id;
 		}
 	}
 	
