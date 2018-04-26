@@ -330,7 +330,8 @@ public class Human {
 				}
 			}
 			if (property.getVacancy()) {
-				possibleActions.add(property.getActionName());
+				if (!possibleActions.contains(property.getActionName()))
+					possibleActions.add(property.getActionName());
 			}
 		}
 		
@@ -854,24 +855,23 @@ public class Human {
 				double amountOfMoney = Math.min(Constants.BENEFIT_UNEMPLOYED, SimUtils.getSocialCare().getSavings());
 				SimUtils.getSocialCare().removeFromSavings(amountOfMoney);
 				return amountOfMoney;
-				
 			}
 		}
 		return 0;
 	}
-	
+
 	//TODO in this function change the parameter to something that is defined before hand
 	public double payTax(double salary) {
 		if (status != Status.WORK_OUT_OF_TOWN) {
 			
 			Council council = SimUtils.getObjectsAll(Council.class).get(0);
-			council.addToSavings(salary * ((double) RunEnvironment.getInstance().getParameters().getValue(Constants.PARAMETER_TAX_TO_COUNCIL) / 100));
+			council.addToSavings(salary * (Constants.TAX_TO_COUNCIL / 100));
 			
-			return salary * ((100 - (double) RunEnvironment.getInstance().getParameters().getValue(Constants.PARAMETER_PERCENTAGE_TAX)) / 100);//(Constants.NETTO_INCOME_PERCENTAGE / 100);
+			return salary * ((100 - Constants.TAX_PERCENTAGE) / 100);
 		}
-		return salary * ((100 - (double) RunEnvironment.getInstance().getParameters().getValue(Constants.PARAMETER_PERCENTAGE_TAX)) / 100);
+		return salary * ((100 - Constants.TAX_PERCENTAGE) / 100);
 	}
-	
+
 	/*=========================================
 	 * Standard getters and setters
 	 *=========================================

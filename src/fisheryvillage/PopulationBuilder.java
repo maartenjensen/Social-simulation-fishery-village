@@ -48,7 +48,7 @@ public class PopulationBuilder {
 		
 	public void generatePopulation(String filePath, String fileName) {
 		
-		List<String> humansList = readFile(filePath + "/" + fileName + ".txt");
+		List<String> humansList = readFile(filePath + "/" + fileName + "Data.txt");
 		for (String humanString : humansList) {
 			List<String> hVars = Arrays.asList(humanString.split(","));
 			int id = Integer.parseInt(hVars.get(0));
@@ -65,7 +65,7 @@ public class PopulationBuilder {
 			int boatId = Integer.parseInt(hVars.get(11));
 			Human human = new Human(isMan, age, id, money, foreigner, childrenWanted, homelessTick,
 									nettoIncome, necessaryCost, jobTitle, status, boatId);
-			Logger.logInfo("Generated H" + human.getId() + ", age: " + human.getAge());
+			Logger.logInfo("Initialized H" + human.getId() + ", age: " + human.getAge());
 		}
 		
 		List<String> relationsList = readFile(filePath + "/" + fileName + "Relations.txt");
@@ -121,7 +121,7 @@ public class PopulationBuilder {
 		for (Human human : humans) {
 			dataHumans.add(human.getHumanVarsAsString());
 		}
-		writeToFile(filePath + "/" + fileName + ".txt", dataHumans);
+		writeToFile(filePath + "/" + fileName + "Data.txt", dataHumans);
 		
 		// Data network
 		safeNetwork(Constants.ID_NETWORK_COUPLE, filePath + "/" + fileName + "Relations.txt");

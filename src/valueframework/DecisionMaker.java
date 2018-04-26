@@ -1,6 +1,7 @@
 package valueframework;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -80,13 +81,83 @@ public class DecisionMaker {
 		
 		// Convert action titles to actions and get the trees that belong to the trees
 		ArrayList<Action> possibleActions = convertActionTitlesToActions(possibleActionTitlesIn);
-		ArrayList<RandomTree> relatedAbstractValue = selectAbstractValuesAccordingToActions(possibleActions);
+		Map<String, Double> weightedValues = getWeightedAbstractValueList();
+		if (weightedValues.size() == 0) {
+			Log.printLog("No value is important, returning all possible actions");
+			return convertActionsToValuedActions(possibleActions);
+		}
+		Log.printLog("Print weighted values" + weightedValues.toString());
+		ArrayList<ValuedAction> possibleValuedActions = evaluateActionsAccordingToValues(possibleActions, weightedValues);
+		Log.printValuedActions("Evaluated VA: ", possibleValuedActions);
 		
-		// Retrieve the actions that belong to the highest priority value
-		ArrayList<ValuedAction> selectedValuedActions = getActionsWithHighestPriorityValue(possibleActions, relatedAbstractValue);
-		Log.printValuedActions(selectedValuedActions);
+		// Select actions
+		ArrayList<ValuedAction> selectedValuedActions = filterValuedActions(possibleValuedActions);
 
 		return selectedValuedActions;
+	}
+
+	private ArrayList<ValuedAction> filterValuedActions(ArrayList<ValuedAction> possibleValuedActions) {
+		
+		Collections.sort(possibleValuedActions);
+		ArrayList<ValuedAction> choosenValuedActions = new ArrayList<ValuedAction>();
+		double highestValue = -1000; //Double.MIN_NORMAL; doesn't work the value is to low to compare
+		for (ValuedAction valuedAction : possibleValuedActions) {
+			
+			if (valuedAction.getActionGoodness() > 0) {
+				choosenValuedActions.add(valuedAction);
+				highestValue = 1;
+			}
+			else {
+				if (highestValue <= valuedAction.getActionGoodness()) {
+					choosenValuedActions.add(valuedAction);
+					highestValue = valuedAction.getActionGoodness();
+				}
+			}
+		}
+		return choosenValuedActions;
+	}
+	
+	private ArrayList<ValuedAction> evaluateActionsAccordingToValues(ArrayList<Action> possibleActions, Map<String, Double> weightedValues) {
+		
+		ArrayList<ValuedAction> valuedActions = new ArrayList<ValuedAction>();
+		for (Action action : possibleActions) {
+			
+			double actionGoodness = 0;
+			HashMap<String, Integer> evaluatedValues = new HashMap<String, Integer>();
+			ArrayList<String> positiveAbstractValues = findPositiveAbstractValues(action);
+			ArrayList<String> negativeAbstractValues = findNegativeAbstractValues(action);
+			for (String key : weightedValues.keySet()) {
+				if (positiveAbstractValues.contains(key)) {
+					evaluatedValues.put(key, 1);
+					actionGoodness += weightedValues.get(key);
+				}
+				else if (negativeAbstractValues.contains(key)) {
+					evaluatedValues.put(key, -1);
+					actionGoodness -= weightedValues.get(key);
+				}
+			}
+			valuedActions.add(new ValuedAction(action.getTitle(), evaluatedValues, actionGoodness));
+		}
+		return valuedActions;
+	}
+	
+	private Map<String, Double> getWeightedAbstractValueList() {
+		
+		Map<String, Double> priorityOfValues = new HashMap<String, Double>();
+		double sigma = 0;
+		for (String wtKey : waterTanks.keySet()) {
+			double priority = waterTanks.get(wtKey).getPriorityPercentage();
+			if (priority > 0) {
+				priorityOfValues.put(wtKey, priority);
+				sigma += priority;
+			}
+		}
+		Map<String, Double> weightedValues = new HashMap<String, Double>();
+		for (String prioKey : priorityOfValues.keySet()) {
+			double weight = priorityOfValues.get(prioKey) / sigma;
+			weightedValues.put(prioKey, weight);
+		}
+		return weightedValues;
 	}
 
 	/**
@@ -117,7 +188,7 @@ public class DecisionMaker {
 		}
 		return possibleActions;
 	}
-	
+	/*
 	private ArrayList<ValuedAction> getActionsWithHighestPriorityValue(ArrayList<Action> possibleActionsSet, ArrayList<RandomTree> selectedValues) {
 		
 		// There should be at least some possibleActions and selectedValues
@@ -143,23 +214,14 @@ public class DecisionMaker {
 			}
 		}
 		return returnedValuedActions;
-	}
+	}*/
 	
-	private ArrayList<RandomTree> prioritizingWaterTanks(ArrayList<RandomTree> rts) {
-		
-		ArrayList<WaterTank> unsortedWaterTanks = new ArrayList<WaterTank>();
-		for(int i = 0; i < rts.size(); i++) {			
-			if(waterTanks.keySet().contains(rts.get(i).getRoot().getValueName())) {
-				unsortedWaterTanks.add(waterTanks.get(rts.get(i).getRoot().getValueName()));
-			}
+	private ArrayList<ValuedAction> convertActionsToValuedActions(ArrayList<Action> actions) {
+		ArrayList<ValuedAction> valuedActions = new ArrayList<ValuedAction>();
+		for (Action action : actions) {
+			valuedActions.add(new ValuedAction(action.getTitle()) );
 		}
-		
-		ArrayList<RandomTree> sortedValueTrees = new ArrayList<RandomTree>();
-		ArrayList<WaterTank>  sortedWaterTanks = Facility.sort(unsortedWaterTanks);
-		for(int i =0; i < sortedWaterTanks.size(); i++) {
-			sortedValueTrees.add(valueTrees.get(sortedWaterTanks.get(i).getRelatedAbstractValue()));
-		}
-		return sortedValueTrees;
+		return valuedActions;
 	}
 	
 	public WaterTank mostImportantValue() {
@@ -167,39 +229,11 @@ public class DecisionMaker {
 		return Facility.sort(new ArrayList<WaterTank>(waterTanks.values())).get(0);
 	}
 
-	private ArrayList<RandomTree> selectAbstractValuesAccordingToActions(
-			ArrayList<Action> possibleActionsSet) {
-		// TODO: picks values that are linked to the possible actions. and then
-		// apply the priority function on them
-		// then returns the values and their importance .
-		// priority is a signed calculated like this : (level-thres)/thres *100;
-		// this list contains at the values with the same priority.
-		// TODO: check if the list is empty write a message that values are not
-		// applicable here.
-		/*System.out
-				.println("\npossibleActions in selectAbstractValuesAccordingToActions before selection: ");
-		Log.printActions(possibleActionsSet);*/
-		ArrayList<RandomTree> outValues = new ArrayList<RandomTree>();
-		for (int i = 0; i < possibleActionsSet.size(); i++) {
-			ArrayList<RandomTree> val = findAbstractValues(possibleActionsSet
-					.get(i));
-			for (int j = 0; j < val.size(); j++) {
-				if (!outValues.contains(val.get(j)))
-					outValues.add(val.get(j));
-			}
-		}
-
-		/*System.out
-				.println("\nvalues : in selectAbstractValuesAccordingToActions after selection: ");
-		Log.printAbstractValues(outValues);*/
-
-		return outValues;
-	}
-
-	private ArrayList<RandomTree> findAbstractValues(Action action) {
+	private ArrayList<String> findPositiveAbstractValues(Action action) {
 		ArrayList<Node> absValues = new ArrayList<Node>();
-		ArrayList<RandomTree> rndTrees = new ArrayList<RandomTree>();
-		ArrayList<Node> concreteValues = action.getRelatedConcreteValues();
+		ArrayList<String> rndTrees = new ArrayList<String>();
+		//add all the related values including negative and positive related ones.
+		ArrayList<Node> concreteValues = action.getPositiveRelatedConcreteValues();
 		for (int i = 0; i < concreteValues.size(); i++) {
 			Node crrPrnt = concreteValues.get(i);
 			Node prvPrnt = crrPrnt;
@@ -211,37 +245,36 @@ public class DecisionMaker {
 				absValues.add(prvPrnt);
 		}
 
-		/*
-		 * Iterator it = valueTrees.entrySet().iterator(); while (it.hasNext())
-		 * { Map.Entry pair = (Map.Entry)it.next();
-		 * if(absValues.contains(((RandomTree)pair.getValue()).getRoot()))
-		 * rndTrees.add((RandomTree) pair.getValue()); it.remove(); // avoids a
-		 * ConcurrentModificationException }
-		 */
 		for (RandomTree value : valueTrees.values()) {
 			if (absValues.contains(value.getRoot()))
-				rndTrees.add(value);
+				rndTrees.add(value.getRoot().getValueName());
 		}
 
 		return rndTrees;
 	}
-
-	private ArrayList<Action> filterActions(ArrayList<Action> possibleActions,
-			RandomTree lowestValue) {
-		// check all the possibleActions that are related to the given abstract value
-		ArrayList<Action> filteredActions = new ArrayList<Action>();
-		for (int i = 0; i < possibleActions.size(); i++) {
-			int numOfPossitiveContibutedValues = possibleActions.get(i)
-					.checkRelatedValueInValueTree(lowestValue.getRoot(), true);
-			// int numOfNegativeContibutedValues =
-			// possibleActions.get(i).checkRalatedValueInValueTree(lowestValue.getRoot(),
-			// false);
-			if (numOfPossitiveContibutedValues != 0) {
-				if(!filteredActions.contains(possibleActions.get(i)))
-				filteredActions.add(possibleActions.get(i));
+	
+	private ArrayList<String> findNegativeAbstractValues(Action action) {
+		ArrayList<Node> absValues = new ArrayList<Node>();
+		ArrayList<String> rndTrees = new ArrayList<String>();
+		//add all the related values including negative and positive related ones.
+		ArrayList<Node> concreteValues = action.getNegativeRelatedConcreteValues();
+		for (int i = 0; i < concreteValues.size(); i++) {
+			Node crrPrnt = concreteValues.get(i);
+			Node prvPrnt = crrPrnt;
+			while (crrPrnt != null) {
+				prvPrnt = crrPrnt;
+				crrPrnt = crrPrnt.getParent();
 			}
+			if (!absValues.contains(prvPrnt))
+				absValues.add(prvPrnt);
 		}
-		return filteredActions;
+
+		for (RandomTree value : valueTrees.values()) {
+			if (absValues.contains(value.getRoot()))
+				rndTrees.add(value.getRoot().getValueName());
+		}
+
+		return rndTrees;
 	}
 
 	public void assignAllActions(ArrayList<Action> alist) {

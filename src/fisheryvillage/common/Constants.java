@@ -87,8 +87,8 @@ public final class Constants {
 	public static final double COST_SCHOOL_INSIDE = 25;
 	public static final double COST_SCHOOL_OUTSIDE = 100;
 	public static final double COST_SCHOOL_CHILD = 0;
-	public static final double NETTO_INCOME_PERCENTAGE = 50;
-	public static final double TAX_TO_COUNCIL = 5;
+	public static final double TAX_PERCENTAGE = 50;
+	public static final double TAX_TO_COUNCIL = 50;
 	
 	// Initialize employee numbers
 	public static final int MAX_FISHERS_PER_BOAT = 5;
@@ -117,9 +117,16 @@ public final class Constants {
 	public static final double EVENT_PERCENT_TOO_CROWDED = 75;
 	
 	// Setup parameter IDs
-	public static final String PARAMETER_PERCENTAGE_TAX = "percentageTax";
-	public static final String PARAMETER_TAX_TO_COUNCIL = "percentageTaxToCouncil";
-
+	public static final String PARA_ID_POP_INIT_FROM_FILE = "popInitFromFile";
+	public static final String PARA_ID_POP_INIT_FILE_NAME = "popInitFileName";
+	public static final String PARA_ID_POP_GEN_TO_FILE = "popGenToFile";
+	public static final String PARA_ID_POP_GEN_FILE_NAME = "popGenFileName";
+	public static final String PARA_ID_POP_GEN_TICK_LIMIT = "popGenTickLimit";
+	public static final String PARA_ID_VALUE_POWR = "valuePower";
+	public static final String PARA_ID_VALUE_SELF = "valueSelfDirection";
+	public static final String PARA_ID_VALUE_UNIV = "valueUniversalism";
+	public static final String PARA_ID_VALUE_TRAD = "valueTradition";
+	
 	// Initialize social status
 	// Look at SocialStatus class
 	public static final Map<Status, Integer> SOCIAL_STATUS_WORK = new HashMap<Status, Integer>() 

@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
+  <name>Human avg values</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,43 +11,43 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-221787075</hashCode>
+    <hashCode>1563312539</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Donate power</string>
+      <string>Avg tradition level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate power</id>
+        <id>Avg tradition level</id>
         <className>fisheryvillage.municipality.Council</className>
-        <methodName>getPower</methodName>
+        <methodName>getAvgTradition</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate self-direction</string>
+      <string>Avg power level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate self-direction</id>
+        <id>Avg power level</id>
         <className>fisheryvillage.municipality.Council</className>
-        <methodName>getSelfDirection</methodName>
+        <methodName>getAvgPower</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate universalism</string>
+      <string>Avg self-direction level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate universalism</id>
+        <id>Avg self-direction level</id>
         <className>fisheryvillage.municipality.Council</className>
-        <methodName>getUniversalism</methodName>
+        <methodName>getAvgSelfDirection</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate tradition</string>
+      <string>Avg universalism level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate tradition</id>
+        <id>Avg universalism level</id>
         <className>fisheryvillage.municipality.Council</className>
-        <methodName>getTradition</methodName>
+        <methodName>getAvgUniversalism</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

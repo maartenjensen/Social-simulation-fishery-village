@@ -1,16 +1,20 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>Building savings</name>
-  <dataSet>Buildings savings</dataSet>
+  <name>Human work</name>
+  <dataSet>Human by status</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
-    <string>$ Council</string>
-    <string>$ Factory</string>
-    <string>$ School</string>
-    <string>$ Elderly Care</string>
-    <string>$ Social Care</string>
+    <string>N Fishers</string>
+    <string>N Teachers</string>
+    <string>N Unemployed</string>
+    <string>N Workers outside</string>
+    <string>N F. workers</string>
+    <string>N Caretakers</string>
+    <string>N Mayor</string>
+    <string>N F. boss</string>
+    <string>N. Captain</string>
     <string>tick</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\BuildingSavings.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\human-work.txt</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

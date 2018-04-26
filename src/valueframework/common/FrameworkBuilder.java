@@ -97,7 +97,7 @@ public final class FrameworkBuilder {
 				Log.printStars();
 				RandomTree tree = createGlobalValueTrees(treeInfo, waterTankInfo);						
 				globalValueTrees.put(tree.getRoot().getValueName(), tree);	
-				Log.printLog(tree.getPrintableTree());
+				Log.printLog("Full-tree\n" + tree.getPrintableTree());
 			}
 			else {
 				line = reader.readLine();
@@ -119,9 +119,9 @@ public final class FrameworkBuilder {
 					List<String> items = Arrays.asList(line.split("\\s*,\\s*"));//ignore while space after comma
 					
 					if (items.size() >= 1) {
-						Action act = addActionFromString(items);
-						ArrayList<Node> relatedCncrtValue = addConcreteValuesFromString(items.subList(1, items.size()));
-						act.assignConcreteValues(relatedCncrtValue);
+						addActionFromString(items);
+						//ArrayList<Node> relatedCncrtValue = addConcreteValuesFromString(items.subList(1, items.size()));
+						//act.assignConcreteValues(relatedCncrtValue);
 					}
 					else {
 						Log.printError("No elements in items or doesn't contain a concrete value:" + items);
@@ -139,12 +139,20 @@ public final class FrameworkBuilder {
 		
 		Log.printStars();
 		Log.printLog("assignRelatedActionsToConcreteValues");
-		for(Node nd : allConcreteValuesFromTrees){
-			for(Action act : allActions){
-				ArrayList<Node> ndList = act.getRelatedConcreteValues();
-				if(ndList.contains(nd))
-					nd.relatedActions.add(act);				
+		Log.printStars();
+		for(Node nd : allConcreteValuesFromTrees) {
+			for(Action act : allActions) {
+				ArrayList<Node> ndListPositive = act.getPositiveRelatedConcreteValues();
+				if (ndListPositive.contains(nd)) {
+					nd.addPositiveAction(act);
+				}
+				else {
+					ArrayList<Node> ndListNegative = act.getNegativeRelatedConcreteValues();
+					if(ndListNegative.contains(nd))
+						nd.addNegativeAction(act);
+				}
 			}
+			Log.printLog(nd.toStringActions());
 		}
 	}	
 
@@ -173,17 +181,27 @@ public final class FrameworkBuilder {
 		return null;
 	}
 
-	private static Action addActionFromString(List<String> actionAndConcreteValues) {
+	private static void addActionFromString(List<String> actionAndConcreteValues) {
 		
 		String actionName = actionAndConcreteValues.get(0);
-		ArrayList<String> concreteValues = new ArrayList<String>();
+		ArrayList<String> positiveRelatedConcreteValuesStrings = new ArrayList<String>();
+		ArrayList<String> negativeRelatedConcreteValuesStrings = new ArrayList<String>();
 		for (int i = 1; i < actionAndConcreteValues.size(); i ++) {
-			concreteValues.add(actionAndConcreteValues.get(i));
+			String concreteValueString = actionAndConcreteValues.get(i);
+			if (concreteValueString.charAt(0) == '-') {
+				negativeRelatedConcreteValuesStrings.add(concreteValueString.substring(1, concreteValueString.length()));
+			}
+			else {
+				positiveRelatedConcreteValuesStrings.add(concreteValueString);
+			}
 		}
-		System.out.println("Add action: " + actionName + ", cvs: " + concreteValues);
-		Action act = new Action(actionName, concreteValues);
+		ArrayList<Node> positiveRelatedConcreteValues = addConcreteValuesFromString(positiveRelatedConcreteValuesStrings);
+		ArrayList<Node> negativeRelatedConcreteValues = addConcreteValuesFromString(negativeRelatedConcreteValuesStrings);
+		
+		Log.printLog("Add action: " + actionName + ", +cvs: " + positiveRelatedConcreteValuesStrings + ", -cvs:" + negativeRelatedConcreteValuesStrings);
+		
+		Action act = new Action(actionName, positiveRelatedConcreteValues, negativeRelatedConcreteValues);
 		allActions.add(act);
-		return act;
 	}
 	
 	private static RandomTree createGlobalValueTrees(List<String> treeInfo, String waterTankInfo) {

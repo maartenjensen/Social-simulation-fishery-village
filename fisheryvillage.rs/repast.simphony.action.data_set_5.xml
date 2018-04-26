@@ -1,26 +1,26 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Ecosystem</name>
+  <name>Human social status min and max</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>4.0</interval>
+    <interval>1.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1296692271</hashCode>
+    <hashCode>-2090174727</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>N Fish</string>
+      <string>Council</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N Fish</id>
-        <className>fisheryvillage.ecosystem.Ecosystem</className>
-        <methodName>getFish</methodName>
+        <id>Council</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getSocialStatusRange</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

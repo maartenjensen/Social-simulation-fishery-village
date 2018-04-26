@@ -97,7 +97,7 @@ public class WaterTank implements Comparable<WaterTank> {
 	}
 	
 	public double getPriorityPercentage(){
-		return (((double)(filledLevel - threshold)/threshold)*100.0);
+		return -1 * (((double)(filledLevel - threshold)/threshold)*100.0);
 	}
 	
 	public double getIncreasingAmount(){

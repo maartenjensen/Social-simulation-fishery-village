@@ -6,17 +6,63 @@
 						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
 									
 		/>
-				<parameter name="percentageTax" displayName="Tax percentage" type="double" 
-						defaultValue="50.0" 
+				<parameter name="popGenToFile" displayName="Population generate to file" type="boolean" 
+						defaultValue="false" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+						converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter"
 									
 		/>
-				<parameter name="percentageTaxToCouncil" displayName="Tax to council" type="double" 
-						defaultValue="50.0" 
+				<parameter name="valuePower" displayName="Value threshold - Power" type="int" 
+						defaultValue="50" 
 						isReadOnly="false" 
-						converter="repast.simphony.parameter.StringConverterFactory$DoubleConverter"
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									values="50 0 10 20 30 40 50 60 70 80 90 100 "
+						
+		/>
+				<parameter name="valueTradition" displayName="Value threshold - Tradition" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									values="50 0 10 20 30 40 50 60 70 80 90 100 "
+						
+		/>
+				<parameter name="popInitFileName" displayName="Population initialize file name" type="java.lang.String" 
+						defaultValue="population" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
 									
+		/>
+				<parameter name="popGenTickLimit" displayName="Population generate number of years" type="int" 
+						defaultValue="30" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									
+		/>
+				<parameter name="valueUniversalism" displayName="Value threshold - Universalism" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									values="50 0 10 20 30 40 50 60 70 80 90 100 "
+						
+		/>
+				<parameter name="popGenFileName" displayName="Population generate file name" type="java.lang.String" 
+						defaultValue="population" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$StringStringConverter"
+									
+		/>
+				<parameter name="popInitFromFile" displayName="Population initialize from file" type="boolean" 
+						defaultValue="false" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$BooleanConverter"
+									
+		/>
+				<parameter name="valueSelfDirection" displayName="Value threshold - Self-direction" type="int" 
+						defaultValue="50" 
+						isReadOnly="false" 
+						converter="repast.simphony.parameter.StringConverterFactory$IntConverter"
+									values="50 0 10 20 30 40 50 60 70 80 90 100 "
+						
 		/>
 		</parameters>
 

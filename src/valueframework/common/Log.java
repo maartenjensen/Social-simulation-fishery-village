@@ -16,10 +16,12 @@ public final class Log {
 		System.out.println("");
 	}
 
-	public static void printValuedActions(ArrayList<ValuedAction> valuedActions) {
+	public static void printValuedActions(String title, ArrayList<ValuedAction> valuedActions) {
 		
+		String print = title;
 		for(ValuedAction act: valuedActions)
-			System.out.println("VF-vac: " + act.toString());
+			print += act.toString() + " | ";
+		System.out.println("VF-vac: " + print);
 	}
 	
 	public static void printAbstractValues(ArrayList<RandomTree> relatedAbstractValue) {		

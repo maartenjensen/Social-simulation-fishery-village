@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Social event motivation</name>
+  <name>Donation motivation</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,43 +11,43 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1958602513</hashCode>
+    <hashCode>-221787075</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Event Tradition</string>
+      <string>Donate power</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Tradition</id>
-        <className>fisheryvillage.municipality.EventHall</className>
-        <methodName>getTradition</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>Event Power</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Power</id>
-        <className>fisheryvillage.municipality.EventHall</className>
+        <id>Donate power</id>
+        <className>fisheryvillage.municipality.Council</className>
         <methodName>getPower</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Event Universalism</string>
+      <string>Donate self-direction</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Universalism</id>
-        <className>fisheryvillage.municipality.EventHall</className>
+        <id>Donate self-direction</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getSelfDirection</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Donate universalism</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Donate universalism</id>
+        <className>fisheryvillage.municipality.Council</className>
         <methodName>getUniversalism</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Event Self-direction</string>
+      <string>Donate tradition</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Self-direction</id>
-        <className>fisheryvillage.municipality.EventHall</className>
-        <methodName>getSelfDirection</methodName>
+        <id>Donate tradition</id>
+        <className>fisheryvillage.municipality.Council</className>
+        <methodName>getTradition</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

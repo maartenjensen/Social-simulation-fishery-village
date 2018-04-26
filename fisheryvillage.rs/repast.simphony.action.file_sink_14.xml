@@ -1,15 +1,15 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
-  <dataSet>Donation motivation</dataSet>
+  <name>Values</name>
+  <dataSet>Human avg values</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>tick</string>
-    <string>Donate power</string>
-    <string>Donate self-direction</string>
-    <string>Donate universalism</string>
-    <string>Donate tradition</string>
+    <string>Avg tradition level</string>
+    <string>Avg power level</string>
+    <string>Avg self-direction level</string>
+    <string>Avg universalism level</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\DonateMotivation.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\values.txt</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

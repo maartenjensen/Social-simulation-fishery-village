@@ -1,10 +1,10 @@
 %action title,related concrete values
-Job fisher,Sustain village,Be part of the community,Unity with nature
-Job captain,Sustain village,Be part of the community,Unity with nature,Authority
+Job fisher,Sustain village,Be part of the community
+Job captain,Sustain village,Be part of the community,Authority,Independent
 Job teacher,Sustain village,Be part of the community,Authority,Independent
-Job factory worker,Sustain village,Be part of the community
+Job factory worker,Sustain village,Be part of the community,-Authority,-Independent
 Job factory boss,Sustain village,Be part of the community,Authority,Wealth,Independent
 Job mayor,Sustain village,Be part of the community,Authority,Wealth,Independent
-Job elderly caretaker,Sustain village,Be part of the community,Care for the weak
-Job work outside village,Not bound to village jobs,Independent
-Job unemployed,Be part of the community
+Job elderly caretaker,Sustain village,Be part of the community,Care for the weak,Independent
+Job work outside village,Not bound to village jobs,Independent,-Be part of the community
+Job unemployed,Be part of the community,-Wealth

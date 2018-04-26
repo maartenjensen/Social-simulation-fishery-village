@@ -2,9 +2,7 @@ package valueframework;
 
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Node
 {
@@ -12,9 +10,10 @@ public class Node
     private Node parent;
     private String valueName;
 
-    public ArrayList<Action> relatedActions;
+    private ArrayList<Action> positiveRelatedActions;
+    private ArrayList<Action> negativeRelatedActions;
     //this list has only value when the node is a leaf in a value tree; otherwise, it is null.
-    
+    /*
     public void randomlyAssignActions(ArrayList<Action> alist){
     	Collections.shuffle(alist);
     	int randomNum;
@@ -27,15 +26,24 @@ public class Node
 			System.err.println("in randomlyAassingActions, input list is null");
 		}
     	//TODO: check if it works fine
+    }*/
+    
+    public void addPositiveAction(Action posAction) {
+    	positiveRelatedActions.add(posAction);
+    }
+    
+    public void addNegativeAction(Action negAction) {
+    	negativeRelatedActions.add(negAction);
     }
     
     public Node(String value, Node parentIn)
     {
-        this.children = new ArrayList<Node>();
+        this.children = new ArrayList<>();
         this.setValueName(value);
         this.setParent(parentIn);
         
-        relatedActions = new ArrayList<Action>();
+        positiveRelatedActions = new ArrayList<Action>();
+        negativeRelatedActions = new ArrayList<Action>();
     }
 
     public void addChild(Node child)
@@ -67,4 +75,16 @@ public class Node
 		this.parent = parent;
 	}
 
+	public String toStringActions() {
+		String print = valueName;
+		print += ", +ACT:";
+		for (Action pos : positiveRelatedActions) {
+			print += pos.getTitle() + ", ";
+		}
+		print += ": -ACT:";
+		for (Action neg : negativeRelatedActions) {
+			print += neg.getTitle() + ", ";
+		}
+		return print;
+	}
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
+import fisheryvillage.common.Parameters;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.municipality.Council;
@@ -54,6 +55,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		// Reset human id
 		HumanUtils.resetHumanId();
 		SimUtils.resetPropertyId();
+		Parameters.setRepastParameters();
 		Logger.enableLogger();
 		
 		// Add context to this ID
@@ -113,7 +115,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		new Ecosystem(Constants.ECOSYSTEM_INITIAL_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
 		
 		// Create population
-		generatePopulation();
+		initializePopulation();
 
 		return context;
 	}
@@ -129,7 +131,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	public void step0Tick() {
 		
 		Logger.logMain("------------------------------------------------------------------------------");
-		double tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		Logger.logMain("0TICK: Starting tick: "+ tick +", " + SimUtils.getCouncil().getDate());
 		if (Constants.MIGRATION_PROBABILITY > RandomHelper.nextDouble()) {
 			
@@ -138,12 +140,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 									HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, true);
 			Logger.logMain("-- New human spawned : " + human.getId());
 		}
-		/*
-		if (tick == 2400) {
-			Logger.logMain("-- 50 years have passed, save population");
-			PopulationBuilder populationBuilder = new PopulationBuilder();
-			populationBuilder.savePopulation("./output", "population");
-		}*/
+
 	}
 
 	/**
@@ -329,8 +326,12 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 
 		Logger.logMain("------------------------------------------------------------------------------");
 		Logger.logMain("End of this step");
+		
+		// checks whether to save the population to a file
+		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		savePopulation(tick);
 	}
-
+	
 	/*=========================================
 	 * Extra functions
 	 *=========================================
@@ -433,21 +434,24 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 	}
 	
-	private void generatePopulation() {
+	private void initializePopulation() {
 		
-		boolean generatePopulationFromFile = true;
+		boolean initializePopulationFromFile = RunEnvironment.getInstance().getParameters().getBoolean(Constants.PARA_ID_POP_INIT_FROM_FILE);
 		PopulationBuilder populationBuilder = new PopulationBuilder();
 		
 		// Disable value based framework for initialization
-		SimUtils.enableInitializationPhase();
+		//SimUtils.enableInitializationPhase();
 		
-		if (generatePopulationFromFile) {
-			Logger.logMain("Generate " + Constants.INITIAL_POPULATION_SIZE + " humans");
-			populationBuilder.generatePopulation("./output", "population");
+		Logger.enableLogger();
+		
+		if (initializePopulationFromFile) {
+			String fileName = RunEnvironment.getInstance().getParameters().getString(Constants.PARA_ID_POP_INIT_FILE_NAME);
+			Logger.logMain("Initialize " + Constants.INITIAL_POPULATION_SIZE + " humans from file : ./output/" + fileName + ".txt");
+			populationBuilder.generatePopulation("./output", fileName);
 		}
 		else
 		{
-			Logger.logMain("Create " + Constants.INITIAL_POPULATION_SIZE + " humans");
+			Logger.logMain("Initialize " + Constants.INITIAL_POPULATION_SIZE + " humans from scratch");
 			for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
 	
 				// Humans are automatically added to the context and placed in the grid
@@ -455,18 +459,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 						  				HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
 				Logger.logInfo("Create H" + human.getId() + ", age: " + human.getAge());
 			}
-			
-			//Logger.setLoggerAll(true, true, false, false, false);
-			Logger.enableLogger();
-			// Humans
-			int years = 0;
-			for (int i = 1; i <= Constants.TICKS_PER_YEAR * years; i ++) { //It starts at 1 since a real scheduled run will also start at 1
-				Logger.logMain("----- PRE-SCHEDULER STEP " + i + " -----");
-				fullStep(i);
-			}
-			
-			// Save population	
-			//populationBuilder.savePopulation("./output", "population");
 		}
 		
 		// Do a location step
@@ -476,11 +468,27 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		Logger.enableLogger();
 	}
 	
-	/**
+	private void savePopulation(int tick) {
+
+		int stopYear = RunEnvironment.getInstance().getParameters().getInteger(Constants.PARA_ID_POP_GEN_TICK_LIMIT);
+		boolean saveToFile = RunEnvironment.getInstance().getParameters().getBoolean(Constants.PARA_ID_POP_GEN_TO_FILE);
+		if (saveToFile && (tick == Constants.TICKS_PER_YEAR * stopYear)) {
+			String fileName = RunEnvironment.getInstance().getParameters().getString(Constants.PARA_ID_POP_GEN_FILE_NAME);
+			Logger.logMain("------------------------------------------------------------------------------");
+			Logger.logMain(stopYear + " years have passed, save population in file: ./output/" + fileName + ".txt");
+			PopulationBuilder populationBuilder = new PopulationBuilder();
+			populationBuilder.savePopulation("./output", fileName);
+			RunEnvironment.getInstance().pauseRun();
+			Logger.logMain("------------------------------------------------------------------------------");
+		}
+	}
+	
+	/*
 	 * Runs a fullStep, apart from the scheduler.
 	 * Used to generate a starting population that has some properties/children
 	 * @param tick the current tick
 	 */
+	/*
 	private void fullStep(int tick) {
 		
 		step0Tick();
@@ -495,5 +503,5 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			step4Month();
 		}
 		step5Tick();
-	}
+	}*/
 }

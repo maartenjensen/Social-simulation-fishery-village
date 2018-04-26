@@ -87,7 +87,7 @@ public class RandomTree {
 	public String getPrintableTree() {
 		return getPrintableNode("", root, 0);
 	}
-	
+
 	private String getPrintableNode(String print, Node node, int depth) {
 		String printableTree = print;
 		for (int i = 0; i < depth - 1; i ++) {
@@ -98,7 +98,7 @@ public class RandomTree {
 		}
 		printableTree += node.getValueName() + "\n";
 		for (Node child : node.getChildren()) {
-			printableTree += getPrintableNode(printableTree, child, ++depth);
+			printableTree += getPrintableNode("", child, depth + 1);
 		}
 		return printableTree;
 	}

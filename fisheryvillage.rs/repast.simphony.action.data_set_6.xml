@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human social status min and max</name>
+  <name>Social event motivation</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,16 +11,43 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-2090174727</hashCode>
+    <hashCode>1958602513</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Council</string>
+      <string>Event Tradition</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Council</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getSocialStatusRange</methodName>
+        <id>Event Tradition</id>
+        <className>fisheryvillage.municipality.EventHall</className>
+        <methodName>getTradition</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Event Power</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Event Power</id>
+        <className>fisheryvillage.municipality.EventHall</className>
+        <methodName>getPower</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Event Universalism</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Event Universalism</id>
+        <className>fisheryvillage.municipality.EventHall</className>
+        <methodName>getUniversalism</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Event Self-direction</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Event Self-direction</id>
+        <className>fisheryvillage.municipality.EventHall</className>
+        <methodName>getSelfDirection</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

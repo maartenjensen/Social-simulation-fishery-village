@@ -8,7 +8,7 @@ Power,[Authority,Wealth]
 Authority,[]
 Wealth,[]
 value tree 2
-waterTank, 100,100,70,20,5,10,10
+waterTank, 100,100,70,20,5,50,50
 Tradition,[Respect for tradition]
 Respect for tradition,[Sustain village,Be part of the community]
 Sustain village,[]
@@ -20,7 +20,7 @@ Social justice,[Care for the weak]
 Care for the weak,[]
 Unity with nature,[]
 value tree 4
-waterTank, 100,100,70,20,5,90,90
+waterTank, 100,100,70,20,5,50,50
 Self-direction,[Independent,Freedom]
 Freedom,[Not bound to village jobs]
 Not bound to village jobs,[]
