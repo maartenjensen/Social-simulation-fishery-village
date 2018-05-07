@@ -38,7 +38,7 @@ public class HumanStyleOGL2D extends DefaultStyleOGL2D {
         			return newSpatial;
         		}
     			else {
-    				Logger.logError("Getting spatial image for human" + human.getId() + " went wrong.");
+    				Logger.logError("Getting spatial image for human" + human.getId() + " went wrong, status: " + human.getStatus());
     				return shapeFactory.createRectangle(6, 6);
     			}
     		}

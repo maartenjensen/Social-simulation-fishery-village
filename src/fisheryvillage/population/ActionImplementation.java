@@ -6,113 +6,136 @@ import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.property.Boat;
+import fisheryvillage.property.BoatType;
 import fisheryvillage.property.Property;
+import fisheryvillage.property.Workplace;
+import fisheryvillage.property.municipality.Factory;
 
 public class ActionImplementation {
 	
-	public static void executeActionJob(String actionTitle, Human human) {
+	public static void executeActionJob(String actionTitle, Resident resident) {
 		
-		if (human.getJobTitle().contains(actionTitle)) {
-			Logger.logAction("H" + human.getId() + " " + actionTitle + " keeps his job as " + human.getStatus() + ", good for him/her");
+		if (resident.getJobActionName().contains(actionTitle)) {
+			Logger.logAction("H" + resident.getId() + " " + actionTitle + " keeps his job as " + resident.getStatus() + ", good for him/her");
 			return ;
 		}
 		
+		resident.stopWorkingAtWorkplace();
 		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
 		switch(actionTitle) {
 		case "Job fisher":
 			for (Boat boat : boats) {
-				if (boat.getVacancy()) {
-					actionWorkStartAt(human, boat, actionTitle);
+				if (boat.getVacancy(resident.getHigherEducated(), resident.getMoney()).contains(Status.FISHER)) {
+					actionWorkStartAt(resident, boat, Status.FISHER);
 					return ;
 				}
 			}
-			Logger.logError("H" + human.getId() + " no boat found to be fisher at!");
+			Logger.logError("H" + resident.getId() + " no boat found to be fisher at!");
 			break;
 		case "Job captain":
 			for (Boat boat : boats) {
 				if (!boat.hasCaptain()) {
-					Logger.logAction("H" + human.getId() + " became a captain at : " + boat.getName());
-					human.removeMoney(boat.getPrice());
-					SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(human, boat);
-					human.setJobTitle(actionTitle);
-					human.setStatus(Status.CAPTAIN);
+					if (resident.getMoney() > BoatType.LARGE.getPrice()) {
+						boat.setBoatType(BoatType.LARGE);
+					}
+					else if (resident.getMoney() > BoatType.MEDIUM.getPrice()) {
+						boat.setBoatType(BoatType.MEDIUM);
+					}
+					else if (resident.getMoney() > BoatType.SMALL.getPrice()) {
+						boat.setBoatType(BoatType.SMALL);
+					}
+					else {
+						Logger.logError("H" + resident.getId() + " could not pay the boat!");
+					}
+					resident.addMoney(-1 * boat.getPrice());
+					resident.connectProperty(boat.getId());
+					resident.setJobActionName(actionTitle);
+					resident.setStatus(Status.CAPTAIN);
+					resident.setWorkplaceId(boat.getId());
+					Logger.logAction("H" + resident.getId() + " became a captain at : " + boat.getName());
 					return ;
 				}
 			}
-			Logger.logError("H" + human.getId() + " no boat found to be captain at!");
+			Logger.logError("H" + resident.getId() + " no boat found to be captain at!");
 			break;
 		case "Job factory boss":
-			human.removeMoney(SimUtils.getFactory().getPrice());
-			SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).addEdge(human, SimUtils.getFactory());
-			Logger.logAction("H" + human.getId() + " became the factory boss");
-			human.setJobTitle(actionTitle);
-			human.setStatus(Status.FACTORY_BOSS);
+			Factory factory = SimUtils.getFactory();
+			resident.addMoney(-1 * factory.getPrice());
+			resident.connectProperty(factory.getId());
+			Logger.logAction("H" + resident.getId() + " became the factory boss");
+			resident.setJobActionName(actionTitle);
+			resident.setStatus(Status.FACTORY_BOSS);
+			resident.setWorkplaceId(factory.getId());
 			break;
 		case "Job teacher":
-			actionWorkStartAt(human, SimUtils.getSchool(), actionTitle);
+			actionWorkStartAt(resident, SimUtils.getSchool(), Status.TEACHER);
 			break;
 		case "Job factory worker":
-			actionWorkStartAt(human, SimUtils.getFactory(), actionTitle);
+			actionWorkStartAt(resident, SimUtils.getFactory(), Status.FACTORY_WORKER);
 			break;
 		case "Job elderly caretaker":
-			actionWorkStartAt(human, SimUtils.getElderlyCare(), actionTitle);
+			actionWorkStartAt(resident, SimUtils.getElderlyCare(), Status.ELDERLY_CARETAKER);
 			break;
 		case "Job work outside village":
-			actionWorkStartAt(human, SimUtils.getCompanyOutside(), actionTitle);
+			actionWorkStartAt(resident, SimUtils.getCompanyOutside(), Status.WORK_OUT_OF_TOWN);
 			break;
 		case "Job mayor":
-			actionWorkStartAt(human, SimUtils.getCouncil(), actionTitle);
+			actionWorkStartAt(resident, SimUtils.getCouncil(), Status.MAYOR);
+			resident.connectProperty(SimUtils.getCouncil().getId());
 			break;
 		case "Job unemployed":
-			Logger.logAction("H" + human.getId() + " became unemployed");
-			human.setJobTitle(actionTitle);
-			human.setStatus(Status.UNEMPLOYED);
+			Logger.logAction("H" + resident.getId() + " became unemployed");
+			resident.setJobActionName(actionTitle);
+			resident.setStatus(Status.UNEMPLOYED);
+			break;
+		case "Job student":
 			break;
 		default:
-			Logger.logError("H" + human.getId() + " action '" + actionTitle + "' doesn't exist");
+			Logger.logError("H" + resident.getId() + " action '" + actionTitle + "' doesn't exist");
 		}
 	}	
 	
-	private static void actionWorkStartAt(Human human, Property property, String jobTitle) {
+	private static void actionWorkStartAt(Resident resident, Workplace workplace, Status jobStatus) {
 		
 		// Standard work start at
-		Logger.logAction("H" + human.getId() + " took the job at : " + property.getName());
-		human.setStatus(property.getJobStatus());
-		human.setJobTitle(jobTitle);
-		if (property instanceof Boat) {
-			Boat boat = (Boat) property;
-			boat.addFisher(human.getId());
+		Logger.logAction("H" + resident.getId() + " took the job at : " + workplace.getName());
+		resident.setStatus(jobStatus);
+		resident.setJobActionName(jobStatus.getJobActionName());
+		resident.setWorkplaceId(workplace.getId());
+		if (workplace instanceof Boat) {
+			Boat boat = (Boat) workplace;
+			boat.addFisher(resident.getId());
 		}
 	}
 	
-	public static void executeActionDonate(String actionTitle, Human human) {
+	public static void executeActionDonate(String actionTitle, Resident resident) {
 		
 		switch(actionTitle) {
 		case "Donate nothing":
-			Logger.logAction("H" + human.getId() + " donated nothing");
+			Logger.logAction("H" + resident.getId() + " donated nothing");
 			break;
 		case "Donate to council":
-			actionDonate(human, SimUtils.getCouncil());
+			actionDonate(resident, SimUtils.getCouncil());
 			break;
 		}
 	}
 	
-	public static void actionDonate(Human human, Property property) {
+	public static void actionDonate(Resident resident, Property property) {
 		
-		if (human.getNettoIncome() >= human.getNecessaryCost()) {
-			double amount = (human.getNettoIncome() - human.getNecessaryCost()) * Constants.DONATE_FACTOR_OF_LEFT_OVER_MONEY;
-			human.removeMoney(-amount);
-			property.addToSavings(amount);
-			Logger.logAction("H" + human.getId() + " donated " + amount + " money to : " + property.getName() + ", total money is " + human.getMoney());
+		if (resident.getNettoIncome() >= resident.getNecessaryCost()) {
+			double amount = (resident.getNettoIncome() - resident.getNecessaryCost()) * Constants.DONATE_FACTOR_OF_LEFT_OVER_MONEY;
+			resident.addMoney(-1 * amount);
+			property.addSavings(amount);
+			Logger.logAction("H" + resident.getId() + " donated " + amount + " money to : " + property.getName() + ", total money is " + resident.getMoney());
 		}
-		else if (human.getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
-			human.removeMoney(-Constants.DONATE_MONEY_WITHOUT_INCOME);
-			property.addToSavings(Constants.DONATE_MONEY_WITHOUT_INCOME);
-			Logger.logAction("H" + human.getId() + " donated " + Constants.DONATE_MONEY_WITHOUT_INCOME + " money to : " + property.getName() + ", total money is " + human.getMoney());
+		else if (resident.getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
+			resident.addMoney(-1 * Constants.DONATE_MONEY_WITHOUT_INCOME);
+			property.addSavings(Constants.DONATE_MONEY_WITHOUT_INCOME);
+			Logger.logAction("H" + resident.getId() + " donated " + Constants.DONATE_MONEY_WITHOUT_INCOME + " money to : " + property.getName() + ", total money is " + resident.getMoney());
 		}
 		else
 		{
-			Logger.logError("H" + human.getId() + " netto income: " + human.getNettoIncome() + " not exceeding necessary cost: " + human.getNecessaryCost());
+			Logger.logError("H" + resident.getId() + " netto income: " + resident.getNettoIncome() + " not exceeding necessary cost: " + resident.getNecessaryCost());
 		}
 	}
 	/*

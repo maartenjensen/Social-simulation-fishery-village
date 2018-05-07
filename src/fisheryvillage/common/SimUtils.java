@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import fisheryvillage.ecosystem.Ecosystem;
-import fisheryvillage.municipality.Council;
-import fisheryvillage.municipality.EventHall;
 import fisheryvillage.property.Boat;
-import fisheryvillage.property.CompanyOutside;
-import fisheryvillage.property.ElderlyCare;
-import fisheryvillage.property.Factory;
 import fisheryvillage.property.Property;
-import fisheryvillage.property.School;
-import fisheryvillage.property.SocialCare;
+import fisheryvillage.property.municipality.Council;
+import fisheryvillage.property.municipality.ElderlyCare;
+import fisheryvillage.property.municipality.EventHall;
+import fisheryvillage.property.municipality.Factory;
+import fisheryvillage.property.municipality.School;
+import fisheryvillage.property.municipality.SocialCare;
+import fisheryvillage.property.other.CompanyOutside;
 import repast.simphony.context.Context;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -32,8 +32,6 @@ public final strictfp class SimUtils {
 	// Initialize variables
 	private static final Random random = new Random();
 	private static Context<Object> masterContext = null;
-	
-	private static boolean initializationPhase = false;
 	
 	private static int newPropertyId = 0;
 
@@ -59,18 +57,6 @@ public final strictfp class SimUtils {
 			}
 		}
 		return null;
-	}
-	
-	public static void enableInitializationPhase() {
-		initializationPhase = true;
-	}
-	
-	public static void disableInitializationPhase() {
-		initializationPhase = false;
-	}
-	
-	public static boolean getInitializationPhase() {
-		return initializationPhase;
 	}
 	
 	public static boolean getRandomBoolean() {
@@ -133,12 +119,11 @@ public final strictfp class SimUtils {
 		return valueLayer;
 	}
 	
-	public static Boat getBoat(int fisherId) {
+	public static Boat getBoatByHumanId(int fisherId) {
 		
 		ArrayList<Boat> boats = getObjectsAllRandom(Boat.class);
 		for (Boat boat : boats) {
 			if (boat.employeeOnBoat(fisherId)) {
-				//Logger.logP("SimUtils.getBoat(): H" + fisherId + " is employee on " + boat.getName());
 				return boat;
 			}
 		}

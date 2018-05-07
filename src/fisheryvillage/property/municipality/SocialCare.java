@@ -1,9 +1,10 @@
-package fisheryvillage.property;
+package fisheryvillage.property.municipality;
 
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
-import fisheryvillage.population.Status;
+import fisheryvillage.property.Property;
+import fisheryvillage.property.PropertyColor;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -21,7 +22,7 @@ public class SocialCare extends Property {
 	private int paymentCount = 0;
 	
 	public SocialCare(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 11, 8, Status.NONE, PropertyColor.SOCIAL_CARE);
+		super(id, price, maintenanceCost, money, location, 11, 8, PropertyColor.SOCIAL_CARE);
 		addToValueLayer();
 	}
 	
@@ -31,22 +32,17 @@ public class SocialCare extends Property {
 	 */
 	public double getUnemployedBenefit() {
 		
-		if (paymentCount == 0) {
-			paymentCount = SimUtils.getCouncil().getNumberOfUnemployed();
-			paymentAmount = Math.min(Constants.BENEFIT_UNEMPLOYED, getSavings() / paymentCount);
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
-		}
-		else if (paymentCount < -1) {
+		if (paymentCount < 0) {
 			Logger.logError("Error in Unemployed, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
+		else if (paymentCount == 0) {
+			paymentCount = SimUtils.getCouncil().getNumberOfUnemployed();
+			paymentAmount = Math.max(0, Math.min(Constants.BENEFIT_UNEMPLOYED, getSavings() / paymentCount));
 		}
+		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
+		return paymentAmount;
 	}
 	
 	@Override
@@ -57,11 +53,11 @@ public class SocialCare extends Property {
 
 	@Override
 	public String getName() {
-		return "SocialCare";
+		return "SocialCare [" + getId() + "]";
 	}
 	
 	@Override
 	public String getLabel() {
-		return "Social care $: " + Math.round(getSavings());
+		return "Social care [" + getId() + "] $: " + Math.round(getSavings());
 	}	
 }

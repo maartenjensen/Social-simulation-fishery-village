@@ -1,11 +1,12 @@
-package fisheryvillage.property;
+package fisheryvillage.property.other;
 
 import java.util.ArrayList;
 
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.SchoolType;
-import fisheryvillage.population.Status;
+import fisheryvillage.property.PropertyColor;
+import fisheryvillage.property.Workplace;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -16,10 +17,10 @@ import saf.v3d.scene.VSpatial;
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class SchoolOutside extends Property {
+public class SchoolOutside extends Workplace {
 
 	public SchoolOutside(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 8, 5, Status.NONE, PropertyColor.SCHOOL);
+		super(id, price, maintenanceCost, money, location, 8, 5, PropertyColor.SCHOOL);
 		addToValueLayer();
 	}
 	
@@ -43,11 +44,11 @@ public class SchoolOutside extends Property {
 
 	@Override
 	public String getName() {
-		return "SchoolOutside";
+		return "SchoolOutside [" + getId() + "]";
 	}
 	
 	@Override
 	public String getLabel() {
-		return "School P:" + getPupilCount();
+		return "School [" + getId() + "] P:" + getPupilCount();
 	}
 }

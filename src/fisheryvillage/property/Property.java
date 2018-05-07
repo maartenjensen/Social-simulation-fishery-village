@@ -4,14 +4,11 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
 
-import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
-import fisheryvillage.population.Status;
-import repast.simphony.space.graph.Network;
-import repast.simphony.space.graph.RepastEdge;
+import fisheryvillage.population.Resident;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.valueLayer.GridValueLayer;
 import saf.v3d.scene.VSpatial;
@@ -30,18 +27,17 @@ public class Property {
 	private int maintenanceCost;
 	private double savings;
 	private final GridPoint location;
-	private final int width;
-	private final int height;
-	protected final Status jobStatus;
-	protected String actionName = "none";
+	private int width;
+	private int height;
 	private final PropertyColor propertyColor;
+	private int ownerId = -1;
 	private int id = -1;
 
 	// Variable initialization
 	protected Map<Boolean, VSpatial> spatialImagesOwned = new HashMap<Boolean, VSpatial>();
 	//private boolean active = false;
 
-	public Property(int id, int price, int maintenanceCost, double savings, GridPoint location, int width, int height, Status jobStatus, PropertyColor propertyColor) {
+	public Property(int id, int price, int maintenanceCost, double savings, GridPoint location, int width, int height, PropertyColor propertyColor) {
 		
 		this.id = id;
 		this.price = price;
@@ -50,7 +46,6 @@ public class Property {
 		this.location = location;
 		this.width = width; // width as number of cells
 		this.height = height; // width as number of cells
-		this.jobStatus = jobStatus;
 		this.propertyColor = propertyColor;
 		
 		SimUtils.getContext().add(this);
@@ -63,7 +58,7 @@ public class Property {
 		return id;
 	}
 	
-	public void addToValueLayer() {
+	protected void addToValueLayer() {
 
 		GridValueLayer valueLayer = SimUtils.getValueLayer();
 		if (valueLayer == null) {
@@ -85,6 +80,19 @@ public class Property {
 		return location.getY();
 	}
 	
+	protected void setDimensions(GridPoint gridPoint) {
+		width = gridPoint.getX();
+		height = gridPoint.getY();
+	}
+	
+	protected void setPrice(int price) {
+		this.price = price;
+	}
+	
+	protected void setMaintenanceCost(int maintenanceCost) {
+		this.maintenanceCost = maintenanceCost;
+	}
+	
 	public int getPrice() {
 		return price;
 	}
@@ -97,52 +105,41 @@ public class Property {
 		return savings;
 	}
 	
-	public String getActionName() {
-		return actionName;
-	}
-	
-	public void addToSavings(double money) {
-		if (money < 0) {
-			Logger.logError("addToSavings() should be positive or 0, it was:" + money);
-			return ;
-		}
-		savings += money;
-	}
-	
-	/**
-	 * Insert negative amount of money which will be added to savings
-	 * @param money
-	 */
-	public void removeFromSavings(double money) {
-		if (money > 0) {
-			Logger.logError("removeFromSavings() should be negative or 0, it was:" + money);
-			return ;
-		}
+	public void addSavings(double money) {
 		savings += money;
 	}
 	
 	public GridPoint getLocation() {
 		return location;
 	}
-	
-	public boolean getVacancy() {
-		return false;
-	}
-	
-	public Status getJobStatus() {
-		return jobStatus;
-	}
-	
-	public Human getOwner() {
+
+	public Resident getOwner() {
 		
-		Network<Object> propertyNetwork = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
-		final Iterable<RepastEdge<Object>> propertyEdges = propertyNetwork.getInEdges(this);
-		for (final RepastEdge<Object> propertyEdge : propertyEdges) {
-			if (propertyEdge.getSource() instanceof Human) {
-				return (Human) propertyEdge.getSource();
-			}
+		if (ownerId >= 0) {
+			return HumanUtils.getResidentById(ownerId);
 		}
 		return null;
+	}
+	
+	public void setOwner(int ownerId) {
+		if (this.ownerId == -1) {
+			Logger.logDebug(getName() + " set ownerId:" + ownerId);
+			this.ownerId = ownerId;
+			return ;
+		}
+		Logger.logError("Property " + id + " Owner (" + this.ownerId + ") already set");
+	}
+	
+	public int getOwnerId() {
+		return ownerId;
+	}
+	
+	public void removeOwner(int oldOwnerId) {
+		if (ownerId == oldOwnerId) {
+			ownerId = -1;
+			return ;
+		}
+		Logger.logError("Property " + id + " Owner (" + ownerId + ") is not equal to remover:" + oldOwnerId);
 	}
 	
 	public boolean getAvailable() {

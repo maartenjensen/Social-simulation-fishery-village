@@ -1,53 +1,53 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human avg values</name>
+  <name>Human by age</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>4.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1563312539</hashCode>
+    <hashCode>-1614299654</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Avg tradition level</string>
+      <string>N [0 - 17]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg tradition level</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getAvgTradition</methodName>
+        <id>N [0 - 17]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfChildren</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg power level</string>
+      <string>N [18 - 64]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg power level</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getAvgPower</methodName>
+        <id>N [18 - 64]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfAdults</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg self-direction level</string>
+      <string>N [65 - 74]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg self-direction level</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getAvgSelfDirection</methodName>
+        <id>N [65 - 74]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfElderlyYoung</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg universalism level</string>
+      <string>N [75 - ...]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg universalism level</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getAvgUniversalism</methodName>
+        <id>N [75 - ...]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfElderlyOld</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

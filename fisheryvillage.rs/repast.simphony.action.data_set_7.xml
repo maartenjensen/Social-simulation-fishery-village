@@ -1,53 +1,62 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
+  <name>Buildings savings</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>4.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-221787075</hashCode>
+    <hashCode>-1614299654</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Donate power</string>
+      <string>$ Council</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate power</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getPower</methodName>
+        <id>$ Council</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getSavings</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate self-direction</string>
+      <string>$ Factory</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate self-direction</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getSelfDirection</methodName>
+        <id>$ Factory</id>
+        <className>fisheryvillage.property.municipality.Factory</className>
+        <methodName>getSavings</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate universalism</string>
+      <string>$ School</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate universalism</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getUniversalism</methodName>
+        <id>$ School</id>
+        <className>fisheryvillage.property.municipality.School</className>
+        <methodName>getSavings</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate tradition</string>
+      <string>$ Elderly Care</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate tradition</id>
-        <className>fisheryvillage.municipality.Council</className>
-        <methodName>getTradition</methodName>
+        <id>$ Elderly Care</id>
+        <className>fisheryvillage.property.municipality.ElderlyCare</className>
+        <methodName>getSavings</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>$ Social Care</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>$ Social Care</id>
+        <className>fisheryvillage.property.municipality.SocialCare</className>
+        <methodName>getSavings</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

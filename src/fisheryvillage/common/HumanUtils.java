@@ -3,18 +3,16 @@ package fisheryvillage.common;
 import java.util.ArrayList;
 
 import fisheryvillage.population.Human;
+import fisheryvillage.population.Resident;
 import fisheryvillage.population.SchoolType;
 import fisheryvillage.population.Status;
-import fisheryvillage.property.CompanyOutside;
-import fisheryvillage.property.ElderlyCare;
 import fisheryvillage.property.House;
 import fisheryvillage.property.Property;
-import fisheryvillage.property.School;
-import fisheryvillage.property.SchoolOutside;
-import fisheryvillage.property.SocialCare;
+import fisheryvillage.property.municipality.ElderlyCare;
+import fisheryvillage.property.municipality.School;
+import fisheryvillage.property.municipality.SocialCare;
+import fisheryvillage.property.other.SchoolOutside;
 import repast.simphony.context.Context;
-import repast.simphony.space.graph.Network;
-import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
 
@@ -49,6 +47,35 @@ public final strictfp class HumanUtils {
 				return human;
 			}
 		}
+		Logger.logError("Human with id:" + id + " does not exist");
+		return null;
+	}
+	
+	/**
+	 * The same as getHumanById but gives no error message when the human is not found
+	 * @param id
+	 * @return
+	 */
+	public static Human getHumanByIdNoException(int id) {
+		
+		ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		for (Human human : humans) {
+			if (human.getId() == id) {
+				return human;
+			}
+		}
+		return null;
+	}
+	
+	public static Resident getResidentById(int id) {
+		
+		ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
+		for (Resident resident : residents) {
+			if (resident.getId() == id) {
+				return resident;
+			}
+		}
+		Logger.logError("Resident with id:" + id + " does not exist");
 		return null;
 	}
 	
@@ -69,7 +96,7 @@ public final strictfp class HumanUtils {
 				return getOwnedHouse(human);
 			}
 			else {
-				return getOwnedHouse(getPartner(human));
+				return getOwnedHouse(human.getPartner());
 			}
 		}
 		else { 
@@ -103,7 +130,7 @@ public final strictfp class HumanUtils {
 	}
 	
 	public static boolean isLivingTogetherWithPartner(Human human) {
-		Human partner = getPartner(human);
+		Human partner = human.getPartner();
 		if (partner != null) {
 			if (getOwnedHouse(human) != null ^ getOwnedHouse(partner) != null) { //Exclusive OR used (^)
 				return true;
@@ -117,7 +144,7 @@ public final strictfp class HumanUtils {
 		if (getOwnedHouse(human) != null) {
 			return true;
 		}
-		Human partner = getPartner(human);
+		Human partner = human.getPartner();
 		if (partner != null) {
 			if (getOwnedHouse(partner) != null) {
 				return true;
@@ -126,43 +153,13 @@ public final strictfp class HumanUtils {
 		return false;
 	}
 	
-	public static void removeAllEdges(Human human) {
-		
-		removeEdges(human, Constants.ID_NETWORK_COUPLE);
-		removeEdges(human, Constants.ID_NETWORK_CHILDREN);
-		removeEdges(human, Constants.ID_NETWORK_PROPERTY);
-	}
-	
-	public static void removeEdges(Human human, String networkId) {
-		Logger.logDebug("HumanUtils.removeEdges" + networkId);
-		Network<Object> network = SimUtils.getNetwork(networkId);
-		Iterable<RepastEdge<Object>> edges = network.getEdges(human);
-		for (RepastEdge<Object> edge : edges) {
-			network.removeEdge(edge);
-		}
-	}
-	
-	public static Human getPartner(Human human) {
-		
-		final Iterable<RepastEdge<Object>> partnerEdges = SimUtils.getNetwork(Constants.ID_NETWORK_COUPLE).getEdges(human);
-		for (final RepastEdge<Object> partnerEdge : partnerEdges) {
-			if (partnerEdge.getSource() != human) {
-				return (Human) partnerEdge.getSource();
-			}
-			else {
-				return (Human) partnerEdge.getTarget();
-			}
-		}
-		return null;
-	}
-	
 	public static ArrayList<Human> getChildrenUnder18(Human human) {
 		
 		ArrayList<Human> children = new ArrayList<Human>();
-		final Iterable<RepastEdge<Object>> childrenEdges = SimUtils.getNetwork(Constants.ID_NETWORK_CHILDREN).getOutEdges(human);
-		for (final RepastEdge<Object> childrenEdge : childrenEdges) {
-			if (!((Human) childrenEdge.getTarget()).isAdult()) {
-				children.add((Human) childrenEdge.getTarget());
+		for (Integer childId : human.getChildrenIds()) {
+			Human child = HumanUtils.getHumanById(childId);
+			if (child.getAge() < 18) {
+				children.add(child);
 			}
 		}
 		return children;
@@ -170,10 +167,9 @@ public final strictfp class HumanUtils {
 	
 	public static ArrayList<Human> getParents(Human human) {
 		
-		final Iterable<RepastEdge<Object>> parentsEdges = SimUtils.getNetwork(Constants.ID_NETWORK_CHILDREN).getInEdges(human); //In edges are edges of this parents
 		ArrayList<Human> parents = new ArrayList<Human>();
-		for (final RepastEdge<Object> parentEdge : parentsEdges) {
-			parents.add((Human) parentEdge.getSource());
+		for (Integer parentId : human.getParentsIds()) {
+			parents.add(HumanUtils.getHumanById(parentId));
 		}
 		return parents;
 	}
@@ -191,42 +187,34 @@ public final strictfp class HumanUtils {
 		return null;
 	}
 	
-	public static Property getWorkingPlace(int id, Status status, SchoolType schoolType) {
-		switch(status) {
-		case TEACHER:
-			return SimUtils.getSchool();
-		case FACTORY_WORKER:
-			return SimUtils.getFactory();
-		case FACTORY_BOSS:
-			return SimUtils.getFactory();
-		case FISHER:
-			return SimUtils.getBoat(id); // Can return null when the id is not found
-		case CAPTAIN:
-			return SimUtils.getBoat(id); // Can return null when the id is not found
-		case WORK_OUT_OF_TOWN:
-			return SimUtils.getObjectsAll(CompanyOutside.class).get(0);
-		case ELDERLY_CARETAKER:
-			return SimUtils.getElderlyCare();
-		case MAYOR:
-			return SimUtils.getCouncil();
-		case CHILD:
+	public static Property getWorkingPlace(int workplaceId, Status status, SchoolType schoolType) {
+		
+		if (status == Status.CHILD) {
 			if (schoolType == SchoolType.INSIDE_VILLAGE) {
 				return SimUtils.getObjectsAll(School.class).get(0);
 			}
 			else if (schoolType == SchoolType.OUTSIDE_VILLAGE) {
 				return SimUtils.getObjectsAll(SchoolOutside.class).get(0);
 			}
-		default:
 			return null;
+		}
+		else {
+			Property workplace = SimUtils.getPropertyById(workplaceId);
+			if (workplace != null) {
+				return workplace;
+			}
+			else {
+				return null;
+			}
 		}
 	}
 
 	public static House getOwnedHouse(Human human) {
 		
-		final Iterable<RepastEdge<Object>> propertyEdges = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).getOutEdges(human);
-		for (final RepastEdge<Object> propertyEdge : propertyEdges) {
-			if (propertyEdge.getTarget() instanceof House) {
-				return (House) propertyEdge.getTarget();
+		for (Integer propertyId : human.getPropertyIds()) {
+			Property property = SimUtils.getPropertyById(propertyId);
+			if (property instanceof House) {
+				return (House) property;
 			}
 		}
 		return null;
@@ -234,10 +222,9 @@ public final strictfp class HumanUtils {
 
 	public static ArrayList<Property> getOwnedProperty(Human human) {
 		
-		final Iterable<RepastEdge<Object>> propertyEdges = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).getOutEdges(human);
 		ArrayList<Property> properties = new ArrayList<Property>();
-		for (final RepastEdge<Object> propertyEdge : propertyEdges) {
-			properties.add((Property) propertyEdge.getTarget());
+		for (Integer propertyId : human.getPropertyIds()) {
+			properties.add(SimUtils.getPropertyById(propertyId));
 		}
 		return properties;
 	}
@@ -246,14 +233,12 @@ public final strictfp class HumanUtils {
 
 		Context<Object> context = SimUtils.getContext();
 		Logger.logDebug("m." + mother.getId() + ", f." + father.getId() + "spawnChild()");
-		final Human child = new Human(SimUtils.getRandomBoolean(), 0, getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
+		final Human child = new Resident(getNewHumanId(), SimUtils.getRandomBoolean(), false, false, 0, Constants.HUMAN_INIT_STARTING_MONEY);
 		Logger.logDebug("Pre child.setAncestors(), An moth:" + mother.getAncestors() + ", an fath:" + father.getAncestors());
 		child.setAncestors(mother.getId(), father.getId(), mother.getAncestors(), father.getAncestors());
-		// Make connection with parents
-		@SuppressWarnings("unchecked")
-		Network<Object> networkChildren = (Network<Object>) context.getProjection(Constants.ID_NETWORK_CHILDREN);
-		networkChildren.addEdge(mother, child);
-		networkChildren.addEdge(father, child);
+		// Add child to parents
+		mother.addChild(child.getId());
+		father.addChild(child.getId());
 		// Put child on the grid
 		@SuppressWarnings("unchecked")
 		Grid<Object> grid = (Grid<Object>) context.getProjection(Constants.ID_GRID);

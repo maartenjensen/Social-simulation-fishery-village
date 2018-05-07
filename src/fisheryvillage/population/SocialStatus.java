@@ -63,10 +63,10 @@ public class SocialStatus {
 		int min = Integer.MAX_VALUE;
 		int max = 0;
 		
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (Human human: humans) {
-			min = Math.min(min, human.getSocialLevelCombined());
-			max = Math.max(max, human.getSocialLevelCombined());
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
+		for (Resident resident: residents) {
+			min = Math.min(min, resident.getSocialLevelCombined());
+			max = Math.max(max, resident.getSocialLevelCombined());
 		}
 		
 		Logger.logDebug("Check unsatisfied universalist, min:" + min + ", max:" + max);
@@ -86,10 +86,10 @@ public class SocialStatus {
 	public double getSocialLevel() {
 		
 		int summationLevel = 0;
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (Human human: humans) {
-			if (human.getStatus() != Status.CHILD && human.getStatus() != Status.ELDEST && human.getStatus() != Status.DEAD) {
-				summationLevel += human.getSocialStatus().getCombinedLevel();
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
+		for (Resident resident: residents) {
+			if (resident.getStatus() != Status.CHILD && resident.getStatus() != Status.ELDEST && resident.getStatus() != Status.DEAD) {
+				summationLevel += resident.getSocialStatus().getCombinedLevel();
 			}
 		}
 		return (double) getCombinedLevel() / summationLevel;

@@ -1,4 +1,4 @@
-package fisheryvillage.property;
+package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,8 @@ import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.SchoolType;
 import fisheryvillage.population.Status;
+import fisheryvillage.property.PropertyColor;
+import fisheryvillage.property.Workplace;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -17,16 +19,16 @@ import saf.v3d.scene.VSpatial;
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class School extends Property {
+public class School extends Workplace {
 
-	private int maxChildrenPerTeacher = 10; // TODO Put into constants
+	private int maxChildrenPerTeacher = Constants.TEACHER_MAX_CHILDREN;
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
 	public School(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 11, 8, Status.TEACHER, PropertyColor.SCHOOL);
+		super(id, price, maintenanceCost, money, location, 11, 8, PropertyColor.SCHOOL);
+		allJobs.add(Status.TEACHER);
 		addToValueLayer();
-		actionName = "Job teacher";
 	}
 
 	public int getTeacherCount() {
@@ -41,13 +43,15 @@ public class School extends Property {
 		return teachers;
 	}
 	
-	public boolean getVacancy() {
+	@Override
+	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
 		
+		ArrayList<Status> possibleJobs = new ArrayList<Status>();
 		int teachers = getTeacherCount();
 		if (teachers < Math.ceil(getChildrenCount()/ (float) maxChildrenPerTeacher)) {
-			return true;
+			possibleJobs.add(Status.TEACHER);
 		}
-		return false;
+		return possibleJobs;
 	}
 	
 	public int getChildrenCount() {
@@ -102,7 +106,6 @@ public class School extends Property {
 
 	public void removeExcessiveTeachers() {
 		
-		
 		int teachersToRemove = getTeacherCount() - (int) Math.ceil((float) getChildrenCount() / (float) maxChildrenPerTeacher);
 		if (teachersToRemove <= 0)
 			return ;
@@ -127,24 +130,19 @@ public class School extends Property {
 	 */
 	public double getTeacherPayment() {
 		
-		if (paymentCount == 0) {
-			paymentCount = getTeacherCount();
-			paymentAmount = Math.min(Constants.SALARY_TEACHER, getSavings() / paymentCount);
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			// Also remove cost of pupils
-			removeFromSavings(-Constants.COST_SCHOOL_CHILD * getPupilCount());
-			return paymentAmount;
-		}
-		else if (paymentCount < -1) {
+		if (paymentCount < 0) {
 			Logger.logError("Error in School, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
+		else if (paymentCount == 0) {
+
+			addSavings(-1 * Constants.COST_SCHOOL_CHILD * getPupilCount());
+			paymentCount = getTeacherCount();
+			paymentAmount = Math.max(0, Math.min(Constants.SALARY_TEACHER, getSavings() / paymentCount));
 		}
+		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
+		return paymentAmount;
 	}
 	
 	@Override
@@ -158,11 +156,11 @@ public class School extends Property {
 	
 	@Override
 	public String getName() {
-		return "School";
+		return "School [" + getId() + "]";
 	}
 	
 	@Override
 	public String getLabel() {
-		return "School T:"+ getTeacherCount() + "/" + Math.ceil(getChildrenCount()/(float) maxChildrenPerTeacher) + ", P:" + getPupilCount() + ", $:" + Math.round(getSavings());
+		return "School [" + getId() + "] T:"+ getTeacherCount() + "/" + Math.ceil(getChildrenCount()/(float) maxChildrenPerTeacher) + ", P:" + getPupilCount() + ", $:" + Math.round(getSavings());
 	}
 }

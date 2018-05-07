@@ -1,4 +1,4 @@
-package fisheryvillage.property;
+package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
@@ -7,8 +7,8 @@ import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
-import repast.simphony.space.graph.Network;
-import repast.simphony.space.graph.RepastEdge;
+import fisheryvillage.property.PropertyColor;
+import fisheryvillage.property.Workplace;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -18,7 +18,7 @@ import saf.v3d.scene.VSpatial;
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class Factory extends Property {
+public class Factory extends Workplace {
 
 	private int maxEmployees = Constants.FACTORY_INITIAL_MAX_EMPLOYEES;
 	private double paymentAmount = 0;
@@ -28,9 +28,10 @@ public class Factory extends Property {
 	private int fishProcessedKg = 0; // Variable only for label
 
 	public Factory(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 10, 10, Status.FACTORY_WORKER, PropertyColor.FACTORY);
+		super(id, price, maintenanceCost, money, location, 10, 10, PropertyColor.FACTORY);
+		allJobs.add(Status.FACTORY_BOSS);
+		allJobs.add(Status.FACTORY_WORKER);
 		addToValueLayer();
-		actionName = "Job factory worker";
 	}
 	
 	public int getFishUnprocessed() {
@@ -65,7 +66,7 @@ public class Factory extends Property {
 		if (getOwner() != null) {
 			double moneyPayedForFish = fishBought * Constants.PRICE_PER_KG_FISH_UNPROCESSED;
 			fishUnprocessedKg += fishBought;
-			removeFromSavings(-moneyPayedForFish);
+			addSavings(-1 * moneyPayedForFish);
 			return moneyPayedForFish;
 		}
 		return 0;
@@ -73,11 +74,11 @@ public class Factory extends Property {
 
 	public void stepProcessFish() {
 		
-		int fishProcessedKg = getFactoryWorkerCount() * Constants.FISH_PROCESSING_AMOUNT_PP;
+		int fishProcessedKg = getEmployeeCount(Status.FACTORY_WORKER) * Constants.FISH_PROCESSING_AMOUNT_PP;
 		if (fishProcessedKg <= fishUnprocessedKg) {
 			fishUnprocessedKg -= fishProcessedKg;
 			this.fishProcessedKg = fishProcessedKg;
-			if (getFactoryWorkerCount() == maxEmployees && maxEmployees < Constants.FACTORY_MAX_EMPLOYEES) {
+			if (getEmployeeCount(Status.FACTORY_WORKER) == maxEmployees && maxEmployees < Constants.FACTORY_MAX_EMPLOYEES) {
 				maxEmployees ++;
 			}
 		}
@@ -90,7 +91,7 @@ public class Factory extends Property {
 				maxEmployees --;
 			}
 		}
-		addToSavings(fishProcessedKg * Constants.PRICE_PER_KG_FISH_PROCESSED);
+		addSavings(fishProcessedKg * Constants.PRICE_PER_KG_FISH_PROCESSED);
 	}
 	
 	public void fireEmployees(int number) {
@@ -106,22 +107,10 @@ public class Factory extends Property {
 		}
 	}
 	
-	public int getFactoryWorkerCount() {
-		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
-		int workers = 0;
-		for (final Human human: humans) {
-			if (human.getStatus() == Status.FACTORY_WORKER) {
-				workers ++;
-			}
-		}
-		return workers;
-	}
-
 	public double getFactoryBossPayment() {
 
-		double bossPayment = Math.min(Constants.SALARY_FACTORY_BOSS, getSavings());
-		removeFromSavings(-bossPayment);
+		double bossPayment = Math.max(0, Math.min(Constants.SALARY_FACTORY_BOSS, getSavings()));
+		addSavings(-1 * bossPayment);
 		return bossPayment;
 	}
 	
@@ -132,46 +121,47 @@ public class Factory extends Property {
 	 */
 	public double getFactoryWorkerPayment() {
 		
-		if (paymentCount == 0) {
-			paymentCount = getFactoryWorkerCount();
-			paymentAmount = Math.min(Constants.SALARY_FACTORY_WORKER, getSavings() / paymentCount);
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
-		}
-		else if (paymentCount < -1) {
+		if (paymentCount < 0) {
 			Logger.logError("Error in Factory, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
+		else if (paymentCount == 0) {
+			paymentCount = getEmployeeCount(Status.FACTORY_WORKER);
+			paymentAmount = Math.max(0, Math.min(Constants.SALARY_FACTORY_WORKER, getSavings() / paymentCount));
 		}
+		
+		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
+		return paymentAmount;
 	}
 	
-	public boolean getVacancy() {
+	@Override
+	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
 		
-		if (getFactoryWorkerCount() < maxEmployees && hasBoss()) {
-			return true;
+		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		if (hasBoss()) {
+			if (getEmployeeCount(Status.FACTORY_WORKER) < maxEmployees) {
+				possibleJobs.add(Status.FACTORY_WORKER);
+			}
 		}
-		return false;
+		else {
+			if (money > getPrice()) {
+				possibleJobs.add(Status.FACTORY_BOSS);
+			}
+		}
+		return possibleJobs;
 	}
 	
 	public boolean hasBoss() {
+
 		Human owner = getOwner();
 		if (owner == null) {
-			Logger.logInfo("There is no boss! Fire everyone");
-			//fireEmployees();
 			return false;
 		}
 		else if (getOwner().getStatus() != Status.FACTORY_BOSS) {
 			Logger.logDebug("Boss " + getOwner().getId() + " is not a boss!");
-			//fireEmployees();
-			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
-			RepastEdge<Object> bossEdge = network.getEdge(getOwner(), this);
-			Logger.logDebug("Remove edge: " + bossEdge);
-			SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).removeEdge(bossEdge);
+			Logger.logDebug("Remove property: " + getId());
+			getOwner().removeAndSellProperty(getId(), true);
 			return false;
 		}
 		return true;
@@ -189,7 +179,7 @@ public class Factory extends Property {
 	
 	@Override
 	public String getName() {
-		return "Factory";
+		return "Factory [" + getId() + "]";
 	}
 	
 	@Override
@@ -207,7 +197,7 @@ public class Factory extends Property {
 		if (getOwner() != null) {
 			bossId = getOwner().getId();
 		}
-		return "Factory: Boss: " + bossId + ", W:" + getFactoryWorkerCount() + "/" + maxEmployees + ", $:" + Math.round(getSavings())
+		return "Factory [" + getId() + "]: Boss: " + bossId + ", W:" + getEmployeeCount(Status.FACTORY_WORKER) + "/" + maxEmployees + ", $:" + Math.round(getSavings())
 			 + "\nFish unprocessed (kg): " + fishUnprocessedKg + "\nFish processed (kg): " + fishProcessedKg;
 		// System.out.printf("Value with 3 digits after decimal point %.3f %n", PI); To format a floating decimal number use : .3f
 	}

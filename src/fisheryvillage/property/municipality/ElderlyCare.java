@@ -1,4 +1,4 @@
-package fisheryvillage.property;
+package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
@@ -7,6 +7,8 @@ import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
+import fisheryvillage.property.PropertyColor;
+import fisheryvillage.property.Workplace;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -16,25 +18,28 @@ import saf.v3d.scene.VSpatial;
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class ElderlyCare extends Property {
+public class ElderlyCare extends Workplace {
 	
-	private int maxElderlyPerCaretaker = 10; // TODO Put into constants
+	private int maxElderlyPerCaretaker = Constants.CARETAKER_MAX_ELDERLY;
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
 	public ElderlyCare(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 11, 8, Status.ELDERLY_CARETAKER, PropertyColor.ELDERLY_CARE);
+		
+		super(id, price, maintenanceCost, money, location, 11, 8, PropertyColor.ELDERLY_CARE);
+		allJobs.add(Status.ELDERLY_CARETAKER);
 		addToValueLayer();
-		actionName = "Job elderly caretaker";
 	}
 	
-	public boolean getVacancy() {
+	@Override
+	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
 		
+		ArrayList<Status> possibleJobs = new ArrayList<Status>();
 		int caretakers = getCaretakerCount();
-		if (caretakers < Math.ceil(getElderlyCount()/ (float) maxElderlyPerCaretaker)) {
-			return true;
+		if (caretakers < Math.ceil(getElderlyCount() / (float) maxElderlyPerCaretaker)) {
+			possibleJobs.add(Status.ELDERLY_CARETAKER);
 		}
-		return false;
+		return possibleJobs;
 	}
 	
 	public int getCaretakerCount() {
@@ -68,22 +73,18 @@ public class ElderlyCare extends Property {
 	 */
 	public double getCaretakerPayment() {
 		
-		if (paymentCount == 0) {
-			paymentCount = getCaretakerCount();
-			paymentAmount = Math.min(Constants.SALARY_ELDERLY_CARETAKER, getSavings() / paymentCount);
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
-		}
-		else if (paymentCount < -1) {
+		if (paymentCount < 0) {
 			Logger.logError("Error in ElderlyCare, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
+		else if (paymentCount == 0) {
+			paymentCount = getCaretakerCount();
+			paymentAmount = Math.max(0, Math.min(Constants.SALARY_ELDERLY_CARETAKER, getSavings() / paymentCount));
 		}
+		
+		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
+		return paymentAmount;
 	}
 
 	public void removeExcessiveCaretakers() {
@@ -111,22 +112,17 @@ public class ElderlyCare extends Property {
 	 */
 	public double getPension() {
 		
-		if (paymentCount == 0) {
-			paymentCount = SimUtils.getCouncil().getNumberOfElderlyOld() + SimUtils.getCouncil().getNumberOfElderlyYoung();
-			paymentAmount = Math.min(Constants.BENEFIT_ELDERLY, getSavings() / paymentCount);
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
-		}
-		else if (paymentCount < -1) {
-			Logger.logError("Error in Unemployed, exceeded paymentCount : " + paymentCount);
+		if (paymentCount < 0) {
+			Logger.logError("Error in getPension for elderly, exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
+		else if (paymentCount == 0) {
+			paymentCount = SimUtils.getCouncil().getNumberOfElderlyOld() + SimUtils.getCouncil().getNumberOfElderlyYoung();
+			paymentAmount = Math.max(0, Math.min(Constants.BENEFIT_ELDERLY, getSavings() / paymentCount));
 		}
+		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
+		return paymentAmount;
 	}
 	
 	@Override
@@ -137,11 +133,11 @@ public class ElderlyCare extends Property {
 	
 	@Override
 	public String getName() {
-		return "ElderlyCare";
+		return "ElderlyCare [" + getId() + "]";
 	}
 	
 	@Override
 	public String getLabel() {
-		return "Elderly care" + ", $:" + Math.round(getSavings());
+		return "Elderly care [" + getId() + "]" + ", $:" + Math.round(getSavings());
 	}
 }

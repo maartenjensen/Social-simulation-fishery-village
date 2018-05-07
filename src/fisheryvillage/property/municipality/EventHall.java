@@ -1,9 +1,8 @@
-package fisheryvillage.municipality;
+package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
 import fisheryvillage.common.SimUtils;
-import fisheryvillage.population.Status;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.PropertyColor;
 import repast.simphony.space.grid.GridPoint;
@@ -25,7 +24,7 @@ public class EventHall extends Property {
 	int countSelfDirection = 0;
 	
 	public EventHall(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 5, 3, Status.NONE, PropertyColor.COUNCIL);
+		super(id, price, maintenanceCost, money, location, 5, 3, PropertyColor.COUNCIL);
 		addToValueLayer();
 	}
 	
@@ -119,12 +118,12 @@ public class EventHall extends Property {
 	
 	@Override
 	public String getName() {
-		return "EventHall";
+		return "EventHall [" + getId() + "]";
 	}
 	
 	@Override
 	public String getLabel() {
-		String label = "Event hall $: " + getSavings() + "|";
+		String label = "Event hall [" + getId() + "] $: " + getSavings() + "|";
 		for (Event event : events) {
 			label += event.toString() + "|";
 		}

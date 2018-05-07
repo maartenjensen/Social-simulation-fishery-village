@@ -1,4 +1,4 @@
-package fisheryvillage.municipality;
+package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
@@ -31,9 +31,9 @@ public class Event {
 		
 		Logger.logInfo("PERFORM " + toString());
 		if (organizerId != -1) {
-			HumanUtils.getHumanById(organizerId).actionSocialEventOrganize();
+			HumanUtils.getResidentById(organizerId).actionSocialEventOrganize();
 			for (int attendee : attendeesIds) {
-				 HumanUtils.getHumanById(attendee).actionSocialEventAttend();
+				 HumanUtils.getResidentById(attendee).actionSocialEventAttend();
 			}
 		}
 		

@@ -2,7 +2,6 @@ package fisheryvillage.property;
 
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
-import fisheryvillage.population.Status;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.grid.GridPoint;
 import repast.simphony.valueLayer.GridValueLayer;
@@ -19,7 +18,7 @@ public class House extends Property {
 	HouseType houseType;
 	
 	public House(int id, HouseType houseType, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 4, 2, Status.NONE, PropertyColor.HOUSE);
+		super(id, price, maintenanceCost, money, location, 4, 2, PropertyColor.HOUSE);
 		this.houseType = houseType;
 		addGardenToValueLayer();
 		addToValueLayer();
@@ -63,11 +62,11 @@ public class House extends Property {
 	
 	@Override
 	public String getName() {
-		return "House " + houseType + ": " + getX() + ", " + getY();
+		return "House [" + getId() + "] " + houseType + ": " + getX() + ", " + getY();
 	}
 	
 	@Override
 	public String getLabel() {
-		return houseType + " $:" + getPrice() + "\nCost $:" + getMaintenanceCost();
+		return houseType + " [" + getId() + "] $:" + getPrice() + "\nMaintenance cost $:" + getMaintenanceCost();
 	}
 }

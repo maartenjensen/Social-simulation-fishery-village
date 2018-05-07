@@ -1,5 +1,6 @@
 package fisheryvillage.common;
 
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
 
 /**
@@ -43,6 +44,8 @@ public final class Logger {
 	public static void logError(String error) {
 		if (logErrors) {
 			System.err.println(error);
+			new Exception().printStackTrace();
+			RunEnvironment.getInstance().endRun();
 		}
 	}
 	

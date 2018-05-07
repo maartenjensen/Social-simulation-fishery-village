@@ -8,22 +8,23 @@ import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Status;
+import fisheryvillage.property.municipality.Factory;
 import repast.simphony.random.RandomHelper;
-import repast.simphony.space.graph.Network;
-import repast.simphony.space.graph.RepastEdge;
 import repast.simphony.space.grid.GridPoint;
+import repast.simphony.valueLayer.GridValueLayer;
 import saf.v3d.scene.VSpatial;
 
 /**
-* Boat: although not a building it is property.
+* Boat: this class extends Workplace and has the possibility for the jobs CAPTAIN and FISHER
 * This is what the fishers use to fish
 *
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class Boat extends Property {
+public class Boat extends Workplace {
 
-	private int maxFishers = Constants.MAX_FISHERS_PER_BOAT;
+	private BoatType boatType;
+	private int maxFishers = 0;
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	private int fishCaught = 0; //Kilograms
@@ -31,48 +32,79 @@ public class Boat extends Property {
 	private int fishThrownAway = 0;
 	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
 	
-	public Boat(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 3, 2, Status.FISHER, PropertyColor.BOAT);
+	public Boat(int id, BoatType boatType, double money, GridPoint location) {
+		super(id, boatType.getPrice(), boatType.getMaintenanceCost(), money, location, boatType.getDimensions().getX(), boatType.getDimensions().getY(), PropertyColor.BOAT);
+		allJobs.add(Status.CAPTAIN);
+		allJobs.add(Status.FISHER);
+		this.boatType = boatType;
+		maxFishers = this.boatType.getEmployeeCapacity() - 1;
 		addToValueLayer();
-		actionName = "Job fisher";
 	}
+
+	public void setBoatType(BoatType boatType) {
+		this.boatType = boatType;
+		setPrice(this.boatType.getPrice());
+		setMaintenanceCost(this.boatType.getMaintenanceCost());
+		setDimensions(this.boatType.getDimensions());
+		maxFishers = this.boatType.getEmployeeCapacity() - 1;
+		resetLayer();
+		addToValueLayer();
+	}
+
+	protected void resetLayer() {
+
+		GridValueLayer valueLayer = SimUtils.getValueLayer();
+		if (valueLayer == null) {
+			Logger.logError("Error valueLayer is null");
+			return ;
+		}
+		for (int i = 0; i < 8; i ++) {
+			for (int j = 0; j < 2; j ++) {
+				valueLayer.set(RandomHelper.nextDoubleFromTo(1.9, 1.99), getX() + i, getY() + j);
+			}
+		}
+	}	
 
 	public int getFisherCount() {
 		
-		removeFishersIds();
 		return fishersIds.size();
 	}
 
 	public int getFisherAndCaptainCount() {
 		
-		removeFishersIds();
 		if (getOwner() != null) {
 			return fishersIds.size() + 1;
 		}
-		return 0;
+		return fishersIds.size();
 	}
 
 	public boolean employeeOnBoat(int fisherId) {
 		
-		removeFishersIds();
 		if (fishersIds.contains(fisherId)) {
 			return true;
 		}
-		else if (getOwner() != null) {
-			if (getOwner().getId() == fisherId) {
-				return true;
-			}
+		else if (getOwnerId() == fisherId) {
+			return true;
 		}
 		return false;
 	}
 	
-	public boolean getVacancy() {
+	@Override
+	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
 		
-		int fishers = getFisherCount();
-		if (fishers < maxFishers && hasCaptain()) {
-			return true;
+		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		if (hasCaptain()) {
+			int fishers = getFisherCount();
+			if (fishers < maxFishers) {
+				possibleJobs.add(Status.FISHER);
+			}
 		}
-		return false;
+		else {
+			if (money > BoatType.SMALL.getPrice()) {
+				possibleJobs.add(Status.CAPTAIN);
+			}
+		}
+		return possibleJobs;
 	}
 
 	public void stepFish() { //TODO make this an influenceable step
@@ -88,7 +120,7 @@ public class Boat extends Property {
 		Factory factory = SimUtils.getFactory();
 		if (factory != null && fishCaught > 0) {
 			fishSold = factory.calculatedFishToBuy(fishCaught);
-			addToSavings(factory.buyFish(fishSold));
+			addSavings(factory.buyFish(fishSold));
 			fishThrownAway = fishCaught - fishSold;
 		}
 		else {
@@ -102,22 +134,16 @@ public class Boat extends Property {
 		fishersIds.add(id);
 	}
 	
-	public void removeFishersIds() {
+	public void removeFisher(int fisherId) {
 		
-		ArrayList<Integer> fishersIdsToRemove = new ArrayList<Integer>();
-		for (final Integer fisherId: fishersIds) {
+		if (fishersIds.contains(fisherId)) {
 			Human human = HumanUtils.getHumanById(fisherId);
 			if (human != null) {
-				if (human.getStatus() != Status.FISHER) {
-					fishersIdsToRemove.add(fisherId);
+				if (human.getStatus() == Status.FISHER) {
+					human.setStatus(Status.UNEMPLOYED);
 				}
 			}
-			else {
-				fishersIdsToRemove.add(fisherId);
-			}
-		}
-		if (fishersIdsToRemove.size() > 0) {
-			fishersIds.removeAll(fishersIdsToRemove);
+			fishersIds.remove(fishersIds.lastIndexOf(fisherId));
 		}
 	}
 	
@@ -128,21 +154,16 @@ public class Boat extends Property {
 	 * and deletes the connection with the captain
 	 * @return
 	 */
-	public boolean hasCaptain() { //TODO make some inheritance for the boat property
+	public boolean hasCaptain() {
 		
 		Human owner = getOwner();
 		if (owner == null) {
-			Logger.logDebug("There is no captain! Fire fishers");
-			//fireFishers();
 			return false;
 		}
-		else if (getOwner().getStatus() != Status.CAPTAIN) {
-			Logger.logDebug("Captain " + getOwner().getId() + " is not a captain!");
-			//fireFishers();
-			Network<Object> network = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
-			RepastEdge<Object> captainEdge = network.getEdge(getOwner(), this);
-			Logger.logDebug("Remove edge: " + captainEdge);
-			SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY).removeEdge(captainEdge);
+		else if (owner.getStatus() != Status.CAPTAIN) {
+			Logger.logError("Owner " + getOwner().getId() + " is not a captain!");
+			Logger.logDebug("Remove property: " + getId());
+			getOwner().removeAndSellProperty(getId(), true);
 			return false;
 		}
 		return true;
@@ -168,62 +189,57 @@ public class Boat extends Property {
 	 * Should only be called in the work function of Human
 	 * @return
 	 */
-	public double getFisherPayment() {
+	public double getFisherPayment(int fisherId) {
 		
-		if (paymentCount == 0) {
-			paymentCount = getFisherCount();
-			if (hasCaptain()) {
-				paymentCount += 2;
-			}
-			paymentAmount = getSavings() / paymentCount;
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
-		}
-		else if (paymentCount < -1) {
-			Logger.logError("Error in Boat, exceeded paymentCount : " + paymentCount);
+		if (paymentCount < 0) {
+			
+			Logger.logError("Error in Boat " + getId() + ", paymentCount lower than zero: " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 1;
-			removeFromSavings(-paymentAmount);
-			return paymentAmount;
+		else if (paymentCount == 0) {
+			
+			paymentCount = getFisherCount();
+			if (hasCaptain()) {
+				paymentCount += Constants.SALARY_MULTIPLIER_CAPTAIN;
+			}
+			paymentAmount = getSavings() / paymentCount;
 		}
+		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
+		Logger.logInfo("Boat " + getId() + " pay fisher " + fisherId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
+		return paymentAmount;
 	}
-	
+
 	/**
 	 * Retrieves the payment of the captain by dividing the total savings
 	 * Should only be called in the work function of Human
 	 * Captain gets payed double.
 	 * @return
 	 */
-	public double getCaptainPayment() {
+	public double getCaptainPayment(int captainId) {
 		
-		if (paymentCount == 0) {
-			paymentCount = getFisherCount() + 2;
-			paymentAmount = getSavings() / paymentCount;
-			paymentCount -= 2;
-			removeFromSavings(-paymentAmount * 2);
-			return paymentAmount * 2;
-		}
-		else if (paymentCount < -1) {
-			Logger.logError("Error in Boat, exceeded paymentCount : " + paymentCount);
+		if (paymentCount < 0) {
+			Logger.logError("Error in Boat " + getId() + ", captain exceeded paymentCount : " + paymentCount);
 			return 0;
 		}
-		else {
-			paymentCount -= 2;
-			removeFromSavings(-paymentAmount * 2);
-			return paymentAmount * 2;
+		else if (paymentCount == 0) {
+			
+			paymentCount = getFisherCount() + Constants.SALARY_MULTIPLIER_CAPTAIN;
+			paymentAmount = getSavings() / paymentCount;
 		}
+		paymentCount -= Constants.SALARY_MULTIPLIER_CAPTAIN;
+		addSavings(-1 * paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN);
+		Logger.logInfo("Boat " + getId() + " pay captain " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
+		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;
 	}
 	
 	@Override
 	public String getName() {
 		
 		if (getOwner() != null) {
-			return "Boat C:" + getOwner().getId() + "; " + getX() + ", " + getY();
+			return "Boat" + " [" + getId() + "] C:" + getOwner().getId() + ", F:" + fishersIds.toString();
 		}
-		return "Boat C: #; " + getX() + ", " + getY();
+		return "Boat" + " [" + getId() + "] C: #, F:" + fishersIds.toString();
 	}
 	
 	@Override
@@ -245,6 +261,6 @@ public class Boat extends Property {
 		if (getOwner() != null) {
 			captainId = getOwner().getId();
 		}
-		return "Boat Captain ID:" + captainId + "\nF:" + getFisherCount() + ", $:" + Math.round(getSavings()) + "\nFish caught (kg):" + fishCaught + "\nFish sold (kg): " + fishSold + "\nFish thrown away (kg): " + fishThrownAway;
+		return "Boat " + boatType + " ["+ getId() +"] price:" + getPrice() + "\nCaptain ID:" + captainId + ", F:" + fishersIds.toString() + "\nF:" + getFisherCount() + ", $:" + Math.round(getSavings()) + "\nFish caught (kg):" + fishCaught + "\nFish sold (kg): " + fishSold + "\nFish thrown away (kg): " + fishThrownAway;
 	}
 }

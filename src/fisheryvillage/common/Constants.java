@@ -19,9 +19,6 @@ public final class Constants {
 	public static final String ID_SPACE = "space";
 	public static final String ID_GRID = "grid";
 	public static final String ID_VALUE_LAYER = "village value layer";
-	public static final String ID_NETWORK_COUPLE = "couple network";
-	public static final String ID_NETWORK_CHILDREN = "children network";
-	public static final String ID_NETWORK_PROPERTY = "property network";
 	
 	// Initialize world parameters
 	public static final int GRID_WIDTH = 80;
@@ -39,31 +36,44 @@ public final class Constants {
 	public static final int NUMBER_OF_HOUSES_STANDARD = 10;
 	public static final int NUMBER_OF_HOUSES_EXPENSIVE = 5;
 	
-	public static final int HOUSE_CHEAP_PRICE = 1000;
+	public static final int NUMBER_OF_BOATS = 5;
+	
+	public static final int HOUSE_CHEAP_PRICE = 20000;
 	public static final int HOUSE_CHEAP_MAINTENANCE = 500;
-	public static final int HOUSE_STANDARD_PRICE = 2000;
+	public static final int HOUSE_STANDARD_PRICE = 40000;
 	public static final int HOUSE_STANDARD_MAINTENANCE = 1000;
-	public static final int HOUSE_EXPENSIVE_PRICE = 3000;
+	public static final int HOUSE_EXPENSIVE_PRICE = 60000;
 	public static final int HOUSE_EXPENSIVE_MAINTENANCE = 1500;
 	public static final double PRICE_PER_KG_FISH_UNPROCESSED = 5;
 	public static final double PRICE_PER_KG_FISH_PROCESSED = 10;
 	public static final int FISH_PROCESSING_AMOUNT_PP = 750;
 	public static final int FISH_CATCH_AMOUNT_MIN_PP = 50;
 	public static final int FISH_CATCH_AMOUNT_MAX_PP = 200;
-	public static final int BOAT_BASIC_PRICE = 1000;
-	public static final int BOAT_BASIC_MAINTENANCE = 100;
+	
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
 	
 	public static final int BUILDING_INITIAL_MONEY = 10000;
+	public static final int FACTORY_PRICE = 10000;
+	
+	public static final int PROPERTY_SELL_PERCENTAGE = 50;
+	
+	// Initialize boat parameters
+	public static final int BOAT_SMALL_PRICE = 5000;
+	public static final int BOAT_SMALL_MAINTENANCE = 100;
+	public static final int BOAT_SMALL_EMPLOYEES = 4;
+	public static final int BOAT_MEDIUM_PRICE = 10000;
+	public static final int BOAT_MEDIUM_MAINTENANCE = 200;
+	public static final int BOAT_MEDIUM_EMPLOYEES = 6;
+	public static final int BOAT_LARGE_PRICE = 15000;
+	public static final int BOAT_LARGE_MAINTENANCE = 300;
+	public static final int BOAT_LARGE_EMPLOYEES = 8;
 	
 	// Initialize population generate parameters
-	public static final int HUMAN_INIT_STARTING_MONEY = 5000;
+	public static final int HUMAN_INIT_STARTING_MONEY = 50000;
 	public static final int HUMAN_INIT_MIN_AGE = 18;
 	public static final int HUMAN_INIT_MAX_AGE = 65;
 	
 	// Initialize population parameters
-	public static final int HUMAN_MIN_CHILDREN_WANTED = 0;
-	public static final int HUMAN_MAX_CHILDREN_WANTED = 6;
 	public static final int HUMAN_RELATIVE_WIFE_MIN_AGE = -20;
 	public static final int HUMAN_RELATIVE_WIFE_MAX_AGE = -10;
 	public static final int HUMAN_ANCESTORS_LAYERS = 1; //0:none, 1:parents, 2:grandparents, 3:great-grandparents, 4:great-great-grandparents, 5:etc
@@ -74,9 +84,14 @@ public final class Constants {
 	public static final int HUMAN_ELDERLY_AGE = 65;
 	public static final int HUMAN_MONEY_DANGER_LEVEL = 3000;
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
-	public static final double HUMAN_PROB_GET_CHILD = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
 	public static final int HOMELESS_TICK = 3 * TICKS_PER_YEAR;
+	
+	// Initialize repopulation parameters
+	public static final int HUMAN_CHILDREN_WANTED_MIN = 1;
+	public static final int HUMAN_CHILDREN_WANTED_MAX = 6;
+	public static final double HUMAN_PROB_GET_CHILD = 0.5;
+	// Formula parameters given in Resident.calculateChildrenWanted()
 	
 	// Initialize ecosystem parameters
 	public static final int ECOSYSTEM_INITIAL_FISH = 100000;
@@ -91,10 +106,11 @@ public final class Constants {
 	public static final double TAX_TO_COUNCIL = 50;
 	
 	// Initialize employee numbers
-	public static final int MAX_FISHERS_PER_BOAT = 5;
 	public static final int FACTORY_INITIAL_MAX_EMPLOYEES = 10;
 	public static final int FACTORY_MAX_EMPLOYEES = 50;
 	public static final int FACTORY_MIN_EMPLOYEES = 3;
+	public static final int CARETAKER_MAX_ELDERLY = 10;
+	public static final int TEACHER_MAX_CHILDREN = 10;
 	
 	// Initialize salary and benefits parameters
 	public static final double SALARY_TEACHER = 3000;
@@ -105,27 +121,13 @@ public final class Constants {
 	public static final double SALARY_ELDERLY_CARETAKER = 2000;
 	public static final double BENEFIT_UNEMPLOYED = 800;
 	public static final double BENEFIT_ELDERLY = 500;
+	public static final int SALARY_MULTIPLIER_CAPTAIN = 2;
 	
 	// Initialize donation
 	public static final double DONATE_FACTOR_OF_LEFT_OVER_MONEY = 0.1;
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS = 5000;
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 100000;
 	public static final double DONATE_MONEY_WITHOUT_INCOME = 50;
-	
-	// Initialize event parameters
-	public static final double EVENT_PERCENT_TOO_ABSENT = 25;
-	public static final double EVENT_PERCENT_TOO_CROWDED = 75;
-	
-	// Setup parameter IDs
-	public static final String PARA_ID_POP_INIT_FROM_FILE = "popInitFromFile";
-	public static final String PARA_ID_POP_INIT_FILE_NAME = "popInitFileName";
-	public static final String PARA_ID_POP_GEN_TO_FILE = "popGenToFile";
-	public static final String PARA_ID_POP_GEN_FILE_NAME = "popGenFileName";
-	public static final String PARA_ID_POP_GEN_TICK_LIMIT = "popGenTickLimit";
-	public static final String PARA_ID_VALUE_POWR = "valuePower";
-	public static final String PARA_ID_VALUE_SELF = "valueSelfDirection";
-	public static final String PARA_ID_VALUE_UNIV = "valueUniversalism";
-	public static final String PARA_ID_VALUE_TRAD = "valueTradition";
 	
 	// Initialize social status
 	// Look at SocialStatus class

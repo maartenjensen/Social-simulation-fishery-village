@@ -10,20 +10,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
-import fisheryvillage.municipality.Council;
 import fisheryvillage.population.Human;
+import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
-import fisheryvillage.property.ElderlyCare;
-import fisheryvillage.property.Factory;
-import fisheryvillage.property.Property;
-import fisheryvillage.property.School;
-import fisheryvillage.property.SocialCare;
-import repast.simphony.space.graph.Network;
-import repast.simphony.space.graph.RepastEdge;
+import fisheryvillage.property.municipality.Council;
+import fisheryvillage.property.municipality.ElderlyCare;
+import fisheryvillage.property.municipality.Factory;
+import fisheryvillage.property.municipality.School;
+import fisheryvillage.property.municipality.SocialCare;
 
 public class PopulationBuilder {
 
@@ -54,39 +51,37 @@ public class PopulationBuilder {
 			int id = Integer.parseInt(hVars.get(0));
 			int age = Integer.parseInt(hVars.get(1));
 			boolean isMan = Boolean.parseBoolean(hVars.get(2));
-			double money = Double.parseDouble(hVars.get(3));
-			int childrenWanted = Integer.parseInt(hVars.get(4));
-			boolean foreigner = Boolean.parseBoolean(hVars.get(5));
-			int homelessTick = Integer.parseInt(hVars.get(6));
-			double nettoIncome = Double.parseDouble(hVars.get(7));
-			double necessaryCost = Double.parseDouble(hVars.get(8));
-			String jobTitle = hVars.get(9);
-			Status status = Status.valueOf(hVars.get(10));
-			int boatId = Integer.parseInt(hVars.get(11));
-			Human human = new Human(isMan, age, id, money, foreigner, childrenWanted, homelessTick,
+			boolean higherEducated = Boolean.parseBoolean(hVars.get(3));
+			double money = Double.parseDouble(hVars.get(4));
+			int childrenWanted = Integer.parseInt(hVars.get(5));
+			boolean foreigner = Boolean.parseBoolean(hVars.get(6));
+			int homelessTick = Integer.parseInt(hVars.get(7));
+			double nettoIncome = Double.parseDouble(hVars.get(8));
+			double necessaryCost = Double.parseDouble(hVars.get(0));
+			String jobTitle = hVars.get(10);
+			Status status = Status.valueOf(hVars.get(11));
+			int boatId = Integer.parseInt(hVars.get(12));
+			Resident resident = new Resident(id, isMan, foreigner, higherEducated, age, money, childrenWanted, homelessTick,
 									nettoIncome, necessaryCost, jobTitle, status, boatId);
-			Logger.logInfo("Initialized H" + human.getId() + ", age: " + human.getAge());
+			Logger.logInfo("Initialized H" + resident.getId() + ", age: " + resident.getAge());
 		}
 		
 		List<String> relationsList = readFile(filePath + "/" + fileName + "Relations.txt");
-		Network<Object> relationNetwork = SimUtils.getNetwork(Constants.ID_NETWORK_COUPLE);
 		for (String relationString : relationsList) {
 			List<String> rVars = Arrays.asList(relationString.split(","));
-			relationNetwork.addEdge(HumanUtils.getHumanById(Integer.parseInt(rVars.get(0))), HumanUtils.getHumanById(Integer.parseInt(rVars.get(1))) );
+			HumanUtils.getResidentById(Integer.parseInt(rVars.get(0))).actionSetPartner(HumanUtils.getResidentById(Integer.parseInt(rVars.get(1))));
 		}
 		
 		List<String> childrenList = readFile(filePath + "/" + fileName + "Children.txt");
-		Network<Object> childrenNetwork = SimUtils.getNetwork(Constants.ID_NETWORK_CHILDREN);
 		for (String childrenString : childrenList) {
 			List<String> cVars = Arrays.asList(childrenString.split(","));
-			childrenNetwork.addEdge(HumanUtils.getHumanById(Integer.parseInt(cVars.get(0))), HumanUtils.getHumanById(Integer.parseInt(cVars.get(1))) );
+			HumanUtils.getHumanById(Integer.parseInt(cVars.get(0))).addChild(Integer.parseInt(cVars.get(1)));
 		}
 		
 		List<String> propertyList = readFile(filePath + "/" + fileName + "Property.txt");
-		Network<Object> propertyNetwork = SimUtils.getNetwork(Constants.ID_NETWORK_PROPERTY);
 		for (String propertyString : propertyList) {
 			List<String> pVars = Arrays.asList(propertyString.split(","));
-			propertyNetwork.addEdge(HumanUtils.getHumanById(Integer.parseInt(pVars.get(0))), SimUtils.getPropertyById(Integer.parseInt(pVars.get(1))) );
+			HumanUtils.getHumanById(Integer.parseInt(pVars.get(0))).connectProperty(Integer.parseInt(pVars.get(1)));
 		}
 		
 		List<String> propertyVarsList = readFile(filePath + "/" + fileName + "PropertyVars.txt");
@@ -116,17 +111,17 @@ public class PopulationBuilder {
 	public void savePopulation(String filePath, String fileName) {
 		// Data humans
 		List<String> dataHumans = new ArrayList<String>();
-		dataHumans.add("%id,age,gender,money,childrenWanted,foreigner,homelessTick,nettoIncome,necessaryCost,jobTitle");
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (Human human : humans) {
-			dataHumans.add(human.getHumanVarsAsString());
+		dataHumans.add("%id,gender,foreigner,higherEducated,age,money,childrenWanted,homelessTick,nettoIncome,necessaryCost,jobTitle");
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
+		for (Resident resident : residents) {
+			dataHumans.add(resident.getHumanVarsAsString());
 		}
 		writeToFile(filePath + "/" + fileName + "Data.txt", dataHumans);
 		
 		// Data network
-		safeNetwork(Constants.ID_NETWORK_COUPLE, filePath + "/" + fileName + "Relations.txt");
-		safeNetwork(Constants.ID_NETWORK_CHILDREN, filePath + "/" + fileName + "Children.txt");
-		safeNetwork(Constants.ID_NETWORK_PROPERTY, filePath + "/" + fileName + "Property.txt");
+		safeRelations(filePath + "/" + fileName + "Relations.txt");
+		safeChildren(filePath + "/" + fileName + "Children.txt");
+		safeProperty(filePath + "/" + fileName + "Property.txt");
 		
 		List<String> dataProperties = new ArrayList<String>();
 		dataProperties.add("%propertyType,savings,extra-variables");
@@ -143,22 +138,53 @@ public class PopulationBuilder {
 		writeToFile(filePath + "/" + fileName + "PropertyVars.txt", dataProperties);
 	}
 	
-	public void safeNetwork(String networkId, String filePathAndName) {
+	public void safeRelations(String filePathAndName) {
 		
-		List<String> dataNetwork = new ArrayList<String>();
-		dataNetwork.add("%source_id, target_id");
-		Iterable<RepastEdge<Object>> edges = SimUtils.getNetwork(networkId).getEdges();
-		for (RepastEdge<Object> edge : edges) {
-			if (edge.getTarget() instanceof Human) {
-				dataNetwork.add( ((Human) edge.getSource()).getId() + "," + ((Human) edge.getTarget()).getId() );
-			}
-			else if (edge.getTarget() instanceof Property) {
-				dataNetwork.add( ((Human) edge.getSource()).getId() + "," + ((Property) edge.getTarget()).getId() );
+		List<Integer> humansContained = new ArrayList<Integer>();
+		List<String> data = new ArrayList<String>();
+		data.add("%human1,human2");
+		for (Human human : SimUtils.getObjectsAll(Human.class)) {
+			if (!humansContained.contains(human.getId()) && human.getPartnerId() >= 0) {
+				data.add(human.getId() + "," + human.getPartnerId());
 			}
 		}
-		writeToFile(filePathAndName, dataNetwork);
+		writeToFile(filePathAndName, data);
 	}
 	
+	public void safeChildren(String filePathAndName) {
+		
+		List<String> data = new ArrayList<String>();
+		data.add("%parent,child1,child2,child3,etc.");
+		for (Human human : SimUtils.getObjectsAll(Human.class)) {
+			ArrayList<Integer> childrenIds = human.getChildrenIds();
+			if (childrenIds.size() >= 1) {
+				String datum = Integer.toString(human.getId());
+				for (int childId : childrenIds) {
+					datum += "," + Integer.toString(childId);
+				}
+				data.add(datum);
+			}
+		}
+		writeToFile(filePathAndName, data);
+	}
+	
+	public void safeProperty(String filePathAndName) {
+		
+		List<String> data = new ArrayList<String>();
+		data.add("%owner,property1,property2,property3,property4,etc.");
+		for (Human human : SimUtils.getObjectsAll(Human.class)) {
+			ArrayList<Integer> propertyIds = human.getPropertyIds();
+			if (propertyIds.size() >= 1) {
+				String datum = Integer.toString(human.getId());
+				for (int propertyId : propertyIds) {
+					datum += "," + Integer.toString(propertyId);
+				}
+				data.add(datum);
+			}
+		}
+		writeToFile(filePathAndName, data);
+	}
+
 	public void writeToFile(String filePathAndName, List<String> data) {
 		PrintWriter writer;
 		try {

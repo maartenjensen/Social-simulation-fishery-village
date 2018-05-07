@@ -1,7 +1,6 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human non-aggregate variables</name>
-  <type>NON_AGGREGATE</type>
-  <sourceType>fisheryvillage.population.Human</sourceType>
+  <name>Social event motivation</name>
+  <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
@@ -12,40 +11,44 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1987264256</hashCode>
+    <hashCode>1958602513</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Money</string>
+      <string>Event Tradition</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Money</id>
-        <className>fisheryvillage.population.Human</className>
-        <methodName>getMoney</methodName>
+        <id>Event Tradition</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getTradition</methodName>
+        <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>SocialLevelEvent</string>
+      <string>Event Power</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SocialLevelEvent</id>
-        <className>fisheryvillage.population.Human</className>
-        <methodName>getSocialLevelEvent</methodName>
+        <id>Event Power</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getPower</methodName>
+        <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>SocialLevelWork</string>
+      <string>Event Universalism</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SocialLevelWork</id>
-        <className>fisheryvillage.population.Human</className>
-        <methodName>getSocialLevelWork</methodName>
+        <id>Event Universalism</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getUniversalism</methodName>
+        <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>SocialLevelCombined</string>
+      <string>Event Self-direction</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SocialLevelCombined</id>
-        <className>fisheryvillage.population.Human</className>
-        <methodName>getSocialLevelCombined</methodName>
+        <id>Event Self-direction</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getSelfDirection</methodName>
+        <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

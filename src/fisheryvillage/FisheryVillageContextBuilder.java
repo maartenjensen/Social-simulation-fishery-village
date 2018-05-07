@@ -5,24 +5,13 @@ import java.util.ArrayList;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
-import fisheryvillage.common.Parameters;
+import fisheryvillage.common.RepastParam;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.ecosystem.Ecosystem;
-import fisheryvillage.municipality.Council;
-import fisheryvillage.municipality.EventHall;
-import fisheryvillage.population.Human;
+import fisheryvillage.population.Resident;
 import fisheryvillage.property.Boat;
-import fisheryvillage.property.CompanyOutside;
-import fisheryvillage.property.ElderlyCare;
-import fisheryvillage.property.Factory;
-import fisheryvillage.property.House;
-import fisheryvillage.property.HouseType;
-import fisheryvillage.property.School;
-import fisheryvillage.property.SchoolOutside;
-import fisheryvillage.property.SocialCare;
 import repast.simphony.context.Context;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
-import repast.simphony.context.space.graph.NetworkBuilder;
 import repast.simphony.context.space.grid.GridFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
@@ -55,7 +44,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		// Reset human id
 		HumanUtils.resetHumanId();
 		SimUtils.resetPropertyId();
-		Parameters.setRepastParameters();
+		RepastParam.setRepastParameters();
 		Logger.enableLogger();
 		
 		// Add context to this ID
@@ -75,15 +64,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		context.addValueLayer(valueLayer);
 		generateNature(valueLayer);
 		
-		// Create networks
-		Logger.logMain("Create couple and children network");
-		NetworkBuilder<Object> netBuilderCouple = new NetworkBuilder<Object> (Constants.ID_NETWORK_COUPLE, context, false);
-		netBuilderCouple.buildNetwork();
-		NetworkBuilder<Object> netBuilderChildren = new NetworkBuilder<Object> (Constants.ID_NETWORK_CHILDREN, context, true);
-		netBuilderChildren.buildNetwork();
-		NetworkBuilder<Object> netBuilderProperty = new NetworkBuilder<Object> (Constants.ID_NETWORK_PROPERTY, context, true);
-		netBuilderProperty.buildNetwork();
-		
 		// Set Context for SimUtils
 		SimUtils.setContext(context);
 		SimUtils.getGrid();
@@ -92,25 +72,10 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		// Create value framework
 		FrameworkBuilder.initialize();
 		
-		// Create houses
-		createHouses();
-
-		// Create boats
-		new Boat(SimUtils.getNewPropertyId(), Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 8));
-		new Boat(SimUtils.getNewPropertyId(), Constants.BOAT_BASIC_PRICE, Constants.BOAT_BASIC_MAINTENANCE, 0, new GridPoint(Constants.GRID_SEA_START + 3, Constants.GRID_HEIGHT - 13));
-
-		// Create buildings
-		new SocialCare(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 2));
-		new ElderlyCare(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 22));
-		new School(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 12));
-		new Factory(SimUtils.getNewPropertyId(), 1000, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 24));
-		new Council(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 18));
-		new EventHall(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 10));
-
-		// Create buildings outside village
-		new SchoolOutside(SimUtils.getNewPropertyId(), 0, 0, 0, new GridPoint(1, 12));
-		new CompanyOutside(SimUtils.getNewPropertyId(), 0, 0, 0, new GridPoint(1, 24));
-
+		// Create village
+		VillageBuilder villageBuilder = new VillageBuilder();
+		villageBuilder.buildVillage();
+		
 		// Create ecosystem
 		new Ecosystem(Constants.ECOSYSTEM_INITIAL_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
 		
@@ -119,26 +84,51 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 
 		return context;
 	}
-	
+
 	/*=========================================
 	 * Simulation schedule
 	 *=========================================
 	 */
+	
+	/*
+	 * Runs a fullStep, apart from the scheduler
+	 * Used to generate a starting population that has some properties/children
+	 * @param tick the current tick
+	 */
+	@ScheduledMethod(start = 1, interval = 1, priority = 0)
+	public void fullStep() {
+		
+		Logger.logMain("Run fullstep");
+		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		step0Tick();
+		if (tick % Constants.TICKS_PER_YEAR == 1) {
+			step1Year();
+		}
+		if (tick % Constants.TICKS_PER_MONTH == 1) {
+			step2Month();
+		}
+		step3Tick();
+		if (tick % Constants.TICKS_PER_MONTH == 1) {
+			step4Month();
+		}
+		step5Tick();
+	}
+	
 	/**
 	 * Step 0 Tick: starting tick, migration
 	 */
-	@ScheduledMethod(start = 1, interval = 1, priority = 0) //Highest priority, so this is activated first
 	public void step0Tick() {
 		
 		Logger.logMain("------------------------------------------------------------------------------");
 		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		Logger.logMain("0TICK: Starting tick: "+ tick +", " + SimUtils.getCouncil().getDate());
+		//TODO change parameters
 		if (Constants.MIGRATION_PROBABILITY > RandomHelper.nextDouble()) {
 			
-			Human human = new Human(SimUtils.getRandomBoolean(),
+			Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), true, SimUtils.getRandomBoolean(),
 									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
-									HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, true);
-			Logger.logMain("-- New human spawned : " + human.getId());
+									Constants.HUMAN_INIT_STARTING_MONEY);
+			Logger.logMain("-- New human spawned : " + resident.getId());
 		}
 
 	}
@@ -146,15 +136,15 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	/**
 	 * Step 1 Year: aging and family
 	 */
-	@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_YEAR, priority = -1)
+	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_YEAR, priority = -1)
 	public void step1Year() {
 		
 		Logger.logMain("1YEAR: aging and family");
 		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		Logger.logMain("- Run Human.stepAging");
-		for (final Human human: humans) {
-			human.stepAging();
+		for (final Resident resident: residents) {
+			resident.stepAging();
 		}
 		
 		Logger.logMain("- Run Boat.hasCaptain");
@@ -164,15 +154,15 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 		
 		Logger.logMain("- Run Human.stepFamily");
-		for (final Human human: humans) {
-			human.stepFamily();
+		for (final Resident resident: residents) {
+			resident.stepFamily();
 		}
 	}
 	
 	/**
 	 * Step 2 month: teacher removal
 	 */
-	@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -2)
+	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -2)
 	public void step2Month() {
 		
 		Logger.logMain("2MONTH: aging and family");
@@ -182,26 +172,26 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		Logger.logMain("- Run ElderlyCare.removeExcessiveCaretakers");
 		SimUtils.getElderlyCare().removeExcessiveCaretakers();
 		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		Logger.logMain("- Run Human.stepHousing");
-		for (final Human human: humans) {
-			human.stepHousing();
+		for (final Resident resident: residents) {
+			resident.stepHousing();
 		}
 		
 		Logger.logMain("- Run Human.stepChildrenSchooling");
-		for (final Human human: humans) {
-			human.stepChildrenSchooling();
+		for (final Resident resident: residents) {
+			resident.stepChildrenSchooling();
 		}
 		Logger.logMain("- Run Human.stepRelation");
-		for (final Human human: humans) {
-			human.stepRelation();
+		for (final Resident resident: residents) {
+			resident.stepRelation();
 		}
 	}
 	
 	/**
 	 * Step 3 week: working and social events
 	 */
-	@ScheduledMethod(start = 1, interval = 1, priority = -3)
+	//@ScheduledMethod(start = 1, interval = 1, priority = -3)
 	public void step3Tick() {
 		
 		Logger.logMain("3TICK: working and social events");
@@ -210,27 +200,20 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.getEventHall().stepResetEventHall();
 		SimUtils.getCouncil().resetCounts();
 		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
-		if (!SimUtils.getInitializationPhase()) {
-			Logger.logMain("- Run Human.stepDrainTanks");
-			for (final Human human: humans) {
-				human.stepDrainTanks();
-			}
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
+		Logger.logMain("- Run Human.stepDrainTanks");
+		for (final Resident resident: residents) {
+			resident.stepDrainTanks();
 		}
 		
 		Logger.logMain("- Run Human.stepSocialStatusDrain");
-		for (final Human human: humans) {
-			human.stepSocialStatusDrain();
+		for (final Resident resident: residents) {
+			resident.stepSocialStatusDrain();
 		}
 		
 		Logger.logMain("- Run Human.stepSocialEvent");
-		for (final Human human: humans) {
-			if (!SimUtils.getInitializationPhase()) {
-				human.stepSocialEvent();
-			}
-			else {
-				human.stepSocialEventOld();
-			}
+		for (final Resident resident: residents) {
+			resident.stepSocialEvent();
 		}
 
 		Logger.logMain("- Run EventHall.stepPerformSocialEvent");
@@ -246,19 +229,19 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 		
 		Logger.logMain("- Run Human.stepDonate");
-		for (final Human human: humans) {
-			human.stepDonate();
+		for (final Resident resident: residents) {
+			resident.stepDonate();
 		}
 	}
 	
 	/**
 	 * Step 4 month: monthly payments and death
 	 */
-	@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -4)
+	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -4)
 	public void step4Month() {
 		Logger.logMain("4MONTH: fishing/processing, montly payments, work selection, migration/death, council");
 		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		
 		Logger.logMain("- Boat.stepSellFish");
 		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
@@ -270,22 +253,22 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.getFactory().stepProcessFish();
 		
 		Logger.logMain("- Run Human.stepResetStandardCosts");
-		for (final Human human: humans) {
-			human.stepResetStandardCosts();
+		for (final Resident resident: residents) {
+			resident.stepResetStandardCosts();
 		}
 		
 		Logger.logMain("- Run Human.stepWork");
-		for (final Human human: humans) {
-			human.stepWork();
+		for (final Resident resident: residents) {
+			resident.stepWork();
 		}
 		
 		Logger.logMain("- Run Human.stepPayStandardCosts");
-		for (final Human human: humans) {
-			human.stepPayStandardCosts();
+		for (final Resident resident: residents) {
+			resident.stepPayStandardCosts();
 		}
 		Logger.logMain("- Run Human.stepSelectWork");
-		for (final Human human: humans) {
-			human.stepSelectWork();
+		for (final Resident resident: residents) {
+			resident.stepSelectWork();
 		}
 		
 		Logger.logMain("- Run Council.stepDistributeMoney");
@@ -294,15 +277,15 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		// Human.stepDeath should be the last one before Human.stepLocation
 		Logger.logMain("- Run Human.stepDeath");
 		ArrayList<Integer> humanIds = new ArrayList<Integer>();
-		for (final Human human: humans) {
-			humanIds.add(human.getId());
+		for (final Resident resident: residents) {
+			humanIds.add(resident.getId());
 		}
 		// Loop through humanIds
 		for (Integer humanId: humanIds) {
-			if (HumanUtils.getHumanById(humanId) != null) {
-				Human human = HumanUtils.getHumanById(humanId);
-				Logger.logProb("Death step for H" + human.getId(), 0.01);
-				human.stepDeath();
+			if (HumanUtils.getHumanByIdNoException(humanId) != null) {
+				Resident resident = HumanUtils.getResidentById(humanId);
+				Logger.logProb("Remove step for H" + resident.getId(), 0.01);
+				resident.stepRemove();
 			}
 			else {
 				Logger.logDebug("NO Death step for H" + humanId);
@@ -313,15 +296,15 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	/**
 	 * Step 5 tick: movement
 	 */
-	@ScheduledMethod(start = 1, interval = 1, priority = -5)
+	//@ScheduledMethod(start = 1, interval = 1, priority = -5)
 	public void step5Tick() {
 	
 		Logger.logMain("5TICK: human location");
 		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		Logger.logMain("- Run Human.stepLocation");
-		for (final Human human: humans) {
-			human.stepLocation();
+		for (final Resident resident: residents) {
+			resident.stepLocation();
 		}
 
 		Logger.logMain("------------------------------------------------------------------------------");
@@ -331,7 +314,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		savePopulation(tick);
 	}
-	
+		
 	/*=========================================
 	 * Extra functions
 	 *=========================================
@@ -391,61 +374,15 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 	}
 	
-	private void createHouses() {
-		
-		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES_CHEAP + " cheap houses");
-		int x = 0, y = 0;
-		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_CHEAP; ++i) {
-			
-			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 5, 1 + y * 3);
-			new House(SimUtils.getNewPropertyId(), HouseType.CHEAP, Constants.HOUSE_CHEAP_PRICE, Constants.HOUSE_CHEAP_MAINTENANCE, 0, location);
-			if (y == 7) {
-				y = 0;
-				x ++;
-			}
-			else {
-				y ++;
-			}
-		}
-		
-		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES_STANDARD + " standard houses");
-		x = 0;
-		y = 0;
-		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_STANDARD; ++i) {
-			
-			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 13 + x * 6, 2 + y * 5);
-			new House(SimUtils.getNewPropertyId(), HouseType.STANDARD, Constants.HOUSE_STANDARD_PRICE, Constants.HOUSE_STANDARD_MAINTENANCE, 0, location);
-			if (y == 4) {
-				y = 0;
-				x ++;
-			}
-			else {
-				y ++;
-			}
-		}
-		
-		Logger.logMain("Create " + Constants.NUMBER_OF_HOUSES_EXPENSIVE + " expensive houses");
-		x = 0;
-		for (int i = 0; i < Constants.NUMBER_OF_HOUSES_EXPENSIVE; ++i) {
-			
-			final GridPoint location = new GridPoint(Constants.GRID_VILLAGE_START + 1 + x * 7, Constants.GRID_HEIGHT - 6);
-			new House(SimUtils.getNewPropertyId(), HouseType.EXPENSIVE, Constants.HOUSE_EXPENSIVE_PRICE, Constants.HOUSE_EXPENSIVE_MAINTENANCE, 0, location);
-			x ++;
-		}
-	}
-	
 	private void initializePopulation() {
 		
-		boolean initializePopulationFromFile = RunEnvironment.getInstance().getParameters().getBoolean(Constants.PARA_ID_POP_INIT_FROM_FILE);
+		boolean initializePopulationFromFile = RepastParam.getPopInitFromFile();
 		PopulationBuilder populationBuilder = new PopulationBuilder();
-		
-		// Disable value based framework for initialization
-		//SimUtils.enableInitializationPhase();
 		
 		Logger.enableLogger();
 		
 		if (initializePopulationFromFile) {
-			String fileName = RunEnvironment.getInstance().getParameters().getString(Constants.PARA_ID_POP_INIT_FILE_NAME);
+			String fileName = RepastParam.getPopInitFileName();
 			Logger.logMain("Initialize " + Constants.INITIAL_POPULATION_SIZE + " humans from file : ./output/" + fileName + ".txt");
 			populationBuilder.generatePopulation("./output", fileName);
 		}
@@ -455,25 +392,24 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
 	
 				// Humans are automatically added to the context and placed in the grid
-				Human human = new Human(SimUtils.getRandomBoolean(), RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
-						  				HumanUtils.getNewHumanId(), Constants.HUMAN_INIT_STARTING_MONEY, false);
-				Logger.logInfo("Create H" + human.getId() + ", age: " + human.getAge());
+				Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), false, SimUtils.getRandomBoolean(),
+									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
+						  			RandomHelper.nextIntFromTo(0, Constants.HUMAN_INIT_STARTING_MONEY) );
+				Logger.logInfo("Create H" + resident.getId() + ", age: " + resident.getAge());
 			}
 		}
 		
 		// Do a location step
 		step5Tick();
-		// To do a value based run
-		SimUtils.disableInitializationPhase();
 		Logger.enableLogger();
 	}
 	
 	private void savePopulation(int tick) {
 
-		int stopYear = RunEnvironment.getInstance().getParameters().getInteger(Constants.PARA_ID_POP_GEN_TICK_LIMIT);
-		boolean saveToFile = RunEnvironment.getInstance().getParameters().getBoolean(Constants.PARA_ID_POP_GEN_TO_FILE);
+		int stopYear = RepastParam.getPopGenTickLimit();
+		boolean saveToFile = RepastParam.getPopGenToFile();
 		if (saveToFile && (tick == Constants.TICKS_PER_YEAR * stopYear)) {
-			String fileName = RunEnvironment.getInstance().getParameters().getString(Constants.PARA_ID_POP_GEN_FILE_NAME);
+			String fileName = RepastParam.getPopGenFileName();
 			Logger.logMain("------------------------------------------------------------------------------");
 			Logger.logMain(stopYear + " years have passed, save population in file: ./output/" + fileName + ".txt");
 			PopulationBuilder populationBuilder = new PopulationBuilder();
@@ -482,26 +418,4 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			Logger.logMain("------------------------------------------------------------------------------");
 		}
 	}
-	
-	/*
-	 * Runs a fullStep, apart from the scheduler.
-	 * Used to generate a starting population that has some properties/children
-	 * @param tick the current tick
-	 */
-	/*
-	private void fullStep(int tick) {
-		
-		step0Tick();
-		if (tick % Constants.TICKS_PER_YEAR == 1) {
-			step1Year();
-		}
-		if (tick % Constants.TICKS_PER_MONTH == 1) {
-			step2Month();
-		}
-		step3Tick();
-		if (tick % Constants.TICKS_PER_MONTH == 1) {
-			step4Month();
-		}
-		step5Tick();
-	}*/
 }

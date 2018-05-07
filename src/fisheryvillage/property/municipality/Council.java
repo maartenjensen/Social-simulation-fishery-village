@@ -1,4 +1,4 @@
-package fisheryvillage.municipality;
+package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
@@ -6,9 +6,10 @@ import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
+import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
-import fisheryvillage.property.Property;
 import fisheryvillage.property.PropertyColor;
+import fisheryvillage.property.Workplace;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.grid.GridPoint;
@@ -21,7 +22,7 @@ import saf.v3d.scene.VSpatial;
 * @author Maarten Jensen
 * @since 2018-02-20
 */
-public class Council extends Property {
+public class Council extends Workplace {
 
 	private double moneyForSchool = 0;
 	private double moneyForSocialCare = 0;
@@ -41,9 +42,9 @@ public class Council extends Property {
 	private int factoryCount = 1;
 	
 	public Council(int id, int price, int maintenanceCost, double money, GridPoint location) {
-		super(id, price, maintenanceCost, money, location, 3, 3, Status.MAYOR, PropertyColor.COUNCIL);
+		super(id, price, maintenanceCost, money, location, 3, 3, PropertyColor.COUNCIL);
+		allJobs.add(Status.MAYOR);
 		addToValueLayer();
-		actionName = "Job mayor";
 	}
 	
 	public void resetCounts() {
@@ -76,22 +77,13 @@ public class Council extends Property {
 		moneyForSocialCare = moneyPart.get(socialCount);
 		moneyForElderlyCare = moneyPart.get(elderlyCount);
 		moneyForFactory = moneyPart.get(factoryCount);
-		/*
-		if (SimUtils.getSchool().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
-			moneyForSchool += getSavings() / 2;
-		else if (SimUtils.getSocialCare().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
-			moneyForSocialCare += getSavings() / 2;
-		else if (SimUtils.getElderlyCare().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
-			moneyForElderlyCare += getSavings() / 2;
-		else if (SimUtils.getFactory().getSavings() < Constants.BUILDING_MONEY_DANGER_LEVEL)
-			moneyForFactory += getSavings() / 2;*/
 		
-		SimUtils.getSchool().addToSavings(moneyForSchool);
-		SimUtils.getSocialCare().addToSavings(moneyForSocialCare);
-		SimUtils.getElderlyCare().addToSavings(moneyForElderlyCare);
-		SimUtils.getFactory().addToSavings(moneyForFactory);
+		SimUtils.getSchool().addSavings(moneyForSchool);
+		SimUtils.getSocialCare().addSavings(moneyForSocialCare);
+		SimUtils.getElderlyCare().addSavings(moneyForElderlyCare);
+		SimUtils.getFactory().addSavings(moneyForFactory);
 		
-		removeFromSavings(- (moneyForSchool + moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
+		addSavings(-1 * (moneyForSchool + moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
 		
 		decideSavings ++;
 	}
@@ -99,15 +91,8 @@ public class Council extends Property {
 	public void setBuildingSavingsCount() {
 		
 		boolean share = false;
-		if (SimUtils.getInitializationPhase()) {
-			if (RandomHelper.nextDouble() > 0.25) {
-				share = true;
-			}
-		}
-		else {
-			if ((0.25 + getMayor().getUniversalismImportanceDistribution() * 0.75) > RandomHelper.nextDouble()) {
-				share = true;
-			}
+		if ((0.25 + getMayor().getUniversalismImportanceDistribution() * 0.75) > RandomHelper.nextDouble()) {
+			share = true;
 		}
 		
 		if (share) {
@@ -157,29 +142,26 @@ public class Council extends Property {
 		}
 	}
 	
-	public boolean getVacancy() {
-		if (hasMayor()) {
-			return false;
+	@Override
+	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+		
+		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		if (!hasMayor()) {
+			possibleJobs.add(Status.MAYOR);
 		}
-		return true;
+		return possibleJobs;
 	}
 	
-	public Human getMayor() {
-		final ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (final Human human: humans) {
-			if (human.getStatus() == Status.MAYOR) {
-				return human;
-			}
-		}
-		return null;
+	public Resident getMayor() {
+		return getOwner();
 	}
 	
 	public boolean hasMayor() {
-		final ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (final Human human: humans) {
-			if (human.getStatus() == Status.MAYOR) {
+		Resident resident = getOwner();
+		if (resident != null) {
+			if (resident.getStatus() == Status.MAYOR)
 				return true;
-			}
+			Logger.logError("H" + resident.getId() + " ");
 		}
 		return false;
 	}
@@ -203,12 +185,12 @@ public class Council extends Property {
 	
 	@Override
 	public String getName() {
-		return "Council";
+		return "Council" + " [" + getId() + "]";
 	}
 	
 	@Override
 	public String getLabel() {
-		return "Council, $: " + Math.round(getSavings()) + "\nSchool $:" + Math.round(moneyForSchool) + "\nSocialCare $:" + Math.round(moneyForSocialCare) + 
+		return "Council" + "[" + getId() + "], $: " + Math.round(getSavings()) + "\nSchool $:" + Math.round(moneyForSchool) + "\nSocialCare $:" + Math.round(moneyForSocialCare) + 
 				"\nElderlyCare $:" + Math.round(moneyForElderlyCare) + "\nFactory $:" + Math.round(moneyForFactory) + "\n\n"+getDate();
 	}
 	
@@ -290,15 +272,19 @@ public class Council extends Property {
 		return getNumberOfAge(Constants.HUMAN_ADULT_AGE, Constants.HUMAN_ELDERLY_CARE_AGE);
 	}
 	
+	public int getNumberOfPeople() {
+		return getNumberOfAge(0, Integer.MAX_VALUE);
+	}
+	
 	public int getSocialStatusRange() {
 		
 		int min = Integer.MAX_VALUE;
 		int max = 0;
 		
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (Human human: humans) {
-			min = Math.min(min, human.getSocialLevelCombined());
-			max = Math.max(max, human.getSocialLevelCombined());
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
+		for (Resident resident: residents) {
+			min = Math.min(min, resident.getSocialLevelCombined());
+			max = Math.max(max, resident.getSocialLevelCombined());
 		}
 		
 		Logger.logDebug("Check unsatisfied universalist, min:" + min + ", max:" + max);
@@ -342,13 +328,13 @@ public class Council extends Property {
 	}
 	
 	public double getAvgUniversalism() {
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
 		int count = 0;
 		double universalism = 0;
-		for (Human human : humans) {
-			if (human.getAge() >= Constants.HUMAN_ADULT_AGE && human.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
+		for (Resident resident : residents) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
 				count ++;
-				universalism += human.getLevelUniversalism();
+				universalism += resident.getLevelUniversalism();
 			}
 		}
 		if (count > 0) {
@@ -361,13 +347,13 @@ public class Council extends Property {
 	
 	
 	public double getAvgTradition() {
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
 		int count = 0;
 		double tradition = 0;
-		for (Human human : humans) {
-			if (human.getAge() >= Constants.HUMAN_ADULT_AGE && human.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
+		for (Resident resident : residents) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
 				count ++;
-				tradition += human.getLevelTradition();
+				tradition += resident.getLevelTradition();
 			}
 		}
 		if (count > 0) {
@@ -379,13 +365,13 @@ public class Council extends Property {
 	}
 	
 	public double getAvgPower() {
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
 		int count = 0;
 		double power = 0;
-		for (Human human : humans) {
-			if (human.getAge() >= Constants.HUMAN_ADULT_AGE && human.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
+		for (Resident resident : residents) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
 				count ++;
-				power += human.getLevelPower();
+				power += resident.getLevelPower();
 			}
 		}
 		if (count > 0) {
@@ -397,13 +383,13 @@ public class Council extends Property {
 	}
 
 	public double getAvgSelfDirection() {
-		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
 		int count = 0;
 		double selfdirection = 0;
-		for (Human human : humans) {
-			if (human.getAge() >= Constants.HUMAN_ADULT_AGE && human.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
+		for (Resident resident : residents) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
 				count ++;
-				selfdirection += human.getLevelSelfDirection();
+				selfdirection += resident.getLevelSelfDirection();
 			}
 		}
 		if (count > 0) {
