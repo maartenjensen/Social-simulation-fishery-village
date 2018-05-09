@@ -1,7 +1,6 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human non-aggregate variables</name>
-  <type>NON_AGGREGATE</type>
-  <sourceType>fisheryvillage.population.Resident</sourceType>
+  <name>Human social status min and max</name>
+  <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
@@ -12,40 +11,17 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1987264256</hashCode>
+    <hashCode>-2090174727</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Money</string>
+      <string>Council</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Money</id>
-        <className>fisheryvillage.population.Resident</className>
-        <methodName>getMoney</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>SocialLevelEvent</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SocialLevelEvent</id>
-        <className>fisheryvillage.population.Resident</className>
-        <methodName>getSocialLevelEvent</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>SocialLevelWork</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SocialLevelWork</id>
-        <className>fisheryvillage.population.Resident</className>
-        <methodName>getSocialLevelWork</methodName>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>SocialLevelCombined</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>SocialLevelCombined</id>
-        <className>fisheryvillage.population.Resident</className>
-        <methodName>getSocialLevelCombined</methodName>
+        <id>Council</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getSocialStatusRange</methodName>
+        <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

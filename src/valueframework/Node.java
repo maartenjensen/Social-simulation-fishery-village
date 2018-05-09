@@ -12,21 +12,6 @@ public class Node
 
     private ArrayList<Action> positiveRelatedActions;
     private ArrayList<Action> negativeRelatedActions;
-    //this list has only value when the node is a leaf in a value tree; otherwise, it is null.
-    /*
-    public void randomlyAssignActions(ArrayList<Action> alist){
-    	Collections.shuffle(alist);
-    	int randomNum;
-		if(alist.size()!=0){
-    		randomNum = ThreadLocalRandom.current().nextInt(0, alist.size());			
-    	relatedActions = new ArrayList<Action>(alist.subList(0, randomNum));
-		}
-		else{
-			relatedActions = null;
-			System.err.println("in randomlyAassingActions, input list is null");
-		}
-    	//TODO: check if it works fine
-    }*/
     
     public void addPositiveAction(Action posAction) {
     	positiveRelatedActions.add(posAction);
@@ -84,6 +69,17 @@ public class Node
 		print += ": -ACT:";
 		for (Action neg : negativeRelatedActions) {
 			print += neg.getTitle() + ", ";
+		}
+		return print;
+	}
+	
+	public String toTreeStringActions(String stringActionStart) {
+		String print = "";
+		for (Action pos : positiveRelatedActions) {
+			print += stringActionStart + "+" + pos.getTitle() + "\n";
+		}
+		for (Action neg : negativeRelatedActions) {
+			print += stringActionStart + "-" + neg.getTitle() + "\n";
 		}
 		return print;
 	}

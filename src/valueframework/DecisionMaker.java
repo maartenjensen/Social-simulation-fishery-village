@@ -27,7 +27,7 @@ public class DecisionMaker {
 	}
 	
 	public double getUniversalismImportanceDistribution() {
-		return waterTanks.get("Universalism").getThreshould() / (waterTanks.get("Power").getThreshould() + waterTanks.get("Universalism").getThreshould());
+		return waterTanks.get("Universalism").getThreshold() / (waterTanks.get("Power").getThreshold() + waterTanks.get("Universalism").getThreshold());
 	}
 	
 	public double getWaterTankLevel(String abstractValue) {
@@ -63,7 +63,7 @@ public class DecisionMaker {
 		Random r = new Random();
 		double filledLevel = Math.round(wt.getCapacity() * r.nextDouble());
 		WaterTank newWaterTank = new WaterTank(wt.getCapacity(), filledLevel, 
-											   wt.getThreshould(), wt.getDrainingAmount(), wt.getRelatedAbstractValue());
+											   wt.getThreshold(), wt.getDrainingAmount(), wt.getRelatedAbstractValue());
 		return newWaterTank;
 	}
 
@@ -290,18 +290,23 @@ public class DecisionMaker {
 	}
 
 	public double getSelfDirectionThreshold() {
-		return waterTanks.get("Self-direction").getThreshould();
+		return waterTanks.get("Self-direction").getThreshold();
 	}
 	
-	public boolean getIsSatisfied() {
+	public int getSatisfiedValuesCount() {
 		int satisfiedValues = 0;
 		for (String key: waterTanks.keySet()) {
 			WaterTank wt = waterTanks.get(key);
-			if (wt.getFilledLevel() > wt.getThreshould()) {
+			if (wt.getFilledLevel() >= wt.getThreshold()) {
 				satisfiedValues ++;
 			}
 		}
-		if (satisfiedValues > waterTanks.size() / 2) {
+		return satisfiedValues;
+	}
+	
+	public boolean getIsSatisfied() {
+		
+		if (getSatisfiedValuesCount() > waterTanks.size() / 2) {
 			return true;
 		}
 		return false;
@@ -309,7 +314,7 @@ public class DecisionMaker {
 	
 	public boolean isSelfDirectionSatisfied() {
 
-		if (waterTanks.get("Self-direction").getFilledLevel() >= waterTanks.get("Self-direction").getThreshould()) {
+		if (waterTanks.get("Self-direction").getFilledLevel() >= waterTanks.get("Self-direction").getThreshold()) {
 			return true;
 		}
 		return false;
@@ -328,7 +333,7 @@ public class DecisionMaker {
 		String string = "";
 		for (String key: waterTanks.keySet()) {
 			string += waterTanks.get(key).getRelatedAbstractValue().charAt(0) + ":" +
-					waterTanks.get(key).getFilledLevel() + "/" + waterTanks.get(key).getThreshould() + ", ";
+					waterTanks.get(key).getFilledLevel() + "/" + waterTanks.get(key).getThreshold() + ", ";
 		}
 		return string;
 	}

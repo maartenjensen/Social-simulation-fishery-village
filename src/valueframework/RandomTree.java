@@ -94,12 +94,24 @@ public class RandomTree {
 			printableTree += "     ";
 		}
 		if (depth > 0) {
-			printableTree += "+----";
+			printableTree += "=====";
 		}
 		printableTree += node.getValueName() + "\n";
+		
+		//Print positive and negative influencing actions
+		String stringActionStart = "";
+		for (int i = 0; i < depth; i ++) {
+			stringActionStart += "     ";
+		}
+		if (depth > 0) {
+			stringActionStart += "--- ";
+		}
+		printableTree += node.toTreeStringActions(stringActionStart);
+		
 		for (Node child : node.getChildren()) {
 			printableTree += getPrintableNode("", child, depth + 1);
 		}
+
 		return printableTree;
 	}
 }

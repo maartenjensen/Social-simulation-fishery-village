@@ -1,53 +1,53 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
+  <name>Human by age</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>4.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-221787075</hashCode>
+    <hashCode>-1614299654</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Donate power</string>
+      <string>N [0 - 17]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate power</id>
+        <id>N [0 - 17]</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getPower</methodName>
+        <methodName>getNumberOfChildren</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate self-direction</string>
+      <string>N [18 - 64]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate self-direction</id>
+        <id>N [18 - 64]</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getSelfDirection</methodName>
+        <methodName>getNumberOfAdults</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate universalism</string>
+      <string>N [65 - 74]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate universalism</id>
+        <id>N [65 - 74]</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getUniversalism</methodName>
+        <methodName>getNumberOfElderlyYoung</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate tradition</string>
+      <string>N [75 - ...]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate tradition</id>
+        <id>N [75 - ...]</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getTradition</methodName>
+        <methodName>getNumberOfElderlyOld</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

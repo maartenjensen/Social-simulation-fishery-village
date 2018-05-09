@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human avg values</name>
+  <name>Satisfied Values</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,43 +11,52 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1563312539</hashCode>
+    <hashCode>209948551</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Avg tradition level</string>
+      <string>Satisfied values 0</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg tradition level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgTradition</methodName>
+        <id>Satisfied values 0</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues0</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg power level</string>
+      <string>Satisfied values 1</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg power level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgPower</methodName>
+        <id>Satisfied values 1</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues1</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg self-direction level</string>
+      <string>Satisfied values 2</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg self-direction level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgSelfDirection</methodName>
+        <id>Satisfied values 2</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues2</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg universalism level</string>
+      <string>Satisfied values 3</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg universalism level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgUniversalism</methodName>
+        <id>Satisfied values 3</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues3</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values 4</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values 4</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues4</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

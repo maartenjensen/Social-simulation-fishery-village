@@ -31,7 +31,7 @@ public class Boat extends Workplace {
 	private int fishSold = 0;
 	private int fishThrownAway = 0;
 	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
-	
+
 	public Boat(int id, BoatType boatType, double money, GridPoint location) {
 		super(id, boatType.getPrice(), boatType.getMaintenanceCost(), money, location, boatType.getDimensions().getX(), boatType.getDimensions().getY(), PropertyColor.BOAT);
 		allJobs.add(Status.CAPTAIN);
@@ -128,6 +128,12 @@ public class Boat extends Workplace {
 			fishSold = 0;
 		}
 		fishCaught = 0;
+		
+		paymentCount = getFisherCount();
+		if (hasCaptain()) {
+			paymentCount += Constants.SALARY_MULTIPLIER_CAPTAIN;
+		}
+		paymentAmount = getSavings() / paymentCount;
 	}
 	
 	public void addFisher(int id) {
@@ -191,6 +197,10 @@ public class Boat extends Workplace {
 	 */
 	public double getFisherPayment(int fisherId) {
 		
+		Logger.logInfo("Boat " + getId() + " pay fisher " + fisherId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
+		paymentCount -= 1;
+		return paymentAmount;
+		/*
 		if (paymentCount < 0) {
 			
 			Logger.logError("Error in Boat " + getId() + ", paymentCount lower than zero: " + paymentCount);
@@ -207,7 +217,7 @@ public class Boat extends Workplace {
 		paymentCount -= 1;
 		addSavings(-1 * paymentAmount);
 		Logger.logInfo("Boat " + getId() + " pay fisher " + fisherId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
-		return paymentAmount;
+		return paymentAmount;*/
 	}
 
 	/**
@@ -218,6 +228,10 @@ public class Boat extends Workplace {
 	 */
 	public double getCaptainPayment(int captainId) {
 		
+		Logger.logInfo("Boat " + getId() + " pay fisher " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
+		paymentCount -= Constants.SALARY_MULTIPLIER_CAPTAIN;
+		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;
+		/*
 		if (paymentCount < 0) {
 			Logger.logError("Error in Boat " + getId() + ", captain exceeded paymentCount : " + paymentCount);
 			return 0;
@@ -230,7 +244,7 @@ public class Boat extends Workplace {
 		paymentCount -= Constants.SALARY_MULTIPLIER_CAPTAIN;
 		addSavings(-1 * paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN);
 		Logger.logInfo("Boat " + getId() + " pay captain " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
-		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;
+		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;*/
 	}
 	
 	@Override

@@ -2,9 +2,11 @@ package fisheryvillage.property.other;
 
 import java.util.ArrayList;
 
+import fisheryvillage.common.Constants;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.PropertyColor;
 import fisheryvillage.property.Workplace;
+import repast.simphony.random.RandomHelper;
 import repast.simphony.space.grid.GridPoint;
 import saf.v3d.scene.VSpatial;
 
@@ -28,12 +30,12 @@ public class CompanyOutside extends Workplace {
 	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
-		if (getEmployeeCount(Status.WORK_OUT_OF_TOWN) < maxEmployees) {
+		if (getEmployeeCount(Status.WORK_OUT_OF_TOWN) < maxEmployees && RandomHelper.nextDouble() <= Constants.WORK_OUTSIDE_PROBABILITY) {
 			possibleJobs.add(Status.WORK_OUT_OF_TOWN);
 		}
 		return possibleJobs;
 	}
-	
+
 	@Override
 	public String getName() {
 		return "Company outside [" + getId() + "]";

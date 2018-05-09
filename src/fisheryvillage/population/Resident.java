@@ -271,10 +271,12 @@ public final class Resident extends Human {
 		if (getAge() > Constants.HUMAN_MAX_LIVING_AGE) { //TODO make this a proper distribution
 			
 			die();
+			return ;
 		}
 		else if (getAge() == Constants.HUMAN_ELDERLY_CARE_AGE) {
 			
 			goToElderlyCare();
+			return ;
 		}
 		
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE)
@@ -491,6 +493,10 @@ public final class Resident extends Human {
 	
 	public double getLevelPower() {
 		return decisionMaker.getWaterTankLevel("Power");
+	}
+	
+	public int getSatisfiedValuesCount() {
+		return decisionMaker.getSatisfiedValuesCount();
 	}
 	
 	public void setChildrenWanted(int childrenWanted) {

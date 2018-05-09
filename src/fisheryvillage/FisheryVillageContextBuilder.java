@@ -78,6 +78,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		// Create ecosystem
 		new Ecosystem(Constants.ECOSYSTEM_INITIAL_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
+		new DataCollector(new GridPoint(2,2));
 		
 		// Create population
 		initializePopulation();
@@ -147,25 +148,19 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			resident.stepAging();
 		}
 		
-		Logger.logMain("- Run Boat.hasCaptain");
-		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
-		for (Boat boat : boats) {
-			boat.hasCaptain();
-		}
-		
 		Logger.logMain("- Run Human.stepFamily");
 		for (final Resident resident: residents) {
 			resident.stepFamily();
 		}
 	}
-	
+
 	/**
 	 * Step 2 month: teacher removal
 	 */
 	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -2)
 	public void step2Month() {
 		
-		Logger.logMain("2MONTH: aging and family");
+		Logger.logMain("2MONTH: teaching, housing and relations");
 		
 		Logger.logMain("- Run School.removeExcessiveTeachers");
 		SimUtils.getSchool().removeExcessiveTeachers(); //TODO put this somewhere that is more appropriate
@@ -233,7 +228,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			resident.stepDonate();
 		}
 	}
-	
+
 	/**
 	 * Step 4 month: monthly payments and death
 	 */
@@ -243,7 +238,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		
-		Logger.logMain("- Boat.stepSellFish");
+		Logger.logMain("- Boat.stepSellFish and calculate payment");
 		ArrayList<Boat> boats = SimUtils.getObjectsAllRandom(Boat.class);
 		for (Boat boat : boats) {
 			boat.stepSellFish();
@@ -256,7 +251,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (final Resident resident: residents) {
 			resident.stepResetStandardCosts();
 		}
-		
+
 		Logger.logMain("- Run Human.stepWork");
 		for (final Resident resident: residents) {
 			resident.stepWork();
@@ -275,7 +270,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.getCouncil().stepDistributeMoney();
 		
 		// Human.stepDeath should be the last one before Human.stepLocation
-		Logger.logMain("- Run Human.stepDeath");
+		Logger.logMain("- Run Human.stepRemove");
 		ArrayList<Integer> humanIds = new ArrayList<Integer>();
 		for (final Resident resident: residents) {
 			humanIds.add(resident.getId());

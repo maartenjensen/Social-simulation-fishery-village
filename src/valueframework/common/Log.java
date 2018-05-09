@@ -48,6 +48,7 @@ public final class Log {
 	
 	public static void printError(String error) {
 		System.err.println("VF-err: " + error);
+		new Exception().printStackTrace();
 	}
 	
 	public static void printStars() {

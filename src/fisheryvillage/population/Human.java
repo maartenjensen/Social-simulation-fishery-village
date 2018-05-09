@@ -138,7 +138,7 @@ public class Human {
 		this.salaryUntaxed = calculateSalary();
 		double salary = payTax(salaryUntaxed);
 		double benefits = calculateBenefits();
-		double bunkrupt_benefits = calculateBankruptBenefits();
+		double bankrupt_benefits = calculateBankruptBenefits();
 		Human partner = getPartner();
 		if (partner != null) {
 			salary /= 2;
@@ -146,9 +146,9 @@ public class Human {
 			partner.giveIncomeToPartner(salary + benefits);
 		}
 		nettoIncome += salary + benefits;
-		money += salary + benefits + bunkrupt_benefits;
+		money += salary + benefits + bankrupt_benefits;
 	}
-	
+
 	public void payStandardCosts() {
 		
 		// For children
@@ -324,6 +324,7 @@ public class Human {
 		// Also remove children
 		for (Human child : HumanUtils.getChildrenUnder18(this)) {
 			Logger.logInfo("and also child H" + child.getId());
+			childrenIds.remove( childrenIds.indexOf(child.getId()));
 			child.removeSelf();
 		}
 		removeSelf();
@@ -355,6 +356,7 @@ public class Human {
 	}
 	
 	private void shareMoney() {
+		
 		Human partner = getPartner();
 		if (partner != null) {
 			partner.addMoney(money);
@@ -595,16 +597,21 @@ public class Human {
 	protected void setStatusByAge() {
 		
 		if (age < Constants.HUMAN_ADULT_AGE) {
-			status = Status.CHILD;
+			if (status != Status.CHILD)
+				status = Status.CHILD;
 		}
 		else if (age >= Constants.HUMAN_ELDERLY_CARE_AGE) {
-			status = Status.ELDEST;
-			schoolType = SchoolType.NO_SCHOOL;
+			if (status != Status.ELDEST) {
+				status = Status.ELDEST;
+				schoolType = SchoolType.NO_SCHOOL;
+			}
 		}
 		else if (age >= Constants.HUMAN_ELDERLY_AGE) {
-			stopWorkingAtWorkplace();
-			status = Status.ELDER;
-			schoolType = SchoolType.NO_SCHOOL;
+			if (status != Status.ELDER) {
+				stopWorkingAtWorkplace();
+				status = Status.ELDER;
+				schoolType = SchoolType.NO_SCHOOL;
+			}
 		}
 		else if (status == Status.CHILD) {
 			status = Status.UNEMPLOYED;

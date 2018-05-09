@@ -56,6 +56,7 @@ public final class FrameworkBuilder {
 			//then read actions from file
 			readActionsFile("inputFiles\\actionList.txt");
 			assignRelatedActionsToConcreteValues();
+			printTrees();
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -97,7 +98,7 @@ public final class FrameworkBuilder {
 				Log.printStars();
 				RandomTree tree = createGlobalValueTrees(treeInfo, waterTankInfo);						
 				globalValueTrees.put(tree.getRoot().getValueName(), tree);	
-				Log.printLog("Full-tree\n" + tree.getPrintableTree());
+				Log.printLog("Basic-tree\n" + tree.getPrintableTree());
 			}
 			else {
 				line = reader.readLine();
@@ -120,8 +121,6 @@ public final class FrameworkBuilder {
 					
 					if (items.size() >= 1) {
 						addActionFromString(items);
-						//ArrayList<Node> relatedCncrtValue = addConcreteValuesFromString(items.subList(1, items.size()));
-						//act.assignConcreteValues(relatedCncrtValue);
 					}
 					else {
 						Log.printError("No elements in items or doesn't contain a concrete value:" + items);
@@ -154,7 +153,7 @@ public final class FrameworkBuilder {
 			}
 			Log.printLog(nd.toStringActions());
 		}
-	}	
+	}
 
 	private static ArrayList<Node> addConcreteValuesFromString(List<String> concreteValues) {
 		
@@ -171,6 +170,13 @@ public final class FrameworkBuilder {
 				concreteValueNodes.add(cncrtValueNode);
 		}
 		return concreteValueNodes;
+	}
+	
+	private static void printTrees() {
+		
+		for (String key : globalValueTrees.keySet()) {
+			Log.printLog("Full-tree\n" + globalValueTrees.get(key).getPrintableTree());
+		}
 	}
 	
 	private static Node findInstanceOfValueWithName(String concreteValue) {

@@ -108,7 +108,7 @@ public class WaterTank implements Comparable<WaterTank> {
 		return drainingAmount;
 	}
 
-	public double getThreshould() {
+	public double getThreshold() {
 		return threshold;
 	}
 

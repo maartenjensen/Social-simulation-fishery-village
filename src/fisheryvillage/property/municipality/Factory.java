@@ -93,7 +93,7 @@ public class Factory extends Workplace {
 		}
 		addSavings(fishProcessedKg * Constants.PRICE_PER_KG_FISH_PROCESSED);
 	}
-	
+
 	public void fireEmployees(int number) {
 		
 		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);

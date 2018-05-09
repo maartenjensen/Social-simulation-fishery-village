@@ -122,6 +122,7 @@ public final class Constants {
 	public static final double BENEFIT_UNEMPLOYED = 800;
 	public static final double BENEFIT_ELDERLY = 500;
 	public static final int SALARY_MULTIPLIER_CAPTAIN = 2;
+	public static final double WORK_OUTSIDE_PROBABILITY = 0.3;
 	
 	// Initialize donation
 	public static final double DONATE_FACTOR_OF_LEFT_OVER_MONEY = 0.1;
