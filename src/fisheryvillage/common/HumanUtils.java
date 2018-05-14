@@ -169,7 +169,9 @@ public final strictfp class HumanUtils {
 		
 		ArrayList<Human> parents = new ArrayList<Human>();
 		for (Integer parentId : human.getParentsIds()) {
-			parents.add(HumanUtils.getHumanById(parentId));
+			Human parent = HumanUtils.getHumanByIdNoException(parentId);
+			if (parent != null)
+				parents.add(parent);
 		}
 		return parents;
 	}

@@ -286,11 +286,17 @@ public class Human {
 	/**
 	 * Removes the agent from the context, the house is sold or given to the partner (if he/she has
 	 * no house) after that the money is given to the partner. If the person has no partner then it 
-	 * is shared among the children.
+	 * is shared among the children. The person is also removed from the childrenIds in his/her parents
 	 */
 	public void removeSelf() {
 		
 		status = Status.DEAD;
+		
+		// Remove this person from parent id
+		for (Human parent : HumanUtils.getParents(this)) {
+			parent.removeChild(id);
+		}
+		
 		Logger.logInfo("H" + id + " is removed");
 		Human partner = getPartner();
 		if (partner != null && HumanUtils.getOwnedHouse(this) != null) {
@@ -321,10 +327,9 @@ public class Human {
 			Logger.logInfo("and takes partner H" + getPartner().getId() + " with her/him");
 			getPartner().removeSelf();
 		}
-		// Also remove children
+		// Also remove children (in removeSelf the child removes the childrenIds id in the parent.
 		for (Human child : HumanUtils.getChildrenUnder18(this)) {
 			Logger.logInfo("and also child H" + child.getId());
-			childrenIds.remove( childrenIds.indexOf(child.getId()));
 			child.removeSelf();
 		}
 		removeSelf();
@@ -642,6 +647,16 @@ public class Human {
 		}
 		else {
 			Logger.logError("H" + id + " child already in childrenIds : " + childId);
+		}
+	}
+	
+	public void removeChild(int childId) {
+		if (childrenIds.contains(childId)) {
+			Logger.logDebug("H" + id + " remove child " + childId + " from parent");
+			childrenIds.remove(childrenIds.indexOf(childId));
+		}
+		else {
+			Logger.logError("H" + id + " child not in childrenIds : " + childId);
 		}
 	}
 	

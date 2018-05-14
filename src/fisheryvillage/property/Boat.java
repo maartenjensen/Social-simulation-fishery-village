@@ -199,6 +199,7 @@ public class Boat extends Workplace {
 		
 		Logger.logInfo("Boat " + getId() + " pay fisher " + fisherId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
 		paymentCount -= 1;
+		addSavings(-1 * paymentAmount);
 		return paymentAmount;
 		/*
 		if (paymentCount < 0) {
@@ -228,8 +229,9 @@ public class Boat extends Workplace {
 	 */
 	public double getCaptainPayment(int captainId) {
 		
-		Logger.logInfo("Boat " + getId() + " pay fisher " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
+		Logger.logInfo("Boat " + getId() + " pay captain " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
 		paymentCount -= Constants.SALARY_MULTIPLIER_CAPTAIN;
+		addSavings(-1 * paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN);
 		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;
 		/*
 		if (paymentCount < 0) {
