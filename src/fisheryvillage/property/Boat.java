@@ -7,6 +7,7 @@ import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
+import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.municipality.Factory;
 import repast.simphony.random.RandomHelper;
@@ -107,12 +108,61 @@ public class Boat extends Workplace {
 		return possibleJobs;
 	}
 
-	public void stepFish() { //TODO make this an influenceable step
+	public void stepFish() {
 		
 		fishThrownAway = 0;
 		fishSold = 0;
-		int fishToCatch = (getFisherCount() + 1) * RandomHelper.nextIntFromTo(Constants.FISH_CATCH_AMOUNT_MIN_PP, Constants.FISH_CATCH_AMOUNT_MAX_PP);
+		
+		if (getFisherAndCaptainCount() == 0) {
+			return ;
+		}
+		
+		String fishingAction = "none";
+		if (hasCaptain()) {
+			fishingAction = getOwner().selectFishingAction();
+			Logger.logAction(getName() + " captain chooses action " + fishingAction);
+			getOwner().actionFish(fishingAction);
+		}
+		else {
+			Resident fisher = HumanUtils.getResidentById( fishersIds.get(RandomHelper.nextIntFromTo(0, fishersIds.size() - 1)) );
+			fishingAction = fisher.selectFishingAction();
+			Logger.logAction(getName() + " fisher chooses action " + fishingAction);
+		}
+		
+		for (int fisherId : fishersIds) { // Update values for each fisher
+			HumanUtils.getResidentById(fisherId).actionFish(fishingAction);
+		}
+		
+		int fishToCatch = actionFish(fishingAction);
 		fishCaught += SimUtils.getEcosystem().fishFish(fishToCatch);
+	}
+	
+	public int actionFish(String fishingAction) {
+		
+		int amountPerFisher = 0;
+		switch (fishingAction) {
+		case "Fish a lot":
+			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MAX_PP;
+			break;
+		case "Fish a lot danger":
+			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MAX_PP;
+			break;
+		case "Fish medium":
+			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MEDIUM_PP;
+			break;
+		case "Fish medium danger":
+			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MEDIUM_PP;
+			break;
+		case "Fish less":
+			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MIN_PP;
+			break;
+		case "Fish less danger":
+			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MIN_PP;
+			break;
+		default:
+			Logger.logError("Error in fish catch");
+		}
+		return getFisherAndCaptainCount() * amountPerFisher;
 	}
 	
 	public void stepSellFish() {

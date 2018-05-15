@@ -48,6 +48,7 @@ public final class Constants {
 	public static final double PRICE_PER_KG_FISH_PROCESSED = 10;
 	public static final int FISH_PROCESSING_AMOUNT_PP = 750;
 	public static final int FISH_CATCH_AMOUNT_MIN_PP = 50;
+	public static final int FISH_CATCH_AMOUNT_MEDIUM_PP = 125;
 	public static final int FISH_CATCH_AMOUNT_MAX_PP = 200;
 	
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;

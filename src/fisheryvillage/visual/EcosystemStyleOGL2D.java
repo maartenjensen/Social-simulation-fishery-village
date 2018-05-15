@@ -1,5 +1,6 @@
 package fisheryvillage.visual;
 
+import java.awt.Color;
 import java.awt.Font;
 
 import fisheryvillage.common.Constants;
@@ -35,5 +36,20 @@ public class EcosystemStyleOGL2D extends DefaultStyleOGL2D {
 	@Override
 	public Position getLabelPosition(Object object) {
 	    return Position.SOUTH;
+	}
+	
+	@Override
+	public Color getColor(final Object agent) {
+		
+		if (agent instanceof Ecosystem) {
+			final Ecosystem ecosystem = (Ecosystem) agent;
+			if (ecosystem.fishInDanger()) {
+				return new Color(0xFF, 0x00, 0x00);
+			}
+			else {
+				return new Color(0x00, 0xFF, 0x00);
+			}
+		}
+		return super.getColor(agent);
 	}
 }

@@ -27,7 +27,7 @@ public class DecisionMaker {
 	}
 	
 	public double getUniversalismImportanceDistribution() {
-		return waterTanks.get("Universalism").getThreshold() / (waterTanks.get("Power").getThreshold() + waterTanks.get("Universalism").getThreshold());
+		return waterTanks.get(AbstractValue.UNIVERSALISM.name()).getThreshold() / (waterTanks.get(AbstractValue.POWER.name()).getThreshold() + waterTanks.get(AbstractValue.UNIVERSALISM.name()).getThreshold());
 	}
 	
 	public double getWaterTankLevel(String abstractValue) {
@@ -188,33 +188,6 @@ public class DecisionMaker {
 		}
 		return possibleActions;
 	}
-	/*
-	private ArrayList<ValuedAction> getActionsWithHighestPriorityValue(ArrayList<Action> possibleActionsSet, ArrayList<RandomTree> selectedValues) {
-		
-		// There should be at least some possibleActions and selectedValues
-		if (possibleActionsSet.size() == 0 || selectedValues.size() == 0)
-			return new ArrayList<ValuedAction>();
-		
-		// Order value trees based on priority
-		ArrayList<RandomTree> orderedAbstractValues = prioritizingWaterTanks(selectedValues);
-		
-		ArrayList<ValuedAction> returnedValuedActions = new ArrayList<ValuedAction>();
-		// Search through the trees in order and return the first abstract value that has 1 or more actions available
-		for(RandomTree rt: orderedAbstractValues) {
-			
-			ArrayList<Action> relatedActions = filterActions(possibleActionsSet, rt);
-			if (relatedActions.size() >= 1) {
-				for(Action tmpAct : relatedActions){
-					//TODO this uses only positively influenced abstract values
-					ArrayList<String> positiveValues = new ArrayList<String>();
-					positiveValues.add(rt.getRoot().getValueName());
-					returnedValuedActions.add(new ValuedAction(tmpAct.getTitle(), positiveValues, new ArrayList<String>()));
-				}
-				break;			
-			}
-		}
-		return returnedValuedActions;
-	}*/
 	
 	private ArrayList<ValuedAction> convertActionsToValuedActions(ArrayList<Action> actions) {
 		ArrayList<ValuedAction> valuedActions = new ArrayList<ValuedAction>();
@@ -290,7 +263,7 @@ public class DecisionMaker {
 	}
 
 	public double getSelfDirectionThreshold() {
-		return waterTanks.get("Self-direction").getThreshold();
+		return waterTanks.get(AbstractValue.SELFDIRECTION.name()).getThreshold();
 	}
 	
 	public int getSatisfiedValuesCount() {
@@ -314,7 +287,7 @@ public class DecisionMaker {
 	
 	public boolean isSelfDirectionSatisfied() {
 
-		if (waterTanks.get("Self-direction").getFilledLevel() >= waterTanks.get("Self-direction").getThreshold()) {
+		if (waterTanks.get(AbstractValue.SELFDIRECTION.name()).getFilledLevel() >= waterTanks.get(AbstractValue.SELFDIRECTION.name()).getThreshold()) {
 			return true;
 		}
 		return false;

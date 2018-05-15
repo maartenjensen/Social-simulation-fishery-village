@@ -3,6 +3,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import fisheryvillage.common.RepastParam;
 import valueframework.common.Log;
 
 
@@ -38,13 +39,13 @@ public class WaterTank implements Comparable<WaterTank> {
 		int maxFilledLevel = Integer.valueOf(items.get(3));
 		int minFilledLevel = Integer.valueOf(items.get(4));
 		drainingAmount = Integer.valueOf(items.get(5));
-		int minThresould = Integer.valueOf(items.get(6));
-		int maxThresould = Integer.valueOf(items.get(7));
+		//int minThresould = Integer.valueOf(items.get(6));
+		//int maxThresould = Integer.valueOf(items.get(7));
 		Random rand = new Random();
 	//	int cp = rand.nextInt((maxCapacity - minCapacity) + 1) + minCapacity;
 		int cp = maxCapacity;
 		int fl = rand.nextInt((maxFilledLevel - minFilledLevel) + 1) + minFilledLevel;
-		int tr = rand.nextInt((maxThresould - minThresould) + 1) + minThresould;
+		int tr = RepastParam.getAbstractValue(relatedAbstractValue); //TODO don't get this directly from the class RepastParam but give the values in the constructor
 	    
 		capacity = cp;
 	    filledLevel = fl;
@@ -76,10 +77,10 @@ public class WaterTank implements Comparable<WaterTank> {
 		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " + " + increasingAmount * multiply + ", new lvl:" + filledLevel);
 	}
 	
-	public void decreaseLevel() {//TODO: level of satisfaction?
+	public void decreaseLevel() {//TODO: check if it is correct to use the drainingAmount for decreasing
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.max(0, filledLevel - increasingAmount);
-		Log.printLog("Decr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " - " + increasingAmount + ", new lvl:" + filledLevel);
+		filledLevel = Math.max(0, filledLevel - drainingAmount); //- increasingAmount);
+		Log.printLog("Decr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " - " + drainingAmount + ", new lvl:" + filledLevel);
 	}
 	
 	public void decreaseLevel(double multiply) {//TODO: level of satisfaction?

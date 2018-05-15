@@ -1,6 +1,7 @@
 package fisheryvillage.common;
 
 import repast.simphony.engine.environment.RunEnvironment;
+import valueframework.AbstractValue;
 
 public final class RepastParam {
 		
@@ -51,7 +52,7 @@ public final class RepastParam {
 		return popInitFileName;
 	}
 	
-	public static int getValuePower() {
+	public static int getPower() {
 		return valuePower;
 	}
 	
@@ -65,5 +66,23 @@ public final class RepastParam {
 	
 	public static int getTradition() {
 		return valueTradition;
+	}
+	
+	public static int getAbstractValue(String valueName) {
+		
+		Logger.logDebug("GETABSTRACTVALUE : " + valueName);
+		if (valueName.equals(AbstractValue.POWER.name())) {
+			return getPower();
+		}
+		else if (valueName.equals(AbstractValue.UNIVERSALISM.name())) {
+			return getUniversalism();
+		}
+		else if (valueName.equals(AbstractValue.SELFDIRECTION.name())) {
+			return getSelfDirection();
+		}
+		else if (valueName.equals(AbstractValue.TRADITION.name())) {
+			return getTradition();
+		}
+		return 0;
 	}
 }

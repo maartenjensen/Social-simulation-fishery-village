@@ -9,6 +9,8 @@ import fisheryvillage.property.Boat;
 import fisheryvillage.property.BoatType;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.Workplace;
+import fisheryvillage.property.municipality.Event;
+import fisheryvillage.property.municipality.EventHall;
 import fisheryvillage.property.municipality.Factory;
 
 public class ActionImplementation {
@@ -117,6 +119,44 @@ public class ActionImplementation {
 		case "Donate to council":
 			actionDonate(resident, SimUtils.getCouncil());
 			break;
+		default:
+			Logger.logError("H" + resident.getId() + " action '" + actionTitle + "' doesn't exist");
+		}
+	}
+	
+	public static void executeActionEvent(String actionTitle, Resident resident) {
+		
+		EventHall eventHall = SimUtils.getEventHall();
+		ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(resident.getId());
+		switch(actionTitle) {
+		case "Organize free event":
+			Logger.logAction("CREATE EVENT F - H" + resident.getId());
+			resident.addMoney(-1 * eventHall.createEvent("Free", resident.getId()));
+			break;
+		case "Organize commercial event":
+			Logger.logAction("CREATE EVENT C - H" + resident.getId());
+			resident.addMoney(-1 * eventHall.createEvent("Commercial", resident.getId()));
+			break;
+		case "Attend free event":
+			for (Event event : possibleEvents) {
+				if (event.getEventType().equals("Free")) {
+					Logger.logAction("ATTEND EVENT F - H" + resident.getId());
+					resident.addMoney(-1 * eventHall.joinEvent(event, resident.getId()));
+					break;
+				}
+			}
+			break;
+		case "Attend commercial event":
+			for (Event event : possibleEvents) {
+				if (event.getEventType().equals("Commercial")) {
+					Logger.logAction("ATTEND EVENT C - H" + resident.getId());
+					resident.addMoney(-1 * eventHall.joinEvent(event, resident.getId()));
+					break;
+				}
+			}
+			break;
+		default:
+			Logger.logError("H" + resident.getId() + " action '" + actionTitle + "' doesn't exist");
 		}
 	}
 	

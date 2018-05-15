@@ -12,9 +12,9 @@ import fisheryvillage.property.HouseType;
 import fisheryvillage.property.municipality.Event;
 import fisheryvillage.property.municipality.EventHall;
 import repast.simphony.random.RandomHelper;
+import valueframework.AbstractValue;
 import valueframework.DecisionMaker;
 import valueframework.ValuedAction;
-import valueframework.WaterTank;
 
 /**
  * This class extends the human class with decision making options
@@ -131,70 +131,50 @@ public final class Resident extends Human {
 			}
 		}
 	}
-	
+
 	public void stepSocialEvent() {
 		
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE) {
 			return ;
 		}
 		
-		WaterTank waterTank = decisionMaker.mostImportantValue();
 		EventHall eventHall = SimUtils.getEventHall();
 		ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(getId());
 		
-		switch(waterTank.getRelatedAbstractValue()) {
-		case "Tradition":
-			if (possibleEvents.size() >= 1) {
-				Logger.logAction("JOIN EVENT - H" + getId() + " Tradition");
-				Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
-				addMoney(-1 * eventHall.joinEvent(eventToJoin, getId()));
-				waterTank.increasingLevel(0.2);
-				eventHall.increaseTradition();
+		//Create possible actions
+		ArrayList<String> possibleActions = new ArrayList<String>();
+		if (eventHall.getVacancyForNewEvent() && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
+			possibleActions.add("Organize free event");
+			possibleActions.add("Organize commercial event");
+		}
+		for (Event event : possibleEvents) {
+			if (event.getEventType().equals("Free") && !possibleActions.contains("Attend free event")) {
+				possibleActions.add("Attend free event");
 			}
-			break;
-		case "Power":
-			if (socialStatus.getBelowAverage()) {
-				
-				if (eventHall.getVacancyForNewEvent() && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
-					Logger.logAction("CREATE EVENT C - H" + getId() + " Power");
-					addMoney(-1 * eventHall.createEvent("Commercial", getId()));
-					waterTank.increasingLevel(2);
-					eventHall.increasePower();
-				}
-				else {
-					if (possibleEvents.size() >= 1) {
-						Logger.logAction("JOIN EVENT - H" + getId() + " Power");
-						Event eventToJoin = possibleEvents.get(RandomHelper.nextIntFromTo(0, possibleEvents.size() - 1));
-						addMoney(-1 * eventHall.joinEvent(eventToJoin, getId()));
-						waterTank.increasingLevel(0.2);
-						eventHall.increasePower();
-					}
-				}
+			else if (event.getEventType().equals("Commercial") && !possibleActions.contains("Attend commercial event") && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
+				possibleActions.add("Attend commercial event");
 			}
-			break;
-		case "Self-direction":
-			if (eventHall.getVacancyForNewEvent() && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
-				if (RandomHelper.nextDouble() < 0.5) {
-					Logger.logAction("CREATE EVENT F - H" + getId() + " Self-direction");
-					addMoney(-1 * eventHall.createEvent("Free", getId()));
-				}
-				else {
-					Logger.logAction("CREATE EVENT C - H" + getId() + " Self-direction");
-					addMoney(-1 * eventHall.createEvent("Commercial",  getId()));	
-				}
-				eventHall.increaseSelfDirection();
-				waterTank.increasingLevel(2);
-			}
-			break;
-		case "Universalism":
-			if (socialStatus.getUnsatisfiedUniversalist() && eventHall.getVacancyForNewEvent()) {
-				Logger.logAction("CREATE EVENT F - H" + getId() + " Universalism");
-				addMoney(-1 * eventHall.createEvent("Free", getId()));
-				waterTank.increasingLevel(2);
-				eventHall.increaseUniversalism();
-			}
-			break;
-		}		
+		}
+		
+		if (possibleActions.size() == 0) {
+			Logger.logInfo("H" + getId() + " event no possible actions");
+			return ;
+		}
+		else {
+			Logger.logInfo("H" + getId() + " event possible actions: " + possibleActions);
+		}
+		
+		ArrayList<ValuedAction> filteredActions = decisionMaker.agentFilterActionsBasedOnValues(possibleActions);
+		ValuedAction selectedAction = filteredActions.get(0);
+		String actionToDo = selectedAction.getTitle();
+
+		if (actionToDo != null) {
+			decisionMaker.agentExecutesValuedAction(selectedAction);
+			ActionImplementation.executeActionEvent(actionToDo, this);
+		}
+		else {
+			Logger.logError("H " + getId() + " Error no action to execute");
+		}	
 	}
 
 	public void stepDonate() {
@@ -209,17 +189,21 @@ public final class Resident extends Human {
 			possibleActions.add("Donate to council");
 		}
 		Logger.logInfo("H" + getId() + " possible actions: " + possibleActions);
-		String actionToDo = "Donate nothing";
-		actionToDo = selectActionFromPossibleActionsDonate(possibleActions);
+
+		ArrayList<ValuedAction> filteredActions = decisionMaker.agentFilterActionsBasedOnValues(possibleActions);
+
+		ValuedAction selectedAction = filteredActions.get(0);
+		String actionToDo = selectedAction.getTitle();
 
 		if (actionToDo != null) {
+			decisionMaker.agentExecutesValuedAction(selectedAction);
 			ActionImplementation.executeActionDonate(actionToDo, this);
 		}
 		else {
-			Logger.logError("Error no action to execute");
+			Logger.logError("H " + getId() + " Error no action to execute");
 		}
 	}
-	
+
 	public void stepFamily() {
 
 		if (!isSingle() && !isMan() && childrenWanted > 0 && getAge() < Constants.HUMAN_MAX_CHILD_GET_AGE && HumanUtils.isLivingTogetherWithPartner(this)
@@ -350,11 +334,60 @@ public final class Resident extends Human {
 		Logger.logAction("H" + getId() + "and H" + partner.getId() + " got a child");
 		childrenWanted--;
 	}
+
+	public void actionFish(String fishingActionTitle) {
+		
+		ArrayList<String> fishingActions = new ArrayList<String>();
+		fishingActions.add(fishingActionTitle);
+		ArrayList<ValuedAction> evaluatedAction = decisionMaker.agentFilterActionsBasedOnValues(fishingActions);
+		decisionMaker.agentExecutesValuedAction(evaluatedAction.get(0));
+	}
 	
 	/*=========================================
 	 * Other methods 
 	 *=========================================
 	 */
+	/**
+	 * Select fishing action based on the decisionMaker filter on actions
+	 * from the filteredActions, the best actions are selected (so the actions with the highest
+	 * same value). A random action from this best actions is choosen
+	 * @return
+	 */
+	public String selectFishingAction() {
+		
+		ArrayList<String> possibleActions = getFishingActions();
+		ArrayList<ValuedAction> filteredActions = decisionMaker.agentFilterActionsBasedOnValues(possibleActions);
+		ArrayList<ValuedAction> bestActions = new ArrayList<ValuedAction>();
+		for (ValuedAction valuedAction : filteredActions) {
+			if (bestActions.size() == 0) {
+				bestActions.add(valuedAction);
+			}
+			else if (bestActions.get(0).getActionGoodness() == valuedAction.getActionGoodness()) {
+				bestActions.add(valuedAction);
+			}
+		}
+		if (filteredActions.size() > 0) {
+			return bestActions.get(RandomHelper.nextIntFromTo(0, bestActions.size() - 1)).getTitle();
+		}
+		Logger.logError("H" + getId() + " no selected actions from possible actions:" + possibleActions);
+		return "ERROR";
+	}
+
+	public ArrayList<String> getFishingActions() {
+		
+		ArrayList<String> possibleActions = new ArrayList<String>();
+		if (!SimUtils.getEcosystem().fishInDanger()) {
+			possibleActions.add("Fish a lot");
+			possibleActions.add("Fish medium");
+			possibleActions.add("Fish less");
+		}
+		else {
+			possibleActions.add("Fish a lot danger");
+			possibleActions.add("Fish medium danger");
+			possibleActions.add("Fish less danger");
+		}
+		return possibleActions;
+	}
 	
 	private int calculateChildrenWanted() {
 		double y = 7 - (1.0/15.0) * (double) SimUtils.getCouncil().getNumberOfPeople();
@@ -385,54 +418,6 @@ public final class Resident extends Human {
 		}
 		Logger.logInfo("H" + getId() + " jobTitle: " + jobActionName + ", selected action:" + selectedAction + " from actions: " + filteredActions);
 		return selectedAction;
-	}
-	
-	private String selectActionFromPossibleActionsDonate(ArrayList<String> possibleActions) {
-		
-		if (possibleActions.size() == 0) {
-			return null;
-		}
-		
-		WaterTank waterTank = decisionMaker.mostImportantValue();
-		if (possibleActions.size() == 1){
-			if (waterTank.getRelatedAbstractValue().equals("Power")) {
-				Logger.logInfo("DONATE NOT - H" + getId() + " Power (no money)");
-				waterTank.increasingLevel(0.2);
-				SimUtils.getCouncil().increasePower();
-			}
-			else if (waterTank.getRelatedAbstractValue().equals("Self-direction")) {
-				Logger.logInfo("DONATE NOT - H" + getId() + " Self-direction (no money)");
-				waterTank.increasingLevel(0.2);
-				SimUtils.getCouncil().increaseSelfDirection();
-			}
-			return "Donate nothing";
-		}
-		
-		switch(waterTank.getRelatedAbstractValue()) {
-		case "Tradition":
-			Logger.logInfo("DONATE - H" + getId() + " Tradition");
-			waterTank.increasingLevel(0.2);
-			SimUtils.getCouncil().increaseTradition();
-			return "Donate to council";
-		case "Power":
-			Logger.logInfo("DONATE NOT - H" + getId() + " Power");
-			waterTank.increasingLevel(0.2);
-			SimUtils.getCouncil().increasePower();
-			return "Donate nothing";
-		case "Self-direction":
-			Logger.logInfo("DONATE NOT - H" + getId() + " Self-direction");
-			waterTank.increasingLevel(0.2);
-			SimUtils.getCouncil().increaseSelfDirection();
-			return "Donate nothing";
-		case "Universalism":
-			Logger.logInfo("DONATE - H" + getId() + " Universalism");
-			waterTank.increasingLevel(0.2);
-			SimUtils.getCouncil().increaseUniversalism();
-			return "Donate to council";
-		default:
-			Logger.logError("Error no correct value from watertank: " + waterTank.getRelatedAbstractValue());
-		}	
-		return "Donate nothing"; 
 	}
 	
 	/*=========================================
@@ -480,19 +465,19 @@ public final class Resident extends Human {
 	}
 	
 	public double getLevelUniversalism() {
-		return decisionMaker.getWaterTankLevel("Universalism");
+		return decisionMaker.getWaterTankLevel(AbstractValue.UNIVERSALISM.name());
 	}
 	
 	public double getLevelTradition() {
-		return decisionMaker.getWaterTankLevel("Tradition");
+		return decisionMaker.getWaterTankLevel(AbstractValue.TRADITION.name());
 	}
 	
 	public double getLevelSelfDirection() {
-		return decisionMaker.getWaterTankLevel("Self-direction");
+		return decisionMaker.getWaterTankLevel(AbstractValue.SELFDIRECTION.name());
 	}
 	
 	public double getLevelPower() {
-		return decisionMaker.getWaterTankLevel("Power");
+		return decisionMaker.getWaterTankLevel(AbstractValue.POWER.name());
 	}
 	
 	public int getSatisfiedValuesCount() {

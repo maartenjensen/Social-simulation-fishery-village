@@ -58,6 +58,8 @@ public final class FrameworkBuilder {
 			assignRelatedActionsToConcreteValues();
 			printTrees();
 			
+			checkInitialConditions(globalValueTrees);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -155,6 +157,50 @@ public final class FrameworkBuilder {
 		}
 	}
 
+	public static void checkInitialConditions(Map<String, RandomTree> gValueTrees){
+		
+		Log.printLog("check initial conditions");
+		int firstThreshold, secondThreshold;
+		int firstIdx, secondIdx;
+		String firstAbsName, secondAbsName;
+		int numOfAbstractValues = AbstractValue.values().length;
+		for(int i = 0; i < numOfAbstractValues; i++){
+			firstAbsName = AbstractValue.getAbstractValueByIndex(i).name();
+			if(gValueTrees.containsKey(firstAbsName)){
+				firstThreshold = (int) gValueTrees.get(firstAbsName).getWaterTank().getThreshold();				
+				firstIdx = (i <= (numOfAbstractValues/2+1)) ? (i) : (numOfAbstractValues-i);
+				Log.printLog("firstAbsName : " + firstAbsName + ",\tfirstThreshold : " + firstThreshold + ",\tfirstIdx : " + firstIdx);											
+				
+				for(int j = 0; j < numOfAbstractValues; j++){
+					secondAbsName = AbstractValue.getAbstractValueByIndex(j).name();
+					if(gValueTrees.containsKey(secondAbsName)){
+						secondThreshold = (int) gValueTrees.get(secondAbsName).getWaterTank().getThreshold();
+						secondIdx = (j <= (numOfAbstractValues/2+1)) ? (j) : (numOfAbstractValues-j);
+						Log.printLog("secondAbsName : " + secondAbsName + ",\tsecondThreshold : " + secondThreshold + ",\tsecondIdx : " + secondIdx);
+						
+						//condition 1:						
+						if(Math.abs(firstThreshold-secondThreshold) > Math.abs((double)(firstIdx-secondIdx)/(double)numOfAbstractValues *100.0)){
+							Log.printLog("firstAbsName : " + firstAbsName + ",\tfirstThreshold : " + firstThreshold + ",\tfirstIdx : " + firstIdx);											
+							Log.printLog("secondAbsName : " + secondAbsName + ",\tsecondThreshold : " + secondThreshold + ",\tsecondIdx : " + secondIdx);
+							Log.printError("the first condition is not satisfied : " + firstAbsName + " threshold : " + firstThreshold + ", and " + secondAbsName + " threshold : " + secondThreshold +
+									"\n\tmaximum difference has to be " + Math.abs((double)(firstIdx-secondIdx)/(double)numOfAbstractValues *100.0));
+							
+						}
+						//condition 2:
+						if(secondIdx == (firstIdx + (numOfAbstractValues/2))%numOfAbstractValues){
+							if((firstThreshold+secondThreshold) > 100){
+								Log.printLog("firstAbsName : " + firstAbsName + ",\tfirstThreshold : " + firstThreshold + ",\tfirstIdx : " + firstIdx);											
+								Log.printLog("secondAbsName : " + secondAbsName + ",\tsecondThreshold : " + secondThreshold + ",\tsecondIdx : " + secondIdx);
+								Log.printError("the second condition is not satisfied : " + firstAbsName + " threshold : " + firstThreshold + ", and " + secondAbsName + " threshold : " + secondThreshold +
+										"\n\t max summation has to be " + 100);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	private static ArrayList<Node> addConcreteValuesFromString(List<String> concreteValues) {
 		
 		ArrayList<Node> concreteValueNodes = new ArrayList<Node>();

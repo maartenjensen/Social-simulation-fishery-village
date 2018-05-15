@@ -54,6 +54,19 @@ public class Ecosystem {
 	
 	public String getLabel() {
 		
-		return "Ecosystem\nFish:" + Integer.toString(fish);
+		String label = "Ecosystem\nFish:" + Integer.toString(fish);
+		if (fishInDanger()) {
+			return label + " DANGER";
+		}
+		return label;
+	}
+	
+	public boolean fishInDanger() {
+		if (fish < Constants.ECOSYSTEM_INITIAL_FISH) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

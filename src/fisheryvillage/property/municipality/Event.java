@@ -8,7 +8,7 @@ import fisheryvillage.common.Logger;
 public class Event {
 	
 	private int costInitial = 30;
-	private int maxAttendees = 10;
+	private int maxAttendees = 6;
 	private int costAttendee = 5;
 	private int attendeeFee;
 	private String eventType = "NONE";
@@ -78,6 +78,10 @@ public class Event {
 	
 	public int getAttendeeFee() {
 		return attendeeFee;
+	}
+	
+	public String getEventType() {
+		return eventType;
 	}
 	
 	public String toString() {
