@@ -115,7 +115,7 @@ public class School extends Workplace {
 		for (final Human human: humans) {
 			if (human.getStatus() == Status.TEACHER) {
 				teachersToRemove --;
-				human.setStatus(Status.UNEMPLOYED);
+				human.stopWorkingAtWorkplace();
 			}
 			if (teachersToRemove == 0)
 				return ;

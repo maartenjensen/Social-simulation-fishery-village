@@ -98,7 +98,7 @@ public class ElderlyCare extends Workplace {
 		for (final Human human: humans) {
 			if (human.getStatus() == Status.ELDERLY_CARETAKER) {
 				caretakersToRemove --;
-				human.setStatus(Status.UNEMPLOYED);
+				human.stopWorkingAtWorkplace();
 			}
 			if (caretakersToRemove == 0)
 				return ;

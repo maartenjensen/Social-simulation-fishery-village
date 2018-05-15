@@ -99,7 +99,7 @@ public class Factory extends Workplace {
 		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
 		for (final Human human: humans) {
 			if (human.getStatus() == Status.FACTORY_WORKER) {
-				human.setStatus(Status.UNEMPLOYED);
+				human.stopWorkingAtWorkplace();
 				number -= 1;
 			}
 			if (number == 0)
