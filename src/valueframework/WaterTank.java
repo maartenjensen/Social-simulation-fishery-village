@@ -67,14 +67,14 @@ public class WaterTank implements Comparable<WaterTank> {
 	
 	public void increaseLevel() {//TODO: level of satisfaction?
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.min(capacity, filledLevel + increasingAmount);
-		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " + " + increasingAmount + ", new lvl:" + filledLevel);
+		filledLevel = Math.min(capacity, filledLevel + Math.max(drainingAmount * 2, increasingAmount));
+		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " + " + Math.max(drainingAmount * 2, increasingAmount) + ", new lvl:" + filledLevel);
 	}
 	
-	public void increasingLevel(double multiply) {//TODO: level of satisfaction?
+	public void increaseLevel(double multiply) {//TODO: level of satisfaction?
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.min(capacity, filledLevel + increasingAmount * multiply);
-		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " + " + increasingAmount * multiply + ", new lvl:" + filledLevel);
+		filledLevel = Math.min(capacity, filledLevel + Math.max(drainingAmount * 2, increasingAmount * multiply));
+		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " + " + Math.max(drainingAmount * 2, increasingAmount * multiply) + ", new lvl:" + filledLevel);
 	}
 	
 	public void decreaseLevel() {//TODO: check if it is correct to use the drainingAmount for decreasing
@@ -85,8 +85,8 @@ public class WaterTank implements Comparable<WaterTank> {
 	
 	public void decreaseLevel(double multiply) {//TODO: level of satisfaction?
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.max(0, filledLevel - increasingAmount * multiply);
-		Log.printLog("Decr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " - " + increasingAmount * multiply + ", new lvl:" + filledLevel);
+		filledLevel = Math.max(0, filledLevel - drainingAmount * multiply); // was originally increasing amount
+		Log.printLog("Decr wt [" + relatedAbstractValue + "]: old lvl: " + oldFilledLevel + " - " + drainingAmount * multiply + ", new lvl:" + filledLevel);
 	}
 	
 	public double getCapacity() {

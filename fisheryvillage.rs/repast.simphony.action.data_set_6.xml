@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human social status min and max</name>
+  <name>Donation motivation</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,16 +11,43 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-2090174727</hashCode>
+    <hashCode>-221787075</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Council</string>
+      <string>Donate power</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Council</id>
+        <id>Donate power</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getSocialStatusRange</methodName>
+        <methodName>getPower</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Donate self-direction</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Donate self-direction</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getSelfDirection</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Donate universalism</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Donate universalism</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getUniversalism</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Donate tradition</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Donate tradition</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getTradition</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

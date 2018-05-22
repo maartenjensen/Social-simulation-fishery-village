@@ -1,0 +1,130 @@
+<repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
+  <name>DataCollector Values Satisfied</name>
+  <type>AGGREGATE</type>
+  <inclTick>true</inclTick>
+  <inclBatchRun>false</inclBatchRun>
+  <inclRandomSeed>false</inclRandomSeed>
+  <scheduleParams>
+    <start>1.0</start>
+    <interval>4.0</interval>
+    <priority>-Infinity</priority>
+    <pType>LAST</pType>
+    <duration>-1.0</duration>
+    <frequency>REPEAT</frequency>
+    <hashCode>797112393</hashCode>
+  </scheduleParams>
+  <atEnd>false</atEnd>
+  <methodDataSources class="linked-hash-map">
+    <entry>
+      <string>Satisfied values adult</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values adult</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesAdult</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values adult + elderly</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values adult + elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesAdultElderly</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values boss</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values boss</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesBoss</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values captain</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values captain</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesCaptain</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values caretaker</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values caretaker</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesCaretaker</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values elderly</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesElderly</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values fisher</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values fisher</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesFisher</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values mayor</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values mayor</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesMayor</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values teacher</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values teacher</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesTeacher</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values unemployed</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values unemployed</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesUnemployed</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values work out of town</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values work out of town</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesWorkOutOfTown</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values factory worker</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values factory worker</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesWorker</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+  </methodDataSources>
+  <countSources class="linked-hash-map"/>
+  <customNADataSources class="linked-hash-map"/>
+  <customAggDataSources class="linked-hash-map"/>
+</repast.simphony.data2.engine.DataSetDescriptor>

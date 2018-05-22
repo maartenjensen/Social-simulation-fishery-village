@@ -1,54 +1,99 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human avg values</name>
+  <name>DataCollector</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>4.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1563312539</hashCode>
+    <hashCode>892108389</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Avg tradition level</string>
+      <string>Avg satisfied values adult</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg tradition level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgTradition</methodName>
-        <aggType>SUM</aggType>
+        <id>Avg satisfied values adult</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesAdult</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg power level</string>
+      <string>Avg satisfied values elderly</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg power level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgPower</methodName>
-        <aggType>SUM</aggType>
+        <id>Avg satisfied values elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesElderly</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg self-direction level</string>
+      <string>Avg satisfied values adult + elderly</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg self-direction level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgSelfDirection</methodName>
-        <aggType>SUM</aggType>
+        <id>Avg satisfied values adult + elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSatisfiedValuesAdultElderly</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Avg universalism level</string>
+      <string>Avg social status adult</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg universalism level</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getAvgUniversalism</methodName>
-        <aggType>SUM</aggType>
+        <id>Avg social status adult</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSocialStatusAdult</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Avg social status elderly</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Avg social status elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSocialStatusElderly</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Avg social status adult + elderly</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Avg social status adult + elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getAverageSocialStatusAdultElderly</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Happy adult</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Happy adult</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getHappyPercentageAdult</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Happy elderly</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Happy elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getHappyPercentageElderly</methodName>
+        <aggType>MEAN</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Happy adult + elderly</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Happy adult + elderly</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getHappyPercentageAdultElderly</methodName>
+        <aggType>MEAN</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

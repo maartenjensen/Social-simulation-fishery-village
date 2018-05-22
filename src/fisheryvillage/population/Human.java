@@ -66,8 +66,8 @@ public class Human {
 		addToContext();
 	}
 
-	protected Human(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money, int childrenWanted,
-				 int homelessTick, double nettoIncome, double necessaryCost, String jobTitle, Status status) {
+	protected Human(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money,
+				 double nettoIncome, double necessaryCost, Status status, int workplaceId) {
 		
 		this.id = id;
 		this.gender = gender;
@@ -77,6 +77,9 @@ public class Human {
 		this.money = money;
 		this.schoolType = SchoolType.NO_SCHOOL;
 		this.status = status;
+		this.workplaceId = workplaceId;
+		this.necessaryCost = necessaryCost;
+		this.nettoIncome = nettoIncome;
 		
 		addToContext();
 	}
@@ -259,7 +262,7 @@ public class Human {
 				newLocation = livingPlace.getFreeLocationExcluded(this);
 			}
 			else {
-				Logger.logError("Human"+getId()+" has no living place");
+				//Logger.logError("Human"+getId()+" has no living place");
 			}
 		}
 		else {
@@ -269,7 +272,7 @@ public class Human {
 					newLocation = workingPlace.getFreeLocationExcluded(this);
 				}
 				else {
-					Logger.logError("No room in working place to put agent");
+					//Logger.logError("H " + id + " status " + status + " no room in working place to put agent");
 				}
 			}
 		}
@@ -280,6 +283,7 @@ public class Human {
 	 * 
 	 */
 	public void die() {
+		Logger.logAction("H" + id + " died at age : " + age);
 		removeSelf();
 	}
 	
@@ -290,6 +294,7 @@ public class Human {
 	 */
 	public void removeSelf() {
 		
+		stopWorkingAtWorkplace();
 		status = Status.DEAD;
 		
 		// Remove this person from parent id
@@ -595,7 +600,7 @@ public class Human {
 		partnerId = -1;
 	}
 	
-	protected void setPartner(Human newPartner) {
+	public void setPartner(Human newPartner) {
 		partnerId = newPartner.getId();
 	}
 	
@@ -609,6 +614,7 @@ public class Human {
 			if (status != Status.ELDEST) {
 				status = Status.ELDEST;
 				schoolType = SchoolType.NO_SCHOOL;
+				removeAndSellAllProperty(); //Maybe don't sell house when partner still lives there
 			}
 		}
 		else if (age >= Constants.HUMAN_ELDERLY_AGE) {
@@ -622,6 +628,13 @@ public class Human {
 			status = Status.UNEMPLOYED;
 			schoolType = SchoolType.NO_SCHOOL;
 		}
+	}
+	
+	public boolean doesHumanDie(int age) {
+		double prob = Math.pow((1.0/125) * age, 5) * (1.0/24);
+		if (prob > RandomHelper.nextDouble())
+			return true;
+		return false;
 	}
 	
 	public double getMoney() {
@@ -647,6 +660,17 @@ public class Human {
 		}
 		else {
 			Logger.logError("H" + id + " child already in childrenIds : " + childId);
+		}
+	}
+	
+	public void addParent(int parentId) {
+		
+		GridPoint parentAncestor = new GridPoint(1, parentId);
+		if (!ancestors.contains(parentAncestor)) {
+			ancestors.add(parentAncestor);
+		}
+		else {
+			Logger.logError("H" + id + " parent already in ancestors : " + parentId);
 		}
 	}
 	

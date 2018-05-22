@@ -1,0 +1,134 @@
+<repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
+  <name>Social status graph</name>
+  <dataSet>DataCollector Social Status</dataSet>
+  <xAxisLabel>Tick Count</xAxisLabel>
+  <yAxisLabel>Amount</yAxisLabel>
+  <chartTitle>Social status graph</chartTitle>
+  <type>TIME_SERIES</type>
+  <background>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </background>
+  <gridLineColor>
+    <red>204</red>
+    <green>204</green>
+    <blue>204</blue>
+    <alpha>255</alpha>
+  </gridLineColor>
+  <showGrid>true</showGrid>
+  <showLegend>true</showLegend>
+  <seriesIds>
+    <entry>
+      <string>Social status unemployed</string>
+      <SeriesData>
+        <label>Social status unemployed</label>
+        <color>
+          <red>153</red>
+          <green>153</green>
+          <blue>153</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status factory worker</string>
+      <SeriesData>
+        <label>Social status factory worker</label>
+        <color>
+          <red>51</red>
+          <green>153</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status mayor</string>
+      <SeriesData>
+        <label>Social status mayor</label>
+        <color>
+          <red>51</red>
+          <green>255</green>
+          <blue>51</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status caretaker</string>
+      <SeriesData>
+        <label>Social status caretaker</label>
+        <color>
+          <red>255</red>
+          <green>153</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status boss</string>
+      <SeriesData>
+        <label>Social status boss</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>153</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status fisher</string>
+      <SeriesData>
+        <label>Social status fisher</label>
+        <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status captain</string>
+      <SeriesData>
+        <label>Social status captain</label>
+        <color>
+          <red>153</red>
+          <green>153</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status work out of town</string>
+      <SeriesData>
+        <label>Social status work out of town</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Social status teacher</string>
+      <SeriesData>
+        <label>Social status teacher</label>
+        <color>
+          <red>153</red>
+          <green>102</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+  </seriesIds>
+  <dataValueIds/>
+  <plotRangeLength>-1</plotRangeLength>
+</repast.simphony.chart2.engine.TimeSeriesChartDescriptor>

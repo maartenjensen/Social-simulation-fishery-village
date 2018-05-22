@@ -27,9 +27,9 @@ public final class Resident extends Human {
 	private DecisionMaker decisionMaker;
 	
 	// Variable initialization
-	private int homelessTick = 0;
+	private int homelessTick = 0; //TODO remove this
 	private int childrenWanted = 0;
-	private SocialStatus socialStatus = new SocialStatus(0, 0);
+	private SocialStatus socialStatus = new SocialStatus();
 	private String jobActionName = "none";
 	
 	public Resident(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money) {
@@ -39,18 +39,19 @@ public final class Resident extends Human {
 	}
 	
 	public Resident(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money, int childrenWanted,
-					int homelessTick, double nettoIncome, double necessaryCost, String jobTitle, Status status, int boatId) {
+					int homelessTick, double nettoIncome, double necessaryCost, String jobTitle, Status status, int workplaceId) {
 		
-		super(id, gender, foreigner, higherEducated, age, money, homelessTick, childrenWanted, nettoIncome, necessaryCost, jobTitle, status);
+		super(id, gender, foreigner, higherEducated, age, money, nettoIncome, necessaryCost, status, workplaceId);
 
 		this.childrenWanted = childrenWanted;
+		this.jobActionName = jobTitle;
+		this.homelessTick = homelessTick;
 		socialStatus.setSocialStatusWork(status);
-		if (status == Status.FISHER && boatId != -1) {
+		if (status == Status.FISHER && workplaceId != -1) {
 			
-			Boat boat = (Boat) SimUtils.getPropertyById(boatId);
+			Boat boat = (Boat) SimUtils.getPropertyById(workplaceId);
 			boat.addFisher(id);
 		}
-		
 		decisionMaker = new DecisionMaker();
 	}
 
@@ -76,24 +77,19 @@ public final class Resident extends Human {
 		payStandardCosts();
 	}
 	
-	public void stepSocialStatusDrain() {
-		socialStatus.drainSocialStatus();
-	}
-	
 	public void stepDrainTanks() {
-		 	
-		//Logger.logProb("VALUES BEFOR H" + id + " - " + getDcString(), 0.05);
+
 		decisionMaker.drainTanks();
-		//Logger.logProb("VALUES AFTER H" + id + " - " + getDcString(), 0.05);
 	}
-	
+
 	public void stepWork() {
 		
 		retrieveAndShareSalary();
-		// Set social status
-		//socialStatus.setSocialStatusWork(status);
+		if (getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_AGE) {
+			socialStatus.setSocialStatusWork(getStatus());
+		}
 	}
-	
+
 	public void stepSelectWork() {
 		
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_AGE) {
@@ -218,32 +214,40 @@ public final class Resident extends Human {
 	
 	public void stepHousing() {
 		
-		if (RandomHelper.nextDouble() > Constants.HUMAN_PROB_GET_HOUSE || getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE)
+		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			
+			socialStatus.setSocialStatusHouse(HumanUtils.getLivingPlaceType(this));
 			return ;
+		}
 		
-		if (!HumanUtils.isOwningHouse(this) && getStatus() != Status.UNEMPLOYED) {
-			homelessTick ++;
-			for (House house : SimUtils.getPropertyAvailableAllRandom(House.class)) {
-				if (getMoney() > house.getPrice()) {
-					actionBuyHouse(house);
+		if (RandomHelper.nextDouble() > Constants.HUMAN_PROB_GET_HOUSE) {
+		
+			if (!HumanUtils.isOwningHouse(this) && getStatus() != Status.UNEMPLOYED) {
+				homelessTick ++;
+				for (House house : SimUtils.getPropertyAvailableAllRandom(House.class)) {
+					if (getMoney() > house.getPrice()) {
+						actionBuyHouse(house);
+						return;
+					}
+				}
+			}
+			
+			House ownedHouse = HumanUtils.getOwnedHouse(this);
+			if (ownedHouse != null) {
+				// Sell house if in relationship and not single and owns a house
+				if (!isSingle() && !HumanUtils.isLivingTogetherWithPartner(this)) { 
+					actionSellHouse(ownedHouse);
 					return;
 				}
-			}
-		}
-		
-		House ownedHouse = HumanUtils.getOwnedHouse(this);
-		if (ownedHouse != null) {
-			// Sell house if in relationship and not single and owns a house
-			if (!isSingle() && !HumanUtils.isLivingTogetherWithPartner(this)) { 
-				actionSellHouse(ownedHouse);
-				return;
-			}
-			if (getLeftoverMoney() < 0 && getMoney() < Constants.HUMAN_MONEY_DANGER_LEVEL) {
-				if (ownedHouse.getHouseType() != HouseType.CHEAP) {
-					actionSellHouse(ownedHouse);
+				if (getLeftoverMoney() < 0 && getMoney() < Constants.HUMAN_MONEY_DANGER_LEVEL) {
+					if (ownedHouse.getHouseType() != HouseType.CHEAP) {
+						actionSellHouse(ownedHouse);
+					}
 				}
 			}
 		}
+		Logger.logDebug("H" + getId() + " check this human");
+		socialStatus.setSocialStatusHouse(HumanUtils.getLivingPlaceType(this));
 	}
 	
 	/**
@@ -252,8 +256,7 @@ public final class Resident extends Human {
 	 */
 	public void stepRemove() {
 	
-		if (getAge() > Constants.HUMAN_MAX_LIVING_AGE) { //TODO make this a proper distribution
-			
+		if (doesHumanDie(getAge())) {		
 			die();
 			return ;
 		}
@@ -270,9 +273,9 @@ public final class Resident extends Human {
 			actionMigrateOutOfTown();
 			return ;
 		}
-		if (!decisionMaker.getIsSatisfied() && RandomHelper.nextDouble() < 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()))
+		if (!decisionMaker.getIsSatisfied() && RandomHelper.nextDouble() < 0.00001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)))
 		{
-			Logger.logAction("H" + getId() + " moves out because he/she is not happy : " + 0.00001 * (2 + decisionMaker.getSelfDirectionThreshold()));
+			Logger.logAction("H" + getId() + " moves out because he/she is not happy : " + 0.00001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)));
 			Logger.logInfo("H" + getId() + getDcString());
 			actionMigrateOutOfTown();
 		}
@@ -320,14 +323,6 @@ public final class Resident extends Human {
 		migrateOutOfTown();
 	}
 	
-	public void actionSocialEventAttend() {
-		socialStatus.setEventAttendee();
-	}
-	
-	public void actionSocialEventOrganize() {
-		socialStatus.setEventOrganizer();
-	}
-	
 	public void actionGetChild(Human partner) {
 		
 		HumanUtils.spawnChild(this, partner);
@@ -341,12 +336,21 @@ public final class Resident extends Human {
 		fishingActions.add(fishingActionTitle);
 		ArrayList<ValuedAction> evaluatedAction = decisionMaker.agentFilterActionsBasedOnValues(fishingActions);
 		decisionMaker.agentExecutesValuedAction(evaluatedAction.get(0));
+		socialStatus.setSocialStatusFisher(fishingActionTitle);
 	}
 	
 	/*=========================================
 	 * Other methods 
 	 *=========================================
 	 */
+	
+	public boolean getIsHappy() {
+		if (socialStatus.getSocialStatusValue(decisionMaker, getStatus()) > 0.25 && decisionMaker.getSatisfiedValuesCount() >= 2) {
+			return true;
+		}
+		return false;
+	}
+	
 	/**
 	 * Select fishing action based on the decisionMaker filter on actions
 	 * from the filteredActions, the best actions are selected (so the actions with the highest
@@ -388,7 +392,7 @@ public final class Resident extends Human {
 		}
 		return possibleActions;
 	}
-	
+
 	private int calculateChildrenWanted() {
 		double y = 7 - (1.0/15.0) * (double) SimUtils.getCouncil().getNumberOfPeople();
 		return Math.max(Constants.HUMAN_CHILDREN_WANTED_MIN, Math.min(Constants.HUMAN_CHILDREN_WANTED_MAX, (int) Math.round(y)));
@@ -406,9 +410,18 @@ public final class Resident extends Human {
 				}
 			}
 		}
-		// Select a random job from the filtered jobs, but keep previous job if it is not unemployed
-		ValuedAction selectedAction = filteredActions.get(RandomHelper.nextIntFromTo(0, filteredActions.size() - 1));
-		if (jobActionName != "Job unemployed") {
+		
+		ValuedAction selectedAction = null;
+		// Select based on highest social status
+		double bestValue = -1;
+		for (ValuedAction filteredAction : filteredActions) {
+			if (Status.getEnumByString(filteredAction.getTitle()).getSocialStatusWork() > bestValue) {
+				selectedAction = filteredAction;
+				bestValue = Status.getEnumByString(filteredAction.getTitle()).getSocialStatusWork();
+			}
+		}
+		// Keep the previous job if it is in the filteredActions
+		if (jobActionName != "Job unemployed" && RandomHelper.nextDouble() > Constants.HUMAN_PROB_KEEP_PREV_JOB) {
 			for (ValuedAction valuedAction : filteredActions) {
 				if (valuedAction.getTitle().equals(jobActionName)) {
 					selectedAction = valuedAction;
@@ -416,6 +429,7 @@ public final class Resident extends Human {
 				}
 			}
 		}
+		
 		Logger.logInfo("H" + getId() + " jobTitle: " + jobActionName + ", selected action:" + selectedAction + " from actions: " + filteredActions);
 		return selectedAction;
 	}
@@ -432,20 +446,24 @@ public final class Resident extends Human {
 		return homelessTick;
 	}
 	
-	public double getSocialLevel() {
-		return socialStatus.getSocialLevel();
+	public double getSocialStatusValue() {
+		return socialStatus.getSocialStatusValue(decisionMaker, getStatus());
 	}
 	
-	public double getSocialLevelWork() {
-		return socialStatus.getWorkLevel();
+	public double getSocialStatusWork() {
+		return socialStatus.getSocialStatusWork();
 	}
 	
-	public double getSocialLevelEvent() {
-		return socialStatus.getEventLevel();
+	public double getSocialStatusHouse() {
+		return socialStatus.getSocialStatusHouse();
 	}
 	
-	public int getSocialLevelCombined() {
-		return socialStatus.getCombinedLevel();
+	public double getSocialStatusFishEcol() {
+		return socialStatus.getSocialStatusFishEcol();
+	}
+	
+	public double getSocialStatusFishEcon() {
+		return socialStatus.getSocialStatusFishEcon();
 	}
 	
 	public SocialStatus getSocialStatus() {
@@ -487,22 +505,18 @@ public final class Resident extends Human {
 	public void setChildrenWanted(int childrenWanted) {
 		this.childrenWanted = childrenWanted;
 	}
-	
+
 	/*=========================================
 	 * Print stuff
 	 *=========================================
 	 */
-	
 	public String getDcString() {
 		return decisionMaker.toString();
 	}
 	
 	public String getHumanVarsAsString() { 
-		int boatId = -1;
-		if (getStatus() == Status.FISHER) {
-			boatId = SimUtils.getBoatByHumanId(getId()).getId();
-		}
-		return getId() + "," + isMan() + "," + getForeigner() + "," + getHigherEducated() + "," + getAge() + "," + getMoney() + "," + childrenWanted +
-			   "," + homelessTick + "," + getNettoIncome() + "," + getNecessaryCost() + "," + jobActionName + "," + getStatus().name() + "," + boatId; 
+
+		return getId() + "," + (!isMan()) + "," + getForeigner() + "," + getHigherEducated() + "," + getAge() + "," + getMoney() + "," + childrenWanted +
+			   "," + homelessTick + "," + getNettoIncome() + "," + getNecessaryCost() + "," + jobActionName + "," + getStatus().name() + "," + getWorkplaceId(); 
 	}
 }

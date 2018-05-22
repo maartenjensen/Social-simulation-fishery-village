@@ -43,4 +43,12 @@ public enum BoatType {
 	public GridPoint getDimensions() {
 		return dimensions;
 	}
+	
+	public static BoatType getEnumByString(String name){
+		for(BoatType e : BoatType.values()){
+			if(e.name().equals(name))
+				return e;
+		}
+		return null;
+	}
 }

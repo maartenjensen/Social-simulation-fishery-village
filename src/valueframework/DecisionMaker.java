@@ -167,11 +167,11 @@ public class DecisionMaker {
 	public void agentExecutesValuedAction(ValuedAction selectedActionTitle) {
 		
 		for(String positiveValue : selectedActionTitle.getValuesPositive()) {
-			waterTanks.get(positiveValue).increaseLevel();
+			waterTanks.get(positiveValue).increaseLevel(0.25);
 		}
 		
 		for(String negativeValue : selectedActionTitle.getValuesNegative()) {
-			waterTanks.get(negativeValue).decreaseLevel();
+			waterTanks.get(negativeValue).decreaseLevel(0.5);
 		}
 	}
 
@@ -262,8 +262,8 @@ public class DecisionMaker {
 		this.valueTrees = valueTrees;
 	}
 
-	public double getSelfDirectionThreshold() {
-		return waterTanks.get(AbstractValue.SELFDIRECTION.name()).getThreshold();
+	public double getAbstractValueThreshold(AbstractValue abstractValue) {
+		return waterTanks.get(abstractValue.name()).getThreshold();
 	}
 	
 	public int getSatisfiedValuesCount() {

@@ -1,26 +1,53 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Ecosystem</name>
+  <name>Social event motivation</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>4.0</interval>
+    <interval>1.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1296692271</hashCode>
+    <hashCode>1958602513</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>N Fish</string>
+      <string>Event Tradition</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N Fish</id>
-        <className>fisheryvillage.ecosystem.Ecosystem</className>
-        <methodName>getFish</methodName>
+        <id>Event Tradition</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getTradition</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Event Power</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Event Power</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getPower</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Event Universalism</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Event Universalism</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getUniversalism</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Event Self-direction</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Event Self-direction</id>
+        <className>fisheryvillage.property.municipality.EventHall</className>
+        <methodName>getSelfDirection</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

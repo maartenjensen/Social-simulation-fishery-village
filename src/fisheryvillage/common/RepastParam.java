@@ -12,6 +12,8 @@ public final class RepastParam {
 	private static boolean popInitFromFile = false;
 	private static String popInitFileName = "none";
 	
+	private static int pauseSimulationAt = -1;
+	
 	private static int valuePower = 50;
 	private static int valueTradition = 50;
 	private static int valueUniversalism = 50;
@@ -25,6 +27,8 @@ public final class RepastParam {
 		
 		popInitFromFile = RunEnvironment.getInstance().getParameters().getBoolean("popInitFromFile");
 		popInitFileName = RunEnvironment.getInstance().getParameters().getString("popInitFileName");
+		
+		pauseSimulationAt = RunEnvironment.getInstance().getParameters().getInteger("simPauseTick");
 		
 		valuePower = RunEnvironment.getInstance().getParameters().getInteger("valuePower");
 		valueSelfDirection = RunEnvironment.getInstance().getParameters().getInteger("valueSelfDirection");
@@ -50,6 +54,10 @@ public final class RepastParam {
 	
 	public static String getPopInitFileName() {
 		return popInitFileName;
+	}
+	
+	public static int getSimulationPauseInt() {
+		return pauseSimulationAt;
 	}
 	
 	public static int getPower() {

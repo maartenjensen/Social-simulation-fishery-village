@@ -100,8 +100,12 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	public void fullStep() {
 		
 		Logger.logMain("Run fullstep");
+		int pauseRunTick = RepastParam.getSimulationPauseInt();
 		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
-		step0Tick();
+
+		Logger.logMain("------------------------------------------------------------------------------");
+		Logger.logMain("0TICK: Starting tick: "+ tick +", " + SimUtils.getCouncil().getDate());
+		
 		if (tick % Constants.TICKS_PER_YEAR == 1) {
 			step1Year();
 		}
@@ -113,25 +117,11 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			step4Month();
 		}
 		step5Tick();
-	}
-	
-	/**
-	 * Step 0 Tick: starting tick, migration
-	 */
-	public void step0Tick() {
-		
-		Logger.logMain("------------------------------------------------------------------------------");
-		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
-		Logger.logMain("0TICK: Starting tick: "+ tick +", " + SimUtils.getCouncil().getDate());
-		//TODO change parameters
-		if (Constants.MIGRATION_PROBABILITY > RandomHelper.nextDouble()) {
-			
-			Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), true, SimUtils.getRandomBoolean(),
-									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
-									Constants.HUMAN_INIT_STARTING_MONEY);
-			Logger.logMain("-- New human spawned : " + resident.getId());
+		if (tick == pauseRunTick && pauseRunTick >= 1) {
+			RunEnvironment.getInstance().pauseRun();
+			Logger.logMain("Pause simulation at : " + pauseRunTick);
+			Logger.logMain("------------------------------------------------------------------------------");
 		}
-
 	}
 
 	/**
@@ -140,12 +130,21 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_YEAR, priority = -1)
 	public void step1Year() {
 		
-		Logger.logMain("1YEAR: aging and family");
+		Logger.logMain("1YEAR: aging, migration and family");
 		
 		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		Logger.logMain("- Run Human.stepAging");
 		for (final Resident resident: residents) {
 			resident.stepAging();
+		}
+		
+		Logger.logMain("- Check migration");
+		if (Constants.MIGRATION_PROBABILITY > RandomHelper.nextDouble()) {
+			
+			Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), true, SimUtils.getRandomBoolean(),
+									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
+									Constants.HUMAN_INIT_STARTING_MONEY);
+			Logger.logMain("-- New human spawned : " + resident.getId());
 		}
 		
 		Logger.logMain("- Run Human.stepFamily");
@@ -199,11 +198,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		Logger.logMain("- Run Human.stepDrainTanks");
 		for (final Resident resident: residents) {
 			resident.stepDrainTanks();
-		}
-		
-		Logger.logMain("- Run Human.stepSocialStatusDrain");
-		for (final Resident resident: residents) {
-			resident.stepSocialStatusDrain();
 		}
 		
 		Logger.logMain("- Run Human.stepSocialEvent");
@@ -398,7 +392,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		step5Tick();
 		Logger.enableLogger();
 	}
-	
+
 	private void savePopulation(int tick) {
 
 		int stopYear = RepastParam.getPopGenTickLimit();

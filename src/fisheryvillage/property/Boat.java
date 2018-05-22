@@ -34,6 +34,7 @@ public class Boat extends Workplace {
 	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
 
 	public Boat(int id, BoatType boatType, double money, GridPoint location) {
+		
 		super(id, boatType.getPrice(), boatType.getMaintenanceCost(), money, location, boatType.getDimensions().getX(), boatType.getDimensions().getY(), PropertyColor.BOAT);
 		allJobs.add(Status.CAPTAIN);
 		allJobs.add(Status.FISHER);
@@ -43,13 +44,32 @@ public class Boat extends Workplace {
 	}
 
 	public void setBoatType(BoatType boatType) {
+		
 		this.boatType = boatType;
 		setPrice(this.boatType.getPrice());
 		setMaintenanceCost(this.boatType.getMaintenanceCost());
 		setDimensions(this.boatType.getDimensions());
 		maxFishers = this.boatType.getEmployeeCapacity() - 1;
+		if (getFisherCount() > maxFishers) {
+			fireEmployees(getFisherCount() - maxFishers);
+			Logger.logInfo(getName() + "to many fishers, firing fishers");
+		}
+		
 		resetLayer();
 		addToValueLayer();
+	}
+
+	public void fireEmployees(int number) {
+		
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		for (final Human human: humans) {
+			if (human.getStatus() == Status.FISHER) {
+				human.stopWorkingAtWorkplace();
+				number -= 1;
+			}
+			if (number == 0)
+				return ;
+		}
 	}
 
 	protected void resetLayer() {
@@ -297,6 +317,20 @@ public class Boat extends Workplace {
 		addSavings(-1 * paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN);
 		Logger.logInfo("Boat " + getId() + " pay captain " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
 		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;*/
+	}
+	
+	public String getFishersIdsString() {
+		String string = "";
+		for (int i = 0; i < fishersIds.size(); i ++) {
+			if (i >= 1)
+				string += ",";
+			string += fishersIds.get(i);
+		}
+		return string;
+	}
+	
+	public BoatType getBoatType() {
+		return boatType;
 	}
 	
 	@Override

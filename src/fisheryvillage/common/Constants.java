@@ -1,10 +1,6 @@
 package fisheryvillage.common;
 
 import java.awt.Font;
-import java.util.HashMap;
-import java.util.Map;
-
-import fisheryvillage.population.Status;
 
 /**
 * This class holds many constants used throughout the code
@@ -27,7 +23,7 @@ public final class Constants {
 	public static final int GRID_SEA_START = GRID_WIDTH - 12;
 	public static final int GRID_VILLAGE_START = 18;
 	public static final int INITIAL_POPULATION_SIZE = 40;
-	public static final double MIGRATION_PROBABILITY = 0.001;
+	public static final double MIGRATION_PROBABILITY = 0.05;
 	public static final int TICKS_PER_MONTH = 4; // If you change this make sure you change the interval parameters of the repast charts
 	public static final int TICKS_PER_YEAR = 12 * TICKS_PER_MONTH;
 	
@@ -36,7 +32,7 @@ public final class Constants {
 	public static final int NUMBER_OF_HOUSES_STANDARD = 10;
 	public static final int NUMBER_OF_HOUSES_EXPENSIVE = 5;
 	
-	public static final int NUMBER_OF_BOATS = 5;
+	public static final int NUMBER_OF_BOATS = 2;
 	
 	public static final int HOUSE_CHEAP_PRICE = 20000;
 	public static final int HOUSE_CHEAP_MAINTENANCE = 500;
@@ -78,15 +74,15 @@ public final class Constants {
 	public static final int HUMAN_RELATIVE_WIFE_MIN_AGE = -20;
 	public static final int HUMAN_RELATIVE_WIFE_MAX_AGE = -10;
 	public static final int HUMAN_ANCESTORS_LAYERS = 1; //0:none, 1:parents, 2:grandparents, 3:great-grandparents, 4:great-great-grandparents, 5:etc
-	public static final int HUMAN_MAX_LIVING_AGE = 90; //TODO should be changed in a distribution
-	public static final int HUMAN_ELDERLY_CARE_AGE = 75;
+	public static final int HUMAN_ELDERLY_CARE_AGE = 80;
 	public static final int HUMAN_MAX_CHILD_GET_AGE = 45;
 	public static final int HUMAN_ADULT_AGE = 18;
 	public static final int HUMAN_ELDERLY_AGE = 65;
 	public static final int HUMAN_MONEY_DANGER_LEVEL = 3000;
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
-	public static final int HOMELESS_TICK = 3 * TICKS_PER_YEAR;
+	public static final int HOMELESS_TICK = 3 * TICKS_PER_YEAR; //TODO remove homeless tick
+	public static final double HUMAN_PROB_KEEP_PREV_JOB = 0.9;
 	
 	// Initialize repopulation parameters
 	public static final int HUMAN_CHILDREN_WANTED_MIN = 1;
@@ -130,33 +126,7 @@ public final class Constants {
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS = 5000;
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 100000;
 	public static final double DONATE_MONEY_WITHOUT_INCOME = 50;
-	
-	// Initialize social status
-	// Look at SocialStatus class
-	public static final Map<Status, Integer> SOCIAL_STATUS_WORK = new HashMap<Status, Integer>() 
-		{
-			private static final long serialVersionUID = 1L;
-			{
-				put(Status.CAPTAIN, 75);
-				put(Status.CHILD, 0);
-				put(Status.DEAD, 0);
-				put(Status.ELDER, 0);
-				put(Status.ELDERLY_CARETAKER, 25);
-				put(Status.ELDEST, 0);
-				put(Status.FACTORY_BOSS, 75);
-				put(Status.FACTORY_WORKER, 25);
-				put(Status.FISHER, 50);
-				put(Status.MAYOR, 100);
-				put(Status.NONE, 0);
-				put(Status.TEACHER, 50);
-				put(Status.UNEMPLOYED, 0);
-				put(Status.WORK_OUT_OF_TOWN, 0);
-			}};
-			
-	public static final int SOCIAL_STATUS_EVENT_NONE = 0;
-	public static final int SOCIAL_STATUS_EVENT_ORGANIZE = 75;
-	public static final int SOCIAL_STATUS_EVENT_ATTEND = 25;
-	
+
 	// Initialize icon paths
 	public static final String ICON_CHILD = "./icons/child";
 	public static final String ICON_TEACHER = "./icons/teacher";

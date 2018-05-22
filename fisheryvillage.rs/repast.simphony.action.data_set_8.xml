@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
+  <name>Satisfied Values</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,43 +11,52 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-221787075</hashCode>
+    <hashCode>209948551</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Donate power</string>
+      <string>Satisfied values 0</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate power</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getPower</methodName>
+        <id>Satisfied values 0</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues0</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate self-direction</string>
+      <string>Satisfied values 1</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate self-direction</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getSelfDirection</methodName>
+        <id>Satisfied values 1</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues1</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate universalism</string>
+      <string>Satisfied values 2</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate universalism</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getUniversalism</methodName>
+        <id>Satisfied values 2</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues2</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Donate tradition</string>
+      <string>Satisfied values 3</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donate tradition</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getTradition</methodName>
+        <id>Satisfied values 3</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues3</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Satisfied values 4</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Satisfied values 4</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getSatisfiedValues4</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

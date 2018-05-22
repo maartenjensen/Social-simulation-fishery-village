@@ -2,7 +2,6 @@ package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
-import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 
 public class Event {
@@ -31,10 +30,10 @@ public class Event {
 		
 		Logger.logInfo("PERFORM " + toString());
 		if (organizerId != -1) {
-			HumanUtils.getResidentById(organizerId).actionSocialEventOrganize();
-			for (int attendee : attendeesIds) {
-				 HumanUtils.getResidentById(attendee).actionSocialEventAttend();
-			}
+			//HumanUtils.getResidentById(organizerId).actionSocialEventOrganize();
+			//for (int attendee : attendeesIds) {
+				 //HumanUtils.getResidentById(attendee).actionSocialEventAttend();
+			//}
 		}
 		
 	}

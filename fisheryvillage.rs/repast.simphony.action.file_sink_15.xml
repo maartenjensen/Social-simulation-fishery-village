@@ -1,15 +1,15 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
-  <dataSet>Donation motivation</dataSet>
+  <name>Humans by age cluster</name>
+  <dataSet>Human by age</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
+    <string>N [0 - 17]</string>
+    <string>N [18 - 64]</string>
+    <string>N [65 - 74]</string>
+    <string>N [75 - ...]</string>
     <string>tick</string>
-    <string>Donate power</string>
-    <string>Donate self-direction</string>
-    <string>Donate universalism</string>
-    <string>Donate tradition</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\DonateMotivation.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\HumanAge.txt</fileName>
   <addTimeStamp>true</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

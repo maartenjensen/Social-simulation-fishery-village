@@ -1,6 +1,0 @@
-%propertyType,savings,extra-variables
-Council,709.4047351249155
-ElderlyCare,2714673.4908511164
-Factory,-869196.034158373,9,1727433
-School,3068423.7536228043
-SocialCare,3915484.784949332

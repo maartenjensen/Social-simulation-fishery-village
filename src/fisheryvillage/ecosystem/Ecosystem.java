@@ -45,6 +45,14 @@ public class Ecosystem {
 		return fish;
 	}
 	
+	public String getParametersString() {
+		return Integer.toString(fish);
+	}
+	
+	public void setParameters(int fish) {
+		this.fish = fish;
+	}
+	
 	public void stepEcosystem() {
 		
 		//double fishFactor = (double) fish / (Constants.ECOSYSTEM_INITIAL_FISH);

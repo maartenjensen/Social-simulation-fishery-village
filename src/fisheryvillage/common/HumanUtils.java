@@ -7,10 +7,10 @@ import fisheryvillage.population.Resident;
 import fisheryvillage.population.SchoolType;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.House;
+import fisheryvillage.property.HouseType;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.municipality.ElderlyCare;
 import fisheryvillage.property.municipality.School;
-import fisheryvillage.property.municipality.SocialCare;
 import fisheryvillage.property.other.SchoolOutside;
 import repast.simphony.context.Context;
 import repast.simphony.space.grid.Grid;
@@ -37,6 +37,10 @@ public final strictfp class HumanUtils {
 
 	public static void resetHumanId() {
 		newHumanId = 0;
+	}
+	
+	public static void setHumanId(int newHumanId) {
+		HumanUtils.newHumanId = newHumanId;
 	}
 	
 	public static Human getHumanById(int id) {
@@ -105,7 +109,51 @@ public final strictfp class HumanUtils {
 				return parentsHouse;
 			}
 			else { // Go to homeless care
-				return SimUtils.getObjectsAll(SocialCare.class).get(0);
+				return SimUtils.getSocialCare();
+			}
+		}
+	}
+	
+	/**
+	 * Returns the house the agents lives in and other wise
+	 * the homeless care
+	 * @return
+	 */
+	public static HouseType getLivingPlaceType(Human human) {
+
+		if (human.getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			return HouseType.WITH_OTHERS;
+		}
+		
+		// Has a house OR partner has a house
+		if (isOwningHouse(human)) { 
+			if (getOwnedHouse(human) != null) {
+				return getOwnedHouse(human).getHouseType();
+			}
+			else {
+				Human partner = human.getPartner();
+				if (partner != null) {
+					House house = getOwnedHouse(partner);
+					if (house != null)
+						return house.getHouseType();
+					else {
+						Logger.logError("H" + human.getId() + " house does not exist: H" + partner.getId() + " should own properties: " + partner.getPropertyIdsString());
+						return null;
+					}
+				}
+				else {
+					Logger.logError("H" + human.getId() + " is owning house but partner does not exist, partnerId: " + human.getPartnerId());
+					return null;
+				}
+			}
+		}
+		else { 
+			House parentsHouse = getParentsHouse(human);
+			if (parentsHouse != null) {
+				return HouseType.WITH_OTHERS;
+			}
+			else { // Go to homeless care
+				return HouseType.HOMELESS;
 			}
 		}
 	}

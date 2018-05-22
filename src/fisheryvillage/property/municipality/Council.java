@@ -161,7 +161,7 @@ public class Council extends Workplace {
 		if (resident != null) {
 			if (resident.getStatus() == Status.MAYOR)
 				return true;
-			Logger.logError("H" + resident.getId() + " ");
+			Logger.logError("H" + resident.getId() + " error in hasMayor ");
 		}
 		return false;
 	}
@@ -274,21 +274,6 @@ public class Council extends Workplace {
 	
 	public int getNumberOfPeople() {
 		return getNumberOfAge(0, Integer.MAX_VALUE);
-	}
-	
-	public int getSocialStatusRange() {
-		
-		int min = Integer.MAX_VALUE;
-		int max = 0;
-		
-		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
-		for (Resident resident: residents) {
-			min = Math.min(min, resident.getSocialLevelCombined());
-			max = Math.max(max, resident.getSocialLevelCombined());
-		}
-		
-		Logger.logDebug("Check unsatisfied universalist, min:" + min + ", max:" + max);
-		return Math.abs(max - min);
 	}
 	
 	public void increaseUniversalism() {

@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Social event motivation</name>
+  <name>Human avg values</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,43 +11,43 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1958602513</hashCode>
+    <hashCode>1563312539</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Event Tradition</string>
+      <string>Avg tradition level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Tradition</id>
-        <className>fisheryvillage.property.municipality.EventHall</className>
-        <methodName>getTradition</methodName>
+        <id>Avg tradition level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgTradition</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Event Power</string>
+      <string>Avg power level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Power</id>
-        <className>fisheryvillage.property.municipality.EventHall</className>
-        <methodName>getPower</methodName>
+        <id>Avg power level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgPower</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Event Universalism</string>
+      <string>Avg self-direction level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Universalism</id>
-        <className>fisheryvillage.property.municipality.EventHall</className>
-        <methodName>getUniversalism</methodName>
+        <id>Avg self-direction level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgSelfDirection</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Event Self-direction</string>
+      <string>Avg universalism level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Event Self-direction</id>
-        <className>fisheryvillage.property.municipality.EventHall</className>
-        <methodName>getSelfDirection</methodName>
+        <id>Avg universalism level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgUniversalism</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
