@@ -23,38 +23,48 @@ public final class Constants {
 	public static final int GRID_SEA_START = GRID_WIDTH - 12;
 	public static final int GRID_VILLAGE_START = 18;
 	public static final int INITIAL_POPULATION_SIZE = 40;
-	public static final double MIGRATION_PROBABILITY = 0.05;
+	public static final double NEW_RESIDENT_PROB = 0.05;
 	public static final int TICKS_PER_MONTH = 4; // If you change this make sure you change the interval parameters of the repast charts
 	public static final int TICKS_PER_YEAR = 12 * TICKS_PER_MONTH;
 	
 	// Initialize building parameters
+	public static final int BUILDING_INITIAL_MONEY = 10000;
+	public static final int PROPERTY_SELL_PERCENTAGE = 50;
+	
 	public static final int NUMBER_OF_HOUSES_CHEAP = 16;
 	public static final int NUMBER_OF_HOUSES_STANDARD = 10;
 	public static final int NUMBER_OF_HOUSES_EXPENSIVE = 5;
-	
-	public static final int NUMBER_OF_BOATS = 2;
-	
 	public static final int HOUSE_CHEAP_PRICE = 20000;
 	public static final int HOUSE_CHEAP_MAINTENANCE = 500;
 	public static final int HOUSE_STANDARD_PRICE = 40000;
 	public static final int HOUSE_STANDARD_MAINTENANCE = 1000;
 	public static final int HOUSE_EXPENSIVE_PRICE = 60000;
 	public static final int HOUSE_EXPENSIVE_MAINTENANCE = 1500;
-	public static final double PRICE_PER_KG_FISH_UNPROCESSED = 5;
-	public static final double PRICE_PER_KG_FISH_PROCESSED = 10;
-	public static final int FISH_PROCESSING_AMOUNT_PP = 750;
-	public static final int FISH_CATCH_AMOUNT_MIN_PP = 50;
-	public static final int FISH_CATCH_AMOUNT_MEDIUM_PP = 125;
-	public static final int FISH_CATCH_AMOUNT_MAX_PP = 200;
 	
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
 	
-	public static final int BUILDING_INITIAL_MONEY = 10000;
-	public static final int FACTORY_PRICE = 10000;
+	public static final double WORK_OUTSIDE_PROBABILITY = 0.3;
 	
-	public static final int PROPERTY_SELL_PERCENTAGE = 50;
+	// Initialize employee numbers
+	public static final int FACTORY_INITIAL_MAX_WORKERS = 10;
+	public static final int FACTORY_MAX_WORKERS = 50;
+	public static final int FACTORY_MIN_WORKERS = 3;
+	public static final int CARETAKER_MAX_ELDERLY = 10;
+	public static final int TEACHER_MAX_CHILDREN = 10;
+
+	public static final double PRICE_PER_KG_FISH_UNPROCESSED = 5;
+	public static final double PRICE_PER_KG_FISH_PROCESSED = 10;
+	public static final int FISH_PROCESSING_AMOUNT_PP = 750;
+	public static final int FACTORY_BUY_PRICE = 10000;
+	public static final double FISH_PROCESSING_NO_BOSS_DECREASE = 25;
 	
 	// Initialize boat parameters
+	public static final int NUMBER_OF_BOATS = 2;
+	public static final int FISH_CATCH_AMOUNT_MIN_PP = 50;
+	public static final int FISH_CATCH_AMOUNT_MEDIUM_PP = 125;
+	public static final int FISH_CATCH_AMOUNT_MAX_PP = 200;
+	public static final double FISH_CAUGHT_NO_CAPTAIN_DECREASE = 25;
+	
 	public static final int BOAT_SMALL_PRICE = 5000;
 	public static final int BOAT_SMALL_MAINTENANCE = 100;
 	public static final int BOAT_SMALL_EMPLOYEES = 4;
@@ -74,40 +84,41 @@ public final class Constants {
 	public static final int HUMAN_RELATIVE_WIFE_MIN_AGE = -20;
 	public static final int HUMAN_RELATIVE_WIFE_MAX_AGE = -10;
 	public static final int HUMAN_ANCESTORS_LAYERS = 1; //0:none, 1:parents, 2:grandparents, 3:great-grandparents, 4:great-great-grandparents, 5:etc
-	public static final int HUMAN_ELDERLY_CARE_AGE = 80;
 	public static final int HUMAN_MAX_CHILD_GET_AGE = 45;
 	public static final int HUMAN_ADULT_AGE = 18;
 	public static final int HUMAN_ELDERLY_AGE = 65;
+	public static final int HUMAN_ELDERLY_CARE_AGE = 85;
 	public static final int HUMAN_MONEY_DANGER_LEVEL = 3000;
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
-	public static final int HOMELESS_TICK = 3 * TICKS_PER_YEAR; //TODO remove homeless tick
 	public static final double HUMAN_PROB_KEEP_PREV_JOB = 0.9;
-	
-	// Initialize repopulation parameters
+
 	public static final int HUMAN_CHILDREN_WANTED_MIN = 1;
 	public static final int HUMAN_CHILDREN_WANTED_MAX = 6;
 	public static final double HUMAN_PROB_GET_CHILD = 0.5;
 	// Formula parameters given in Resident.calculateChildrenWanted()
 	
+	// Initialize population schwartz change
+	public static final double SCHWARTZ_CHANGE_SELF = -0.5;
+	public static final double SCHWARTZ_CHANGE_TRAD = 0.5;
+	public static final int SCHWARTZ_CHANGE_MIN_AGE = 30;
+	public static final int SCHWARTZ_CHANGE_MAX_AGE = 60;
+	public static final int SCHWARTZ_MIN = 10;
+	public static final int SCHWARTZ_MAX = 90;
+	
 	// Initialize ecosystem parameters
-	public static final int ECOSYSTEM_INITIAL_FISH = 100000;
+	public static final int ECOSYSTEM_STABLE_FISH = 200000;
+	public static final int ECOSYSTEM_MAX_REPOPULATE_UPPER = 150000;
+	public static final int ECOSYSTEM_MAX_REPOPULATE_LOWER = 50000;
+	public static final int ECOSYSTEM_IN_DANGER = 50000;
 	
 	// Initialize money parameters
 	public static final double LIVING_COST_ADULT = 300;
 	public static final double LIVING_COST_CHILD = 150;
 	public static final double COST_SCHOOL_INSIDE = 25;
 	public static final double COST_SCHOOL_OUTSIDE = 100;
-	public static final double COST_SCHOOL_CHILD = 0;
 	public static final double TAX_PERCENTAGE = 50;
-	public static final double TAX_TO_COUNCIL = 50;
-	
-	// Initialize employee numbers
-	public static final int FACTORY_INITIAL_MAX_EMPLOYEES = 10;
-	public static final int FACTORY_MAX_EMPLOYEES = 50;
-	public static final int FACTORY_MIN_EMPLOYEES = 3;
-	public static final int CARETAKER_MAX_ELDERLY = 10;
-	public static final int TEACHER_MAX_CHILDREN = 10;
+	public static final double PERC_FROM_TAX_TO_COUNCIL = 50;
 	
 	// Initialize salary and benefits parameters
 	public static final double SALARY_TEACHER = 3000;
@@ -119,8 +130,7 @@ public final class Constants {
 	public static final double BENEFIT_UNEMPLOYED = 800;
 	public static final double BENEFIT_ELDERLY = 500;
 	public static final int SALARY_MULTIPLIER_CAPTAIN = 2;
-	public static final double WORK_OUTSIDE_PROBABILITY = 0.3;
-	
+
 	// Initialize donation
 	public static final double DONATE_FACTOR_OF_LEFT_OVER_MONEY = 0.1;
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS = 5000;

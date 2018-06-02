@@ -103,7 +103,7 @@ public final strictfp class HumanUtils {
 				return getOwnedHouse(human.getPartner());
 			}
 		}
-		else { 
+		else { // If doesn't have a house go to parents house
 			House parentsHouse = getParentsHouse(human);
 			if (parentsHouse != null) {
 				return parentsHouse;
@@ -229,9 +229,14 @@ public final strictfp class HumanUtils {
 		ArrayList<Human> parents = HumanUtils.getParents(human);
 		if (parents.size() >= 1) {
 			for (final Human parent : parents) {
-				if (HumanUtils.getOwnedHouse(parent) != null) {
-					return HumanUtils.getOwnedHouse(parent);
-				}
+				if (isOwningHouse(parent)) { 
+					if (getOwnedHouse(parent) != null) {
+						return getOwnedHouse(parent);
+					}
+					else {
+						return getOwnedHouse(parent.getPartner());
+					}
+				}				
 			}
 		}
 		return null;

@@ -2,8 +2,8 @@ package fisheryvillage.population;
 
 public enum FishingAction {
 
-	A_LOT("Fish a lot", 1.0, 0.2),
-	MEDIUM("Fish medium", 0.5, 0.6),
+	A_LOT("Fish a lot", 1.0, 0),
+	MEDIUM("Fish medium", 0.5, 0.5),
 	LESS("Fish less", 0.0, 1.0),
 	A_LOT_DANGER("Fish a lot danger", 1.0, 0.0),
 	MEDIUM_DANGER("Fish medium danger", 0.5, 0.0),

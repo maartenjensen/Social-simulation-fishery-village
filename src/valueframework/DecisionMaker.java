@@ -3,6 +3,7 @@ package valueframework;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -36,13 +37,21 @@ public class DecisionMaker {
 		}
 		return -1;
 	}
+	
+	public void setWaterTankThreshold(String valueName, double threshold) {
+		waterTanks.get(valueName).setThreshold(threshold);
+	}
+	
+	public void adjustWaterTankThreshold(String valueName, double change, double min, double max) {
+		waterTanks.get(valueName).adjustThreshold(change, min, max);
+	}
 
 	public void drainTanks() {
 		for (String key : waterTanks.keySet()) {
 			waterTanks.get(key).draining();
 		}
 	}
-	
+
 	/**
 	 * Here we save the reference of the global value tree and create
 	 * new waterTanks for the decisionmaker.
@@ -96,6 +105,13 @@ public class DecisionMaker {
 		return selectedValuedActions;
 	}
 
+	/**
+	 * First sorts the possibleValuedActions, then adds all of them that have a positive action goodness
+	 * If there are none which have a goodness above zero then the ones with the highest goodness are returned
+	 * e.g. a set of valuedActions with goodness 0 or maybe -0.1
+	 * @param possibleValuedActions
+	 * @return
+	 */
 	private ArrayList<ValuedAction> filterValuedActions(ArrayList<ValuedAction> possibleValuedActions) {
 		
 		Collections.sort(possibleValuedActions);
@@ -300,13 +316,34 @@ public class DecisionMaker {
 		}
 		return 0;
 	}
-	
+
+	public void setImportantWaterTankFromData(List<String> data) {
+		for (int i = 1; i < data.size(); i += 3) {
+			 waterTanks.get(data.get(i)).setLevelAndThreshold(Double.parseDouble(data.get(i + 1)), Double.parseDouble(data.get(i + 2)));
+		}
+	}
+
+	public String importantData() {
+		String string = "";
+		boolean first = true;
+		for (String key: waterTanks.keySet()) {
+			if (!first) {
+				string += ",";
+				
+			}
+			string += waterTanks.get(key).getRelatedAbstractValue() + "," +
+					  waterTanks.get(key).getFilledLevel() + "," + waterTanks.get(key).getThreshold();
+			first = false;
+		}
+		return string;
+	}
+
 	@Override
 	public String toString() {
 		String string = "";
 		for (String key: waterTanks.keySet()) {
 			string += waterTanks.get(key).getRelatedAbstractValue().charAt(0) + ":" +
-					waterTanks.get(key).getFilledLevel() + "/" + waterTanks.get(key).getThreshold() + ", ";
+					  waterTanks.get(key).getFilledLevel() + "/" + waterTanks.get(key).getThreshold() + ", ";
 		}
 		return string;
 	}

@@ -136,7 +136,6 @@ public class School extends Workplace {
 		}
 		else if (paymentCount == 0) {
 
-			addSavings(-1 * Constants.COST_SCHOOL_CHILD * getPupilCount());
 			paymentCount = getTeacherCount();
 			paymentAmount = Math.max(0, Math.min(Constants.SALARY_TEACHER, getSavings() / paymentCount));
 		}

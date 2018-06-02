@@ -3,6 +3,7 @@ package fisheryvillage.ecosystem;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
+import fisheryvillage.property.BoatType;
 import repast.simphony.space.grid.GridPoint;
 
 /**
@@ -13,7 +14,9 @@ import repast.simphony.space.grid.GridPoint;
 */
 public class Ecosystem {
 	
-	private int fish;
+	private double fish;
+	private double amountFished = 0; //only used for data collection
+	private double amountRepopulated = 0; //only used for data collection
 	
 	public Ecosystem(int initialFish, GridPoint location) {
 		
@@ -26,43 +29,60 @@ public class Ecosystem {
 	
 	public int fishFish(int amountFish) {
 		
-		double fishFactor = (double) fish / (Constants.ECOSYSTEM_INITIAL_FISH / 2.0);
-		amountFish *= 0.25 + Math.min(0.75, fishFactor * 0.75);
-		
 		if (amountFish <= fish) {
-			fish -= amountFish * (0.25 + Math.min(0.75, fishFactor * 0.75)); //TODO put into constants
+			fish -= amountFish;
+			amountFished += amountFish;
 			return amountFish;
 		}
 		else {
 			System.out.println("Ecosystem, there is no fish left!");
-			amountFish = fish;
+			amountFish = (int) fish;
+			amountFished += amountFish;
 			fish = 0;
 			return amountFish;
 		}
 	}
 	
-	public int getFish() {
+	public double getFish() {
 		return fish;
 	}
 	
+	public double getAmountFishedX10() {
+		return amountFished * 10;
+	}
+	
+	public double getAmountRepopulatedX10() {
+		return amountRepopulated * 10;
+	}
+	
 	public String getParametersString() {
-		return Integer.toString(fish);
+		return Double.toString(fish);
 	}
 	
 	public void setParameters(int fish) {
 		this.fish = fish;
 	}
 	
+	/**
+	 * Increase is based on the max number of boats, times the medium amount that can be caught
+	 */
 	public void stepEcosystem() {
 		
-		//double fishFactor = (double) fish / (Constants.ECOSYSTEM_INITIAL_FISH);
-		fish += ((Constants.FISH_CATCH_AMOUNT_MIN_PP + Constants.FISH_CATCH_AMOUNT_MAX_PP) * 12)/ 2.0;
-		//TODO grows with rate of 15 fishers there is a max of 12 fishers
+		double repopulationMultiplier = 1;
+		if (fish < Constants.ECOSYSTEM_MAX_REPOPULATE_LOWER) {
+			repopulationMultiplier = Math.max(0, fish / (Constants.ECOSYSTEM_MAX_REPOPULATE_LOWER));
+		}
+		else if (fish > Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) {
+			repopulationMultiplier = Math.max(0, (Constants.ECOSYSTEM_STABLE_FISH - fish) / (Constants.ECOSYSTEM_STABLE_FISH - Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) );
+		}
+		amountRepopulated = Constants.FISH_CATCH_AMOUNT_MEDIUM_PP * Constants.NUMBER_OF_BOATS * BoatType.LARGE.getEmployeeCapacity() * repopulationMultiplier;
+		fish += amountRepopulated;
+		amountFished = 0;
 	}
-	
+
 	public String getLabel() {
 		
-		String label = "Ecosystem\nFish:" + Integer.toString(fish);
+		String label = "Ecosystem\nFish:" + Double.toString(fish);
 		if (fishInDanger()) {
 			return label + " DANGER";
 		}
@@ -70,11 +90,19 @@ public class Ecosystem {
 	}
 	
 	public boolean fishInDanger() {
-		if (fish < Constants.ECOSYSTEM_INITIAL_FISH) {
+		if (fish < Constants.ECOSYSTEM_IN_DANGER) {
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	/**
+	 * This value times 10
+	 * @return
+	 */
+	public double getFishInDangerLevel() {
+		return Constants.ECOSYSTEM_IN_DANGER;
 	}
 }

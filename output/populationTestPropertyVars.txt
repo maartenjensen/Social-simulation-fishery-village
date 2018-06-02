@@ -1,8 +1,0 @@
-%propertyType,id,savings,ownerId,extra-variables
-Council,37,639.875,10
-ElderlyCare,34,687330.1265403939,-1
-Factory,36,-1979119.81446124,-1,11,1236833
-School,35,1350738.0044864153,-1
-SocialCare,33,1679563.8461653623,-1
-Boat,31,0.0,36,LARGE
-Boat,32,1.8189894035458565E-12,4,LARGE

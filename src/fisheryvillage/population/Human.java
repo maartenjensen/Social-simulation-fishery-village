@@ -222,7 +222,7 @@ public class Human {
 	}
 	
 	/**
-	 * Return all job vacancies 
+	 * Return all job vacancies, can't become a fisher if you are a captain already
 	 * @return
 	 */
 	protected ArrayList<String> getPossibleWorkActions(String currentJobTitle) {
@@ -243,6 +243,9 @@ public class Human {
 		if (!possibleActions.contains(currentJobTitle) && !currentJobTitle.equals("none")) {
 			possibleActions.add(currentJobTitle);
 		}
+		if (currentJobTitle.equals("Job captain") && possibleActions.contains("Job fisher")) {
+			possibleActions.remove("Job fisher");
+		}
 		return possibleActions;
 	}
 	
@@ -260,9 +263,13 @@ public class Human {
 			Property livingPlace = HumanUtils.getLivingPlace(this);
 			if (livingPlace != null) {
 				newLocation = livingPlace.getFreeLocationExcluded(this);
+				if (newLocation == null)  {
+					livingPlace.getLocation();
+					Logger.logInfo("H" + id + " living place is full: " + livingPlace.getName());
+				}
 			}
 			else {
-				//Logger.logError("Human"+getId()+" has no living place");
+				Logger.logError("H" + id + " has no living place");
 			}
 		}
 		else {
@@ -272,7 +279,7 @@ public class Human {
 					newLocation = workingPlace.getFreeLocationExcluded(this);
 				}
 				else {
-					//Logger.logError("H " + id + " status " + status + " no room in working place to put agent");
+					Logger.logError("H " + id + " status " + status + " no room in working place to put agent");
 				}
 			}
 		}
@@ -280,7 +287,7 @@ public class Human {
 	}
 	
 	/**
-	 * 
+	 * Remove person because it died
 	 */
 	public void die() {
 		Logger.logAction("H" + id + " died at age : " + age);
@@ -503,14 +510,16 @@ public class Human {
 
 	//TODO in this function change the parameter to something that is defined before hand
 	protected double payTax(double salary) {
+		double payedAsTax = salary * ((Constants.TAX_PERCENTAGE) / 100);
+		salary -= payedAsTax;
 		if (status != Status.WORK_OUT_OF_TOWN) {
 			
 			Council council = SimUtils.getObjectsAll(Council.class).get(0);
-			council.addSavings(salary * (Constants.TAX_TO_COUNCIL / 100));
+			council.addSavings(payedAsTax * (Constants.PERC_FROM_TAX_TO_COUNCIL / 100));
 			
-			return salary * ((100 - Constants.TAX_PERCENTAGE) / 100);
+			return salary;
 		}
-		return salary * ((100 - Constants.TAX_PERCENTAGE) / 100);
+		return salary;
 	}
 
 	public void connectProperty(int propertyId) {

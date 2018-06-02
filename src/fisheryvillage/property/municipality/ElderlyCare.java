@@ -20,7 +20,6 @@ import saf.v3d.scene.VSpatial;
 */
 public class ElderlyCare extends Workplace {
 	
-	private int maxElderlyPerCaretaker = Constants.CARETAKER_MAX_ELDERLY;
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
@@ -36,7 +35,7 @@ public class ElderlyCare extends Workplace {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
 		int caretakers = getCaretakerCount();
-		if (caretakers < Math.ceil(getElderlyCount() / (float) maxElderlyPerCaretaker)) {
+		if (caretakers < Math.ceil(getElderlyCount() / (double) Constants.CARETAKER_MAX_ELDERLY)) {
 			possibleJobs.add(Status.ELDERLY_CARETAKER);
 		}
 		return possibleJobs;
@@ -89,7 +88,7 @@ public class ElderlyCare extends Workplace {
 
 	public void removeExcessiveCaretakers() {
 			
-		int caretakersToRemove = getCaretakerCount() - (int) Math.ceil((float) getElderlyCount() / (float) maxElderlyPerCaretaker);
+		int caretakersToRemove = getCaretakerCount() - (int) Math.ceil((float) getElderlyCount() / (double) Constants.CARETAKER_MAX_ELDERLY);
 		if (caretakersToRemove <= 0)
 			return ;
 		

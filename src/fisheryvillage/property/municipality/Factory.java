@@ -20,7 +20,7 @@ import saf.v3d.scene.VSpatial;
 */
 public class Factory extends Workplace {
 
-	private int maxEmployees = Constants.FACTORY_INITIAL_MAX_EMPLOYEES;
+	private int maxEmployees = Constants.FACTORY_INITIAL_MAX_WORKERS;
 	private double paymentAmount = 0;
 	private int paymentCount = 0;
 	
@@ -33,15 +33,15 @@ public class Factory extends Workplace {
 		allJobs.add(Status.FACTORY_WORKER);
 		addToValueLayer();
 	}
-	
+
 	public int getFishUnprocessed() {
 		return fishUnprocessedKg;
 	}
-	
+
 	public int getMaxEmployees() {
 		return maxEmployees;
 	}
-	
+
 	public void setVariables(int maxEmployees, int fishUnprocessed) {
 		
 		this.maxEmployees = maxEmployees;
@@ -75,10 +75,13 @@ public class Factory extends Workplace {
 	public void stepProcessFish() {
 		
 		int fishProcessedKg = getEmployeeCount(Status.FACTORY_WORKER) * Constants.FISH_PROCESSING_AMOUNT_PP;
+		if (!hasBoss())
+			fishProcessedKg *= (100 - Constants.FISH_PROCESSING_NO_BOSS_DECREASE) / 100.0;
+		
 		if (fishProcessedKg <= fishUnprocessedKg) {
 			fishUnprocessedKg -= fishProcessedKg;
 			this.fishProcessedKg = fishProcessedKg;
-			if (getEmployeeCount(Status.FACTORY_WORKER) == maxEmployees && maxEmployees < Constants.FACTORY_MAX_EMPLOYEES) {
+			if (getEmployeeCount(Status.FACTORY_WORKER) == maxEmployees && maxEmployees < Constants.FACTORY_MAX_WORKERS) {
 				maxEmployees ++;
 			}
 		}
@@ -87,7 +90,7 @@ public class Factory extends Workplace {
 			fishUnprocessedKg = 0;
 			this.fishProcessedKg = fishProcessedKg;
 			fireEmployees(1);
-			if (maxEmployees > Constants.FACTORY_MIN_EMPLOYEES) {
+			if (maxEmployees > Constants.FACTORY_MIN_WORKERS) {
 				maxEmployees --;
 			}
 		}

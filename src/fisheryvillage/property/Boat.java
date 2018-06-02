@@ -60,13 +60,17 @@ public class Boat extends Workplace {
 	}
 
 	public void fireEmployees(int number) {
-		
-		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
-		for (final Human human: humans) {
+
+		ArrayList<Integer> temporaryFisherIds = new ArrayList<Integer>();
+		temporaryFisherIds.addAll(fishersIds);
+		for (Integer fisherId : temporaryFisherIds) {
+			Human human = HumanUtils.getHumanById(fisherId);
 			if (human.getStatus() == Status.FISHER) {
 				human.stopWorkingAtWorkplace();
 				number -= 1;
 			}
+			else
+				Logger.logError(getName() + " error in fire employees with " + fisherId);
 			if (number == 0)
 				return ;
 		}
@@ -182,7 +186,11 @@ public class Boat extends Workplace {
 		default:
 			Logger.logError("Error in fish catch");
 		}
-		return getFisherAndCaptainCount() * amountPerFisher;
+		int fishToCatch = getFisherAndCaptainCount() * amountPerFisher;
+		if (!hasCaptain())
+			fishToCatch *= (100 - Constants.FISH_CAUGHT_NO_CAPTAIN_DECREASE) / 100.0;
+		
+		return fishToCatch;
 	}
 	
 	public void stepSellFish() {

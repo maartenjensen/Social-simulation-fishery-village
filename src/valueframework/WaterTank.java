@@ -17,12 +17,12 @@ public class WaterTank implements Comparable<WaterTank> {
 	private double threshold;
 	private String relatedAbstractValue;
 		
-	public WaterTank(double capacity, double filledLevel, double threshould, double drainingAmount, String relatedAbstractValue) {
+	public WaterTank(double capacity, double filledLevel, double threshold, double drainingAmount, String relatedAbstractValue) {
 		this.capacity = capacity;
 	    this.filledLevel = filledLevel;
-	    this.threshold = threshould;
+	    this.threshold = threshold;
 	    this.drainingAmount = drainingAmount;
-	    increasingAmount = capacity - threshould;
+	    increasingAmount = capacity - threshold;
 	    this.relatedAbstractValue = relatedAbstractValue;
 	    
 	    Log.printLog("Created watertank " + relatedAbstractValue + ", cap: " + capacity + ", lvl: " + filledLevel +
@@ -56,6 +56,12 @@ public class WaterTank implements Comparable<WaterTank> {
 	    				   ", thr:" + threshold + ", inc:" + increasingAmount + ", dra:" + drainingAmount);
 	}
 
+	public void setLevelAndThreshold(double filledLevel, double threshold) {
+		 this.filledLevel = filledLevel;
+		 this.threshold = threshold;
+		 increasingAmount = capacity - threshold;
+	}
+	
 	@Override
 	public int compareTo(WaterTank other) {
 		return Double.compare(getPriorityPercentage(),other.getPriorityPercentage());
@@ -117,6 +123,16 @@ public class WaterTank implements Comparable<WaterTank> {
 		return relatedAbstractValue;
 	}
 
+	public void setThreshold(double threshold) {
+		this.threshold = threshold;
+		increasingAmount = capacity - threshold;
+	}
+	
+	public void adjustThreshold(double add, double min, double max) {
+		threshold = Math.max(min, Math.min(max, threshold + add));
+		increasingAmount = capacity - threshold;
+	}
+	
 	public void setRelatedAbstractValue(String valueName) {
 		this.relatedAbstractValue = valueName;
 	}

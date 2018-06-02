@@ -28,7 +28,7 @@ public class VillageBuilder {
 		new SocialCare(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 2));
 		new ElderlyCare(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 22));
 		new School(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_VILLAGE_START + 25, 12));
-		new Factory(SimUtils.getNewPropertyId(), Constants.FACTORY_PRICE, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 24));
+		new Factory(SimUtils.getNewPropertyId(), Constants.FACTORY_BUY_PRICE, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 24));
 		new Council(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 18));
 		new EventHall(SimUtils.getNewPropertyId(), 0, 0, Constants.BUILDING_INITIAL_MONEY, new GridPoint(Constants.GRID_SEA_START - 11, 8));
 

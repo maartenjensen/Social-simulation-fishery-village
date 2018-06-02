@@ -77,7 +77,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		villageBuilder.buildVillage();
 		
 		// Create ecosystem
-		new Ecosystem(Constants.ECOSYSTEM_INITIAL_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
+		new Ecosystem(Constants.ECOSYSTEM_STABLE_FISH, new GridPoint(Constants.GRID_SEA_START + 2, Constants.GRID_HEIGHT - 20));
 		new DataCollector(new GridPoint(2,2));
 		
 		// Create population
@@ -139,7 +139,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 		
 		Logger.logMain("- Check migration");
-		if (Constants.MIGRATION_PROBABILITY > RandomHelper.nextDouble()) {
+		if (Constants.NEW_RESIDENT_PROB > RandomHelper.nextDouble()) {
 			
 			Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), true, SimUtils.getRandomBoolean(),
 									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
@@ -237,7 +237,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (Boat boat : boats) {
 			boat.stepSellFish();
 		}
-				
+	
 		Logger.logMain("- Run Boat.stepProcessFish");
 		SimUtils.getFactory().stepProcessFish();
 		

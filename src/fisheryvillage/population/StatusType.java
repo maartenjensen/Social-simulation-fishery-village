@@ -2,12 +2,12 @@ package fisheryvillage.population;
 
 public enum StatusType {
 
-	FISHER_ECOL,
-	FISHER_ECON,
 	WEALTH_JOB,
 	WEALTH_HOUSE,
 	WEALTH_BOAT,
+	FISHER_ECOL,
+	FISHER_ECON,
 	DONATION,
-	SOCIAL_ORGANIZE,
-	SOCIAL_ATTEND;
+	EVENTS,
+	ORGANIZE_FREE;
 }

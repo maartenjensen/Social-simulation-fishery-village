@@ -32,6 +32,42 @@
         </color>
       </SeriesData>
     </entry>
+    <entry>
+      <string>N Fish repopulated x 10</string>
+      <SeriesData>
+        <label>N Fish repopulated x 10</label>
+        <color>
+          <red>0</red>
+          <green>204</green>
+          <blue>204</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>N Fish danger level</string>
+      <SeriesData>
+        <label>N Fish danger level</label>
+        <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>N Fish caught x 10</string>
+      <SeriesData>
+        <label>N Fish caught x 10</label>
+        <color>
+          <red>204</red>
+          <green>204</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
   </seriesIds>
   <dataValueIds/>
   <plotRangeLength>-1</plotRangeLength>

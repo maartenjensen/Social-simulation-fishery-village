@@ -8,7 +8,7 @@ public enum HouseType {
 	STANDARD(0.6),
 	EXPENSIVE(1.0);
 	
-	double socialStatusHouse;
+	private double socialStatusHouse;
 	
 	HouseType(double socialStatusHouse) {
 		this.socialStatusHouse = socialStatusHouse;

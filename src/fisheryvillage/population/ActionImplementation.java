@@ -90,8 +90,6 @@ public class ActionImplementation {
 			resident.setJobActionName(actionTitle);
 			resident.setStatus(Status.UNEMPLOYED);
 			break;
-		case "Job student":
-			break;
 		default:
 			Logger.logError("H" + resident.getId() + " action '" + actionTitle + "' doesn't exist");
 		}
@@ -178,14 +176,30 @@ public class ActionImplementation {
 			Logger.logError("H" + resident.getId() + " netto income: " + resident.getNettoIncome() + " not exceeding necessary cost: " + resident.getNecessaryCost());
 		}
 	}
-	/*
-	public void actionDonate(Property property, int amount) {
-		Logger.logAction("H" + id + " donated money to : " + property.getName());
-		if (money < amount) {
-			Logger.logError("Error money smaller than amount, donation canceled");
-			return ;
+	
+	public static Status getStatusFromString(String actionTitle) {
+		
+		switch(actionTitle) {
+		case "Job fisher":
+			return Status.FISHER;
+		case "Job captain":
+			return Status.CAPTAIN;
+		case "Job factory boss":
+			return Status.FACTORY_BOSS;
+		case "Job teacher":
+			return Status.TEACHER;
+		case "Job factory worker":
+			return Status.FACTORY_WORKER;
+		case "Job elderly caretaker":
+			return Status.ELDERLY_CARETAKER;
+		case "Job work outside village":
+			return Status.WORK_OUT_OF_TOWN;
+		case "Job mayor":
+			return Status.MAYOR;
+		case "Job unemployed":
+			return Status.UNEMPLOYED;
+		default:
+			return Status.NONE;
 		}
-		money -= amount;
-		property.addToSavings(amount);
-	}*/
+	}	
 }
