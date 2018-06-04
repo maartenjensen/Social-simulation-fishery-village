@@ -288,7 +288,7 @@ public final strictfp class HumanUtils {
 
 		Context<Object> context = SimUtils.getContext();
 		Logger.logDebug("m." + mother.getId() + ", f." + father.getId() + "spawnChild()");
-		final Human child = new Resident(getNewHumanId(), SimUtils.getRandomBoolean(), false, false, 0, Constants.HUMAN_INIT_STARTING_MONEY);
+		final Human child = new Resident(getNewHumanId(), SimUtils.getRandomBoolean(), false, 0, Constants.HUMAN_INIT_STARTING_MONEY);
 		Logger.logDebug("Pre child.setAncestors(), An moth:" + mother.getAncestors() + ", an fath:" + father.getAncestors());
 		child.setAncestors(mother.getId(), father.getId(), mother.getAncestors(), father.getAncestors());
 		// Add child to parents

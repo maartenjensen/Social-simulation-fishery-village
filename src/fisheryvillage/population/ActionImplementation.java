@@ -27,8 +27,9 @@ public class ActionImplementation {
 		switch(actionTitle) {
 		case "Job fisher":
 			for (Boat boat : boats) {
-				if (boat.getVacancy(resident.getHigherEducated(), resident.getMoney()).contains(Status.FISHER)) {
+				if (boat.getVacancy(false, resident.getMoney()).contains(Status.FISHER)) {
 					actionWorkStartAt(resident, boat, Status.FISHER);
+					resident.setHasBeenFisher();
 					return ;
 				}
 			}
@@ -54,6 +55,7 @@ public class ActionImplementation {
 					resident.setJobActionName(actionTitle);
 					resident.setStatus(Status.CAPTAIN);
 					resident.setWorkplaceId(boat.getId());
+					resident.setHasBeenFisher();
 					Logger.logAction("H" + resident.getId() + " became a captain at : " + boat.getName());
 					return ;
 				}
@@ -121,25 +123,29 @@ public class ActionImplementation {
 			Logger.logError("H" + resident.getId() + " action '" + actionTitle + "' doesn't exist");
 		}
 	}
-	
+
 	public static void executeActionEvent(String actionTitle, Resident resident) {
 		
+		int moneyEvent = 0;
 		EventHall eventHall = SimUtils.getEventHall();
 		ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(resident.getId());
 		switch(actionTitle) {
 		case "Organize free event":
-			Logger.logAction("CREATE EVENT F - H" + resident.getId());
-			resident.addMoney(-1 * eventHall.createEvent("Free", resident.getId()));
+			moneyEvent = eventHall.createEvent("Free", resident.getId());
+			resident.addMoney(-1 * moneyEvent);
+			Logger.logAction("CREATE EVENT F - H" + resident.getId() + " event cost: " + moneyEvent);
 			break;
 		case "Organize commercial event":
-			Logger.logAction("CREATE EVENT C - H" + resident.getId());
-			resident.addMoney(-1 * eventHall.createEvent("Commercial", resident.getId()));
+			moneyEvent = eventHall.createEvent("Commercial", resident.getId());
+			resident.addMoney(-1 * moneyEvent);
+			Logger.logAction("CREATE EVENT C - H" + resident.getId() + " event cost: " + moneyEvent);
+			
 			break;
 		case "Attend free event":
 			for (Event event : possibleEvents) {
 				if (event.getEventType().equals("Free")) {
 					Logger.logAction("ATTEND EVENT F - H" + resident.getId());
-					resident.addMoney(-1 * eventHall.joinEvent(event, resident.getId()));
+					eventHall.joinEvent(event, resident.getId());
 					break;
 				}
 			}
@@ -148,7 +154,7 @@ public class ActionImplementation {
 			for (Event event : possibleEvents) {
 				if (event.getEventType().equals("Commercial")) {
 					Logger.logAction("ATTEND EVENT C - H" + resident.getId());
-					resident.addMoney(-1 * eventHall.joinEvent(event, resident.getId()));
+					eventHall.joinEvent(event, resident.getId());
 					break;
 				}
 			}

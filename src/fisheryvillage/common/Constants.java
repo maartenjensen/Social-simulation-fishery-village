@@ -43,7 +43,7 @@ public final class Constants {
 	
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
 	
-	public static final double WORK_OUTSIDE_PROBABILITY = 0.3;
+	public static final double WORK_OUTSIDE_PROBABILITY = 0.5;
 	
 	// Initialize employee numbers
 	public static final int FACTORY_INITIAL_MAX_WORKERS = 10;
@@ -51,7 +51,8 @@ public final class Constants {
 	public static final int FACTORY_MIN_WORKERS = 3;
 	public static final int CARETAKER_MAX_ELDERLY = 10;
 	public static final int TEACHER_MAX_CHILDREN = 10;
-
+	public static final int COMPANY_MAX_WORKERS = 100;
+	
 	public static final double PRICE_PER_KG_FISH_UNPROCESSED = 5;
 	public static final double PRICE_PER_KG_FISH_PROCESSED = 10;
 	public static final int FISH_PROCESSING_AMOUNT_PP = 750;
@@ -60,9 +61,9 @@ public final class Constants {
 	
 	// Initialize boat parameters
 	public static final int NUMBER_OF_BOATS = 2;
-	public static final int FISH_CATCH_AMOUNT_MIN_PP = 50;
+	public static final int FISH_CATCH_AMOUNT_MIN_PP = 75;
 	public static final int FISH_CATCH_AMOUNT_MEDIUM_PP = 125;
-	public static final int FISH_CATCH_AMOUNT_MAX_PP = 200;
+	public static final int FISH_CATCH_AMOUNT_MAX_PP = 175;
 	public static final double FISH_CAUGHT_NO_CAPTAIN_DECREASE = 25;
 	
 	public static final int BOAT_SMALL_PRICE = 5000;
@@ -92,6 +93,7 @@ public final class Constants {
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
 	public static final double HUMAN_PROB_KEEP_PREV_JOB = 0.9;
+	public static final double HUMAN_PROB_SEARCH_NEW_JOB = 0.1;
 
 	public static final int HUMAN_CHILDREN_WANTED_MIN = 1;
 	public static final int HUMAN_CHILDREN_WANTED_MAX = 6;
@@ -110,7 +112,7 @@ public final class Constants {
 	public static final int ECOSYSTEM_STABLE_FISH = 200000;
 	public static final int ECOSYSTEM_MAX_REPOPULATE_UPPER = 150000;
 	public static final int ECOSYSTEM_MAX_REPOPULATE_LOWER = 50000;
-	public static final int ECOSYSTEM_IN_DANGER = 50000;
+	public static final int ECOSYSTEM_IN_DANGER = 75000;
 	
 	// Initialize money parameters
 	public static final double LIVING_COST_ADULT = 300;

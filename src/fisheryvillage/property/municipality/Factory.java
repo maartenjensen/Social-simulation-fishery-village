@@ -139,7 +139,7 @@ public class Factory extends Workplace {
 	}
 	
 	@Override
-	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
 		if (hasBoss()) {

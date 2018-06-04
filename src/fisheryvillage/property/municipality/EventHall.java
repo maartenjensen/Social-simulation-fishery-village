@@ -30,7 +30,7 @@ public class EventHall extends Property {
 	
 	public boolean getVacancyForNewEvent() {
 		
-		int eventPeoplePotential = SimUtils.getCouncil().getNumberOfAdults() + SimUtils.getCouncil().getNumberOfElderlyYoung();
+		int eventPeoplePotential = SimUtils.getCouncil().getNumberOfAdults() + SimUtils.getCouncil().getNumberOfElderlyYoung() + 6;
 		int eventPeopleCapacity = 0;
 		for (Event event : events) {
 			eventPeopleCapacity += event.getMaxAttendees() + 1; // + 1 for the organizer
@@ -59,10 +59,9 @@ public class EventHall extends Property {
 		return possibleEvents;
 	}
 	
-	public int joinEvent(Event event, int id) {
+	public void joinEvent(Event event, int id) {
 		
 		event.addAttendee(id);
-		return event.getAttendeeFee();
 	}
 
 	public void stepPerformSocialEvent() {

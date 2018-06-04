@@ -114,7 +114,7 @@ public class SocialStatus {
 		Logger.logInfo("JWZ pre:" + statusMap.toString());
 		return selectBestAction(statusMap);
 	}
-	
+
 	public ValuedAction getBestActionWork(DecisionMaker decisionMaker, ArrayList<ValuedAction> eventActions) {
 		
 		if (eventActions.size() == 1) 
@@ -140,14 +140,15 @@ public class SocialStatus {
 		double sum = decisionMaker.getAbstractValueThreshold(AbstractValue.POWER) + decisionMaker.getAbstractValueThreshold(AbstractValue.UNIVERSALISM)
 					 + decisionMaker.getAbstractValueThreshold(AbstractValue.TRADITION);
 		double universalism = decisionMaker.getAbstractValueThreshold(AbstractValue.UNIVERSALISM) / sum;
-
+		double tradition = decisionMaker.getAbstractValueThreshold(AbstractValue.TRADITION) / sum;
+		
 		HashMap<ValuedAction, Double> statusMap = new HashMap<ValuedAction, Double>();
 		for (ValuedAction eventAction : eventActions) {
 			if (eventAction.getTitle().equals("Donate nothing")) {
 				statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), 0));
 			}
 			else if (eventAction.getTitle().equals("Donate to council")) {
-				statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), universalism * 1)); //TODO tradition
+				statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), universalism * 1 + tradition * 1)); //TODO tradition
 			}
 		}
 		Logger.logInfo("JWZ pre:" + statusMap.toString());
@@ -183,8 +184,7 @@ public class SocialStatus {
 	 * @return
 	 */
 	private double getCalculate(double valueGoodness, double valueSocial) {
-		if (valueGoodness < 0)
-			valueGoodness = 1 + valueGoodness;
+		valueGoodness = (1.0 + valueGoodness) / 2.0;
 		return (valueGoodness + 0.01) * (valueSocial + 0.01);
 	}
 

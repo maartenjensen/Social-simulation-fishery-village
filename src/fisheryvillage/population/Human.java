@@ -34,10 +34,10 @@ public class Human {
 	private final int id;
 	private final boolean gender; // man = false; woman = true;
 	private final boolean foreigner;
-	private boolean higherEducated;
 	private int age;
 	private double money;
 	private Status status;
+	private boolean hasBeenFisher;
 	
 	// Variable initialization
 	private ArrayList<Integer> childrenIds = new ArrayList<Integer>();
@@ -47,32 +47,33 @@ public class Human {
 	private SchoolType schoolType = SchoolType.NO_SCHOOL;
 	private double nettoIncome = 0;
 	private double necessaryCost = 0;
+	private double soloNetIncome = 0;
 	private double salaryUntaxed = 0;
 	private int partnerId = -1;
 	private int workplaceId = -1;
 
-	protected Human(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money) {
+	protected Human(int id, boolean gender, boolean foreigner, int age, double money) {
 
 		this.id = id;
 		this.gender = gender;
 		this.foreigner = foreigner;
-		this.higherEducated = higherEducated;
 		this.age = age;
 		this.money = money;
 		this.schoolType = SchoolType.NO_SCHOOL;
 		this.status = Status.UNEMPLOYED;
+		this.hasBeenFisher = false;
 		
 		setStatusByAge();
 		addToContext();
 	}
 
-	protected Human(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money,
+	protected Human(int id, boolean gender, boolean foreigner, boolean hasBeenFisher, int age, double money,
 				 double nettoIncome, double necessaryCost, Status status, int workplaceId) {
 		
 		this.id = id;
 		this.gender = gender;
 		this.foreigner = foreigner;
-		this.higherEducated = higherEducated;
+		this.hasBeenFisher = hasBeenFisher;
 		this.age = age;
 		this.money = money;
 		this.schoolType = SchoolType.NO_SCHOOL;
@@ -130,6 +131,7 @@ public class Human {
 		
 		necessaryCost = 0;
 		nettoIncome = 0;
+		soloNetIncome = 0;
 		salaryUntaxed = 0;
 	}
 
@@ -140,6 +142,7 @@ public class Human {
 		
 		this.salaryUntaxed = calculateSalary();
 		double salary = payTax(salaryUntaxed);
+		soloNetIncome = salary;
 		double benefits = calculateBenefits();
 		double bankrupt_benefits = calculateBankruptBenefits();
 		Human partner = getPartner();
@@ -230,21 +233,26 @@ public class Human {
 		ArrayList<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("Job unemployed");
 
-		ArrayList<Workplace> workplaces = SimUtils.getObjectsAllRandom(Workplace.class);
-		for (final Workplace workplace : workplaces) {
-
-			ArrayList<Status> vacancies = workplace.getVacancy(getHigherEducated(), getMoney());
-			for (Status vacancy : vacancies) {
-				if (!possibleActions.contains(vacancy.getJobActionName())) {
-					possibleActions.add(vacancy.getJobActionName());
+		if (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() || currentJobTitle == "Job unemployed") {
+			ArrayList<Workplace> workplaces = SimUtils.getObjectsAllRandom(Workplace.class);
+			for (final Workplace workplace : workplaces) {
+	
+				ArrayList<Status> vacancies = workplace.getVacancy(getHasBeenFisher(), getMoney());
+				for (Status vacancy : vacancies) {
+					if (!possibleActions.contains(vacancy.getJobActionName())) {
+						possibleActions.add(vacancy.getJobActionName());
+					}
 				}
 			}
 		}
-		if (!possibleActions.contains(currentJobTitle) && !currentJobTitle.equals("none")) {
+		if (!possibleActions.contains(currentJobTitle) && !currentJobTitle.equals("none") && !currentJobTitle.equals("Job unemployed")) {
 			possibleActions.add(currentJobTitle);
 		}
-		if (currentJobTitle.equals("Job captain") && possibleActions.contains("Job fisher")) {
+		if ((currentJobTitle.equals("Job captain") && possibleActions.contains("Job fisher"))) {
 			possibleActions.remove("Job fisher");
+		}
+		if (possibleActions.contains(currentJobTitle) && soloNetIncome <= Constants.BENEFIT_UNEMPLOYED && !currentJobTitle.equals("none") && !currentJobTitle.equals("Job unemployed")) {
+			possibleActions.remove(currentJobTitle);
 		}
 		return possibleActions;
 	}
@@ -623,7 +631,7 @@ public class Human {
 			if (status != Status.ELDEST) {
 				status = Status.ELDEST;
 				schoolType = SchoolType.NO_SCHOOL;
-				removeAndSellAllProperty(); //Maybe don't sell house when partner still lives there
+				goToElderlyCare();
 			}
 		}
 		else if (age >= Constants.HUMAN_ELDERLY_AGE) {
@@ -752,11 +760,7 @@ public class Human {
 	public boolean isMan() {
 		return (!gender);
 	}
-	
-	public boolean getHigherEducated() {
-		return higherEducated;
-	}
-	
+
 	public ArrayList<GridPoint> getAncestors() {
 		return ancestors;
 	}
@@ -771,6 +775,10 @@ public class Human {
 		return null;
 	}
 	
+	public boolean getHasBeenFisher() {
+		return hasBeenFisher;
+	}
+	
 	public int getPartnerId() {
 		return partnerId;
 	}
@@ -781,6 +789,10 @@ public class Human {
 	
 	public void setWorkplaceId(int workplaceId) {
 		this.workplaceId = workplaceId;
+	}
+	
+	public void setHasBeenFisher() {
+		this.hasBeenFisher = true;
 	}
 	
 	public ArrayList<Integer> getParentsIds() {

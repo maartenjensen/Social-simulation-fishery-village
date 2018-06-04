@@ -32,18 +32,20 @@ public final class Resident extends Human {
 	private int childrenWanted = -1;
 	private SocialStatus socialStatus = new SocialStatus();
 	private String jobActionName = "none";
+	private ValuedAction eventAction = null;
+	private boolean canOrganize = false;
 	
-	public Resident(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money) {
-		super(id, gender, foreigner, higherEducated, age, money);
+	public Resident(int id, boolean gender, boolean foreigner, int age, double money) {
+		super(id, gender, foreigner, age, money);
 
 		decisionMaker = new DecisionMaker();
 		initDecisionMakerWaterTanks();
 	}
 
-	public Resident(int id, boolean gender, boolean foreigner, boolean higherEducated, int age, double money, int childrenWanted,
+	public Resident(int id, boolean gender, boolean foreigner, boolean hasBeenFisher, int age, double money, int childrenWanted,
 					double nettoIncome, double necessaryCost, String jobTitle, Status status, int workplaceId) {
 		
-		super(id, gender, foreigner, higherEducated, age, money, nettoIncome, necessaryCost, status, workplaceId);
+		super(id, gender, foreigner, hasBeenFisher, age, money, nettoIncome, necessaryCost, status, workplaceId);
 
 		this.childrenWanted = childrenWanted;
 		this.jobActionName = jobTitle;
@@ -115,7 +117,7 @@ public final class Resident extends Human {
 			ActionImplementation.executeActionJob(actionToDo, this);
 		}
 		else {
-			Logger.logError("Error no action to execute");
+			Logger.logError("H" + getId() + "Error no action to execute");
 		}
 	}
 
@@ -139,9 +141,10 @@ public final class Resident extends Human {
 			return ;
 		}
 		
-		boolean canOrganize = false;
 		EventHall eventHall = SimUtils.getEventHall();
 		ArrayList<Event> possibleEvents = eventHall.getEventsWithVacancy(getId());
+		eventAction = null;
+		canOrganize = false;
 		
 		//Create possible actions
 		ArrayList<String> possibleActions = new ArrayList<String>();
@@ -172,9 +175,8 @@ public final class Resident extends Human {
 		String actionToDo = selectedAction.getTitle();
 
 		if (actionToDo != null) {
-			decisionMaker.agentExecutesValuedAction(selectedAction);
+			eventAction = selectedAction;
 			ActionImplementation.executeActionEvent(actionToDo, this);
-			socialStatus.setSocialStatusEvent(actionToDo, canOrganize);
 		}
 		else {
 			Logger.logError("H " + getId() + " Error no action to execute");
@@ -268,11 +270,6 @@ public final class Resident extends Human {
 			die();
 			return ;
 		}
-		else if (getAge() == Constants.HUMAN_ELDERLY_CARE_AGE) {
-			
-			goToElderlyCare();
-			return ;
-		}
 		
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE)
 			return ;
@@ -340,6 +337,28 @@ public final class Resident extends Human {
 		ArrayList<ValuedAction> evaluatedAction = decisionMaker.agentFilterActionsBasedOnValues(fishingActions);
 		decisionMaker.agentExecutesValuedAction(evaluatedAction.get(0));
 		socialStatus.setSocialStatusFisher(fishingActionTitle);
+	}
+	
+	public void actionEventOrganize(int profit) {
+		if (eventAction != null) {
+			decisionMaker.agentExecutesValuedAction(eventAction);
+			socialStatus.setSocialStatusEvent(eventAction.getTitle(), canOrganize);
+			addMoney(profit);
+		}
+		else {
+			Logger.logError("H" + getId() + " has no event action");
+		}
+	}
+	
+	public void actionEventAttend(int fee) {
+		if (eventAction != null) {
+			decisionMaker.agentExecutesValuedAction(eventAction);
+			socialStatus.setSocialStatusEvent(eventAction.getTitle(), canOrganize);
+			addMoney(-1 * fee);
+		}
+		else {
+			Logger.logError("H" + getId() + " has no event action");
+		}
 	}
 	
 	/*=========================================
@@ -563,7 +582,7 @@ public final class Resident extends Human {
 	
 	public String getHumanVarsAsString() { 
 
-		return getId() + "," + (!isMan()) + "," + getForeigner() + "," + getHigherEducated() + "," + getAge() + "," + getMoney() + "," + childrenWanted +
+		return getId() + "," + (!isMan()) + "," + getForeigner() + "," + getHasBeenFisher() + "," + getAge() + "," + getMoney() + "," + childrenWanted +
 			   "," + getNettoIncome() + "," + getNecessaryCost() + "," + jobActionName + "," + getStatus().name() + "," + getWorkplaceId(); 
 	}
 }

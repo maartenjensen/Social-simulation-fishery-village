@@ -143,7 +143,7 @@ public class Council extends Workplace {
 	}
 	
 	@Override
-	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
 		if (!hasMayor()) {

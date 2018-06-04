@@ -44,7 +44,7 @@ public class School extends Workplace {
 	}
 	
 	@Override
-	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
 		int teachers = getTeacherCount();

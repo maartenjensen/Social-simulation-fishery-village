@@ -86,7 +86,7 @@ public class PopulationBuilder {
 			int id = Integer.parseInt(hVars.get(0));
 			boolean gender = Boolean.parseBoolean(hVars.get(1));
 			boolean foreigner = Boolean.parseBoolean(hVars.get(2));
-			boolean higherEducated = Boolean.parseBoolean(hVars.get(3));
+			boolean hasBeenFisher = Boolean.parseBoolean(hVars.get(3));
 			int age = Integer.parseInt(hVars.get(4));
 			double money = Double.parseDouble(hVars.get(5));
 			int childrenWanted = Integer.parseInt(hVars.get(6));
@@ -95,7 +95,7 @@ public class PopulationBuilder {
 			String jobTitle = hVars.get(9);
 			Status status = Status.valueOf(hVars.get(10));
 			int workplaceId = Integer.parseInt(hVars.get(11));
-			Resident resident = new Resident(id, gender, foreigner, higherEducated, age, money, childrenWanted,
+			Resident resident = new Resident(id, gender, foreigner, hasBeenFisher, age, money, childrenWanted,
 									nettoIncome, necessaryCost, jobTitle, status, workplaceId);
 			Logger.logInfo("Initialized H" + resident.getId() + ", age: " + resident.getAge());
 			if (maxHumanId < id)
@@ -179,7 +179,7 @@ public class PopulationBuilder {
 	public void savePopulation(String filePath, String fileName) {
 		// Data humans
 		List<String> dataHumans = new ArrayList<String>();
-		dataHumans.add("%0:id,gender,foreigner,higherEducated,age,money,childrenWanted,homelessTick,nettoIncome,necessaryCost,jobTitle,status,workplaceId");
+		dataHumans.add("%0:id,gender,foreigner,hasBeenFisher,age,money,childrenWanted,homelessTick,nettoIncome,necessaryCost,jobTitle,status,workplaceId");
 		ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
 		for (Resident resident : residents) {
 			dataHumans.add(resident.getHumanVarsAsString());

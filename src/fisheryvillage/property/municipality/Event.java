@@ -2,14 +2,15 @@ package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
+import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 
 public class Event {
-	
+
 	private int costInitial = 30;
 	private int maxAttendees = 6;
-	private int costAttendee = 5;
 	private int attendeeFee;
+	private int costPerAttendee = 10;
 	private String eventType = "NONE";
 	
 	int organizerId = -1;
@@ -18,26 +19,30 @@ public class Event {
 	Event(String eventType, int organizerId) {
 		if (eventType == "Free") {
 			attendeeFee = 0;
+			costPerAttendee = 10;
 		}
 		else if (eventType == "Commercial") {
-			attendeeFee = 15;
+			attendeeFee = 25;
+			costPerAttendee = 10;
 		}
 		this.eventType = eventType;
 		setOrganizer(organizerId);
 	}
-	
+
 	public void stepPerformEvent() {
 		
-		Logger.logInfo("PERFORM " + toString());
-		if (organizerId != -1) {
-			//HumanUtils.getResidentById(organizerId).actionSocialEventOrganize();
-			//for (int attendee : attendeesIds) {
-				 //HumanUtils.getResidentById(attendee).actionSocialEventAttend();
-			//}
+		if (organizerId >= 0 && attendeesIds.size() >= 2) {
+			Logger.logInfo("PERFORM EVENT " + toString());
+			HumanUtils.getResidentById(organizerId).actionEventOrganize((attendeeFee - costPerAttendee) * attendeesIds.size());
+			for (int attendee : attendeesIds) {
+				 HumanUtils.getResidentById(attendee).actionEventAttend(attendeeFee);
+			}
 		}
-		
+		else {
+			Logger.logInfo("EVENT " + toString() + " had to few people");
+		}
 	}
-	
+
 	public boolean getVacancyForAttendee(int id) {
 		if (attendeesIds.size() < maxAttendees && organizerId != id && organizerId != -1) {
 			return true;
@@ -69,10 +74,6 @@ public class Event {
 	
 	public int getMaxAttendees() {
 		return maxAttendees;
-	}
-	
-	public int getCostAttendee() {
-		return costAttendee;
 	}
 	
 	public int getAttendeeFee() {

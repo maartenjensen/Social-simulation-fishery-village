@@ -15,7 +15,7 @@ public class Workplace extends Property {
 		super(id, price, maintenanceCost, savings, location, width, height, propertyColor);
 	}
 	
-	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		return new ArrayList<Status>();
 	}
 	

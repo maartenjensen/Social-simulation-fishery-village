@@ -17,8 +17,6 @@ import saf.v3d.scene.VSpatial;
 * @since 2018-02-20
 */
 public class CompanyOutside extends Workplace {
-
-	private int maxEmployees = 100;
 	
 	public CompanyOutside(int id, int price, int maintenanceCost, double money, GridPoint location) {
 		super(id, price, maintenanceCost, money, location, 10, 10, PropertyColor.COMPANY);
@@ -27,10 +25,10 @@ public class CompanyOutside extends Workplace {
 	}
 	
 	@Override
-	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
-		if (getEmployeeCount(Status.WORK_OUT_OF_TOWN) < maxEmployees && RandomHelper.nextDouble() <= Constants.WORK_OUTSIDE_PROBABILITY) {
+		if (getEmployeeCount(Status.WORK_OUT_OF_TOWN) < Constants.COMPANY_MAX_WORKERS && RandomHelper.nextDouble() <= Constants.WORK_OUTSIDE_PROBABILITY) {
 			possibleJobs.add(Status.WORK_OUT_OF_TOWN);
 		}
 		return possibleJobs;
@@ -49,6 +47,6 @@ public class CompanyOutside extends Workplace {
 
 	@Override
 	public String getLabel() {
-		return "Company [" + getId() + "]: W:" + getEmployeeCount(Status.WORK_OUT_OF_TOWN) + "/" + maxEmployees;
+		return "Company [" + getId() + "]: W:" + getEmployeeCount(Status.WORK_OUT_OF_TOWN) + "/" + Constants.COMPANY_MAX_WORKERS;
 	}	
 }

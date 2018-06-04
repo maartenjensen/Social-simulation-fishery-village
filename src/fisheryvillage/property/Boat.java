@@ -6,6 +6,7 @@ import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
+import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
@@ -115,9 +116,13 @@ public class Boat extends Workplace {
 	}
 	
 	@Override
-	public ArrayList<Status> getVacancy(boolean higherEducated, double money) {
+	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		if (hasBeenFisher) {
+			return possibleJobs;
+		}
+		
 		if (hasCaptain()) {
 			int fishers = getFisherCount();
 			if (fishers < maxFishers) {
@@ -163,6 +168,7 @@ public class Boat extends Workplace {
 	
 	public int actionFish(String fishingAction) {
 		
+		Ecosystem ecosystem = SimUtils.getEcosystem();
 		int amountPerFisher = 0;
 		switch (fishingAction) {
 		case "Fish a lot":
@@ -178,10 +184,10 @@ public class Boat extends Workplace {
 			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MEDIUM_PP;
 			break;
 		case "Fish less":
-			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MIN_PP;
+			amountPerFisher = Math.min(ecosystem.getAllowedToCatchLess(), Constants.FISH_CATCH_AMOUNT_MIN_PP);
 			break;
 		case "Fish less danger":
-			amountPerFisher = Constants.FISH_CATCH_AMOUNT_MIN_PP;
+			amountPerFisher = Math.min(ecosystem.getAllowedToCatchLess(), Constants.FISH_CATCH_AMOUNT_MIN_PP);
 			break;
 		default:
 			Logger.logError("Error in fish catch");

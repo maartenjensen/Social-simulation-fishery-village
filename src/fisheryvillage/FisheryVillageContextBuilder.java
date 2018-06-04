@@ -141,7 +141,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		Logger.logMain("- Check migration");
 		if (Constants.NEW_RESIDENT_PROB > RandomHelper.nextDouble()) {
 			
-			Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), true, SimUtils.getRandomBoolean(),
+			Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), true,
 									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
 									Constants.HUMAN_INIT_STARTING_MONEY);
 			Logger.logMain("-- New human spawned : " + resident.getId());
@@ -381,7 +381,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			for (int i = 0; i < Constants.INITIAL_POPULATION_SIZE; ++i) {
 	
 				// Humans are automatically added to the context and placed in the grid
-				Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), false, SimUtils.getRandomBoolean(),
+				Resident resident = new Resident(HumanUtils.getNewHumanId(), SimUtils.getRandomBoolean(), false,
 									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
 						  			RandomHelper.nextIntFromTo(0, Constants.HUMAN_INIT_STARTING_MONEY) );
 				Logger.logInfo("Create H" + resident.getId() + ", age: " + resident.getAge());

@@ -3,6 +3,7 @@ package fisheryvillage.ecosystem;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
+import fisheryvillage.property.Boat;
 import fisheryvillage.property.BoatType;
 import repast.simphony.space.grid.GridPoint;
 
@@ -15,6 +16,7 @@ import repast.simphony.space.grid.GridPoint;
 public class Ecosystem {
 	
 	private double fish;
+	private int allowedLessFish = 0;
 	private double amountFished = 0; //only used for data collection
 	private double amountRepopulated = 0; //only used for data collection
 	
@@ -68,6 +70,19 @@ public class Ecosystem {
 	 */
 	public void stepEcosystem() {
 		
+		amountRepopulated = getAmountRepopulate();
+		int fishers = 0;
+		for (Boat boat : SimUtils.getObjectsAll(Boat.class)) {
+			fishers += boat.getFisherAndCaptainCount();
+		}
+		allowedLessFish = (int) Math.round(amountRepopulated / (2 * fishers));
+		fish += amountRepopulated;
+		Logger.logInfo("Ecosystem fish: " + fish + ", increased amount: " + amountRepopulated + ", allowed to catch: " + allowedLessFish);
+		amountFished = 0;
+	}
+	
+	private double getAmountRepopulate() {
+		
 		double repopulationMultiplier = 1;
 		if (fish < Constants.ECOSYSTEM_MAX_REPOPULATE_LOWER) {
 			repopulationMultiplier = Math.max(0, fish / (Constants.ECOSYSTEM_MAX_REPOPULATE_LOWER));
@@ -75,11 +90,13 @@ public class Ecosystem {
 		else if (fish > Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) {
 			repopulationMultiplier = Math.max(0, (Constants.ECOSYSTEM_STABLE_FISH - fish) / (Constants.ECOSYSTEM_STABLE_FISH - Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) );
 		}
-		amountRepopulated = Constants.FISH_CATCH_AMOUNT_MEDIUM_PP * Constants.NUMBER_OF_BOATS * BoatType.LARGE.getEmployeeCapacity() * repopulationMultiplier;
-		fish += amountRepopulated;
-		amountFished = 0;
+		return Constants.FISH_CATCH_AMOUNT_MEDIUM_PP * Constants.NUMBER_OF_BOATS * BoatType.LARGE.getEmployeeCapacity() * repopulationMultiplier;
 	}
 
+	public int getAllowedToCatchLess() {
+		return allowedLessFish;
+	}
+	
 	public String getLabel() {
 		
 		String label = "Ecosystem\nFish:" + Double.toString(fish);
