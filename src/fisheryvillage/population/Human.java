@@ -233,18 +233,16 @@ public class Human {
 		ArrayList<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("Job unemployed");
 
-		if (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() || currentJobTitle == "Job unemployed") {
-			ArrayList<Workplace> workplaces = SimUtils.getObjectsAllRandom(Workplace.class);
-			for (final Workplace workplace : workplaces) {
-	
-				ArrayList<Status> vacancies = workplace.getVacancy(getHasBeenFisher(), getMoney());
-				for (Status vacancy : vacancies) {
-					if (!possibleActions.contains(vacancy.getJobActionName())) {
-						possibleActions.add(vacancy.getJobActionName());
-					}
+		ArrayList<Workplace> workplaces = SimUtils.getObjectsAllRandom(Workplace.class);
+		for (final Workplace workplace : workplaces) {
+			ArrayList<Status> vacancies = workplace.getVacancy(getHasBeenFisher(), getMoney());
+			for (Status vacancy : vacancies) {
+				if (!possibleActions.contains(vacancy.getJobActionName())) {
+					possibleActions.add(vacancy.getJobActionName());
 				}
 			}
 		}
+		
 		if (!possibleActions.contains(currentJobTitle) && !currentJobTitle.equals("none") && !currentJobTitle.equals("Job unemployed")) {
 			possibleActions.add(currentJobTitle);
 		}

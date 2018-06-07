@@ -27,14 +27,14 @@ public final class Resident extends Human {
 
 	// Variable declaration (initialization in constructor)
 	private DecisionMaker decisionMaker;
-	
+
 	// Variable initialization
 	private int childrenWanted = -1;
 	private SocialStatus socialStatus = new SocialStatus();
 	private String jobActionName = "none";
 	private ValuedAction eventAction = null;
 	private boolean canOrganize = false;
-	
+
 	public Resident(int id, boolean gender, boolean foreigner, int age, double money) {
 		super(id, gender, foreigner, age, money);
 
@@ -103,7 +103,13 @@ public final class Resident extends Human {
 			return ;
 		}
 
-		ArrayList<String> possibleActions = getPossibleWorkActions(jobActionName);
+		ArrayList<String> possibleActions = new ArrayList<String>();
+		if (jobActionName.equals("none") || Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble()) {
+			possibleActions = getPossibleWorkActions(jobActionName);
+		}
+		else {
+			possibleActions.add(jobActionName);
+		}
 		Logger.logInfo("H" + getId() + " possible actions: " + possibleActions);
 		String actionToDo = null;
 		ValuedAction selectedAction = selectActionFromPossibleActionsJob(possibleActions);
@@ -214,7 +220,7 @@ public final class Resident extends Human {
 	public void stepFamily() {
 
 		if (!isSingle() && !isMan() && childrenWanted > 0 && getAge() < Constants.HUMAN_MAX_CHILD_GET_AGE && HumanUtils.isLivingTogetherWithPartner(this)
-						&& RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_CHILD) {
+						&& RandomHelper.nextDouble() <= Constants.HUMAN_PROB_GET_CHILD) {
 			Human partner = getPartner();
 			if (partner == null) {
 				Logger.logError("Human.stepFamily(): partner = null");

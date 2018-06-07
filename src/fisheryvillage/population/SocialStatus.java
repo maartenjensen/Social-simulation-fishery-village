@@ -184,8 +184,7 @@ public class SocialStatus {
 	 * @return
 	 */
 	private double getCalculate(double valueGoodness, double valueSocial) {
-		valueGoodness = (1.0 + valueGoodness) / 2.0;
-		return (valueGoodness + 0.01) * (valueSocial + 0.01);
+		return Math.max(valueGoodness + valueSocial, 0.01);
 	}
 
 	/**

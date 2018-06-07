@@ -93,7 +93,7 @@ public final class Constants {
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
 	public static final double HUMAN_PROB_KEEP_PREV_JOB = 0.9;
-	public static final double HUMAN_PROB_SEARCH_NEW_JOB = 0.1;
+	public static final double HUMAN_PROB_SEARCH_NEW_JOB = 0.017; //Roughly every 5 years
 
 	public static final int HUMAN_CHILDREN_WANTED_MIN = 1;
 	public static final int HUMAN_CHILDREN_WANTED_MAX = 6;
