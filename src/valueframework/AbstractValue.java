@@ -34,4 +34,9 @@ public enum AbstractValue {
     public static AbstractValue getAbstractValueByIndex(int idx) {
         return AbstractValue.values()[idx];
     }
+
+    public static int getIndexOfAbstractValue(String value){
+    	return AbstractValue.valueOf(value).ordinal();
+    	
+    }
 }
