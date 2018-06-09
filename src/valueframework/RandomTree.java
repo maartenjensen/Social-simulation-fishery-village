@@ -18,6 +18,11 @@ public class RandomTree {
 		randomTreeBuilderFromFile(rootTitle, treeInfo);
 	}
 	
+	public RandomTree(Node rt, WaterTank wt){
+		root = rt;
+		waterTank = wt;
+	}
+	
 	public Node getRoot() {
 		return root;
 	}
@@ -28,6 +33,10 @@ public class RandomTree {
 
 	public WaterTank getWaterTank() {
 		return waterTank;
+	}
+	
+	public void setWaterTank(WaterTank wt) {
+		this.waterTank = wt;
 	}
 	
 	public Node randomTreeBuilderFromFile(String rootTitle,	List<String> treeInfo) {

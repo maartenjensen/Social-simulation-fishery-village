@@ -46,6 +46,10 @@ public final class Log {
 		System.out.println("VF-log: " + output);
 	}
 	
+	public static void printDebug(String debug) {
+		System.out.println("VF-debug: " + debug);
+	}
+	
 	public static void printError(String error) {
 		System.err.println("VF-err: " + error);
 		new Exception().printStackTrace();
