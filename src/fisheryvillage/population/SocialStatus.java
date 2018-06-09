@@ -131,7 +131,7 @@ public class SocialStatus {
 		Logger.logInfo("JWZ pre:" + statusMap.toString());
 		return selectBestAction(statusMap);
 	}
-	
+
 	public ValuedAction getBestActionDonate(DecisionMaker decisionMaker, ArrayList<ValuedAction> eventActions) {
 		
 		if (eventActions.size() == 1) 

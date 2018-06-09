@@ -109,14 +109,15 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		if (tick % Constants.TICKS_PER_YEAR == 1) {
 			step1Year();
 		}
+		step2Tick();
 		if (tick % Constants.TICKS_PER_MONTH == 1) {
-			step2Month();
+			step3Month();
 		}
-		step3Tick();
+		step4Tick();
 		if (tick % Constants.TICKS_PER_MONTH == 1) {
-			step4Month();
+			step5Month();
 		}
-		step5Tick();
+		step6Tick();
 		if (tick == pauseRunTick && pauseRunTick >= 1) {
 			RunEnvironment.getInstance().pauseRun();
 			Logger.logMain("Pause simulation at : " + pauseRunTick);
@@ -154,12 +155,26 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	}
 
 	/**
-	 * Step 2 month: teacher removal
+	 * Step 2 tick: drain tanks
+	 */
+	public void step2Tick() {
+		
+		Logger.logMain("2TICK: drain tanks");
+		
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
+		Logger.logMain("- Run Human.stepDrainTanks");
+		for (final Resident resident: residents) {
+			resident.stepDrainTanks();
+		}
+	}
+	
+	/**
+	 * Step 3 month: teacher removal
 	 */
 	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -2)
-	public void step2Month() {
+	public void step3Month() {
 		
-		Logger.logMain("2MONTH: teaching, housing and relations");
+		Logger.logMain("3MONTH: teaching, housing and relations");
 		
 		Logger.logMain("- Run School.removeExcessiveTeachers");
 		SimUtils.getSchool().removeExcessiveTeachers(); //TODO put this somewhere that is more appropriate
@@ -180,26 +195,26 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (final Resident resident: residents) {
 			resident.stepRelation();
 		}
+		
+		Logger.logMain("- Run Human.stepSelectWork");
+		for (final Resident resident: residents) {
+			resident.stepSelectWork();
+		}
 	}
 	
 	/**
-	 * Step 3 week: working and social events
+	 * Step 4 week: working and social events
 	 */
 	//@ScheduledMethod(start = 1, interval = 1, priority = -3)
-	public void step3Tick() {
+	public void step4Tick() {
 		
-		Logger.logMain("3TICK: working and social events");
+		Logger.logMain("4TICK: working and social events");
 		
 		Logger.logMain("- Run EventHall.resetEventHall");
 		SimUtils.getEventHall().stepResetEventHall();
 		SimUtils.getCouncil().resetCounts();
 		
 		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
-		Logger.logMain("- Run Human.stepDrainTanks");
-		for (final Resident resident: residents) {
-			resident.stepDrainTanks();
-		}
-		
 		Logger.logMain("- Run Human.stepSocialEvent");
 		for (final Resident resident: residents) {
 			resident.stepSocialEvent();
@@ -224,11 +239,11 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	}
 
 	/**
-	 * Step 4 month: monthly payments and death
+	 * Step 5 month: monthly payments and death
 	 */
 	//@ScheduledMethod(start = 1, interval = Constants.TICKS_PER_MONTH, priority = -4)
-	public void step4Month() {
-		Logger.logMain("4MONTH: fishing/processing, montly payments, work selection, migration/death, council");
+	public void step5Month() {
+		Logger.logMain("5MONTH: fishing/processing, montly payments, work selection, migration/death, council");
 		
 		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		
@@ -255,10 +270,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (final Resident resident: residents) {
 			resident.stepPayStandardCosts();
 		}
-		Logger.logMain("- Run Human.stepSelectWork");
-		for (final Resident resident: residents) {
-			resident.stepSelectWork();
-		}
 		
 		Logger.logMain("- Run Council.stepDistributeMoney");
 		SimUtils.getCouncil().stepDistributeMoney();
@@ -283,12 +294,12 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	}
 	
 	/**
-	 * Step 5 tick: movement
+	 * Step 6 tick: movement
 	 */
 	//@ScheduledMethod(start = 1, interval = 1, priority = -5)
-	public void step5Tick() {
+	public void step6Tick() {
 	
-		Logger.logMain("5TICK: human location");
+		Logger.logMain("6TICK: human location");
 		
 		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		Logger.logMain("- Run Human.stepLocation");
@@ -389,7 +400,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 		
 		// Do a location step
-		step5Tick();
+		step6Tick();
 		Logger.enableLogger();
 	}
 
