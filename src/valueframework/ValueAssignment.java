@@ -110,11 +110,10 @@ public class ValueAssignment {
 		return null;
 	}
 
-	private static String intersectionConditions(String addToQueue1,
-			String addToQueue2) {
+	private static String intersectionConditions(String addToQueue1, String addToQueue2) {
 		double lb1 = getLowerBound(addToQueue1), lb2 = getLowerBound(addToQueue2), newLowerBound;
 		String valueTitle = getValueName(addToQueue1);
-		Double valueImportance = new Double(getThreshold(addToQueue1));
+		Double valueImportance = getThreshold(addToQueue1);
 		// if(lb1 < 0 || lb2 < 0)
 		newLowerBound = Math.max(lb1, lb2);
 		// else
@@ -147,10 +146,10 @@ public class ValueAssignment {
 			return null;
 		int secondIdx = (idx <= (numOfAbstractValues / 2 + 1)) ? (idx) : (numOfAbstractValues - idx);
 
-		double firstThresLower = new Double(getLowerBound(firstItem));
-		double firstThresUpper = new Double(getUpperBound(firstItem));
-		double secondThresLower = new Double(getLowerBound(secondItem));
-		double secondThresUpper = new Double(getUpperBound(secondItem));
+		double firstThresLower = getLowerBound(firstItem);
+		double firstThresUpper = getUpperBound(firstItem);
+		double secondThresLower = getLowerBound(secondItem);
+		double secondThresUpper = getUpperBound(secondItem);
 
 		double maxOfSummation = 100 + multiplier / 2;
 		double minOfSummation = 100 - multiplier / 2;
@@ -241,16 +240,16 @@ public class ValueAssignment {
 	}
 
 	public static double getUpperBound(String intersectionSet) {
-		return new Double(intersectionSet.split(";")[3]);
+		return Double.parseDouble(intersectionSet.split(";")[3]);
 	}
 
 	public static double getLowerBound(String intersectionSet) {
-		return new Double(intersectionSet.split(";")[2]);
+		return Double.parseDouble(intersectionSet.split(";")[2]);
 	}
 
 	public static Double getThreshold(String item) {
 
-		return new Double(item.split(";")[1]);
+		return Double.valueOf(item.split(";")[1]);
 	}
 
 	public static String getValueName(String item) {
@@ -304,11 +303,11 @@ public class ValueAssignment {
 		double biggestImportance = -1;
 		double importance;
 		for (int i = 0; i < importanceRange.size(); i++) {
-			biggestImportance = new Double(importanceRange.get(i).split(";")[1]);
+			biggestImportance = Double.parseDouble(importanceRange.get(i).split(";")[1]);
 			for (int j = i + 1; j < importanceRange.size(); j++) {
 				item = importanceRange.get(j);
 				items = item.split(";");
-				importance = new Double(items[1]);
+				importance = Double.parseDouble(items[1]);
 				if (importance > biggestImportance) {
 					itemTemp = importanceRange.get(i);
 					importanceRange.set(i, item);
