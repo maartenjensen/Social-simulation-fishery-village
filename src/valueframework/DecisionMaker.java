@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import valueframework.common.Facility;
 import valueframework.common.FrameworkBuilder;
 import valueframework.common.Log;
 
@@ -15,88 +14,76 @@ public class DecisionMaker {
 
 	private ArrayList<Action> allActions;
 	private Map<String, RandomTree> valueTrees;
-	private Map<String, WaterTank> waterTanks;
 
 	public DecisionMaker() {
 
 		valueTrees = new HashMap<String, RandomTree>();
-		waterTanks = new HashMap<String, WaterTank>();
+		//waterTanks = new HashMap<String, WaterTank>();
 		allActions = new ArrayList<Action>();
 
 		assignAllActions(FrameworkBuilder.getAllPossibleActions());
-		createWaterTanks();
-		Log.printDebug("Making a new agent ");
-		Log.printDebug("the input threshold is : ");
-		FrameworkBuilder.printThresholds(valueTrees);
+		copyNewValueTrees();
 		ValueAssignment.checkInitialConditions(valueTrees);
 		updateValueTrees(ValueAssignment.getImportanceRange());
-		Log.printDebug("the assigned threshold is : ");
-		FrameworkBuilder.printThresholds(valueTrees);
-		printValueTrees();
+		Log.printLog("Decision maker " + toString());
 	}
 
 	private void updateValueTrees(ArrayList<String> importanceRange) {
+		
 		for (String valInfo : importanceRange) {
-			System.out.println(importanceRange);
-			WaterTank wt = waterCopyWaterTank(waterTanks.get(ValueAssignment.getValueName(valInfo)));
+			
+			//Log.printDebug(valInfo);
+			// Copy WaterTank
+			WaterTank wt = waterCopyWaterTank(valueTrees.get(ValueAssignment.getValueName(valInfo)).getWaterTank());
+			
+			// Update WaterTank
 			wt.setThreshold(ValueAssignment.getThreshold(valInfo));
-			waterTanks.put(wt.getRelatedAbstractValue(), wt);
+
+			// Set WaterTank
 			RandomTree rt = valueTrees.get(wt.getRelatedAbstractValue());
 			rt.setWaterTank(wt);
 			valueTrees.put(wt.getRelatedAbstractValue(), rt);
 		}
 	}
 
-	private void printValueTrees() {
-		for (String key : valueTrees.keySet()) {
-			System.out.println(key + ": threshold "
-					+ valueTrees.get(key).getWaterTank().getThreshold());
-		}
-
-	}
-
 	public double getUniversalismImportanceDistribution() {
-		return waterTanks.get(AbstractValue.UNIVERSALISM.name()).getThreshold()
-				/ (waterTanks.get(AbstractValue.POWER.name()).getThreshold() + waterTanks
-						.get(AbstractValue.UNIVERSALISM.name()).getThreshold());
+		return getWaterTankFromTree(AbstractValue.UNIVERSALISM.name()).getThreshold()
+				/ (getWaterTankFromTree(AbstractValue.POWER.name()).getThreshold() + getWaterTankFromTree(AbstractValue.UNIVERSALISM.name()).getThreshold());
 	}
 
 	public double getWaterTankLevel(String abstractValue) {
-		if (waterTanks.containsKey(abstractValue)) {
-			return waterTanks.get(abstractValue).getFilledLevel();
+		if (valueTrees.containsKey(abstractValue)) {
+			return getWaterTankFromTree(abstractValue).getFilledLevel();
 		}
 		return -1;
 	}
 
 	public void setWaterTankThreshold(String valueName, double threshold) {
-		waterTanks.get(valueName).setThreshold(threshold);
+		getWaterTankFromTree(valueName).setThreshold(threshold);
 	}
 
-	public void adjustWaterTankThreshold(String valueName, double change,
-			double min, double max) {
-		waterTanks.get(valueName).adjustThreshold(change, min, max);
+	public void adjustWaterTankThreshold(String valueName, double change, double min, double max) {
+		getWaterTankFromTree(valueName).adjustThreshold(change, min, max);
 	}
 
 	public void drainTanks() {
-		for (String key : waterTanks.keySet()) {
-			waterTanks.get(key).draining();
+		for (String key : valueTrees.keySet()) {
+			getWaterTankFromTree(key).draining();
 		}
 	}
 
 	/**
-	 * Here we save the reference of the global value tree and create new
-	 * waterTanks for the decisionmaker.
+	 * Here we copy each value tree (make a new reference)
 	 */
-	private void createWaterTanks() {
+	private void copyNewValueTrees() {
 		for (String rootName : FrameworkBuilder.getGlobalValueTrees().keySet()) {
-			RandomTree rt = copyRadnomTree(FrameworkBuilder
-					.getGlobalValueTrees().get(rootName));
+			RandomTree rt = copyRandomTree(FrameworkBuilder.getGlobalValueTrees().get(rootName));
 			valueTrees.put(rootName, rt);
-			waterTanks.put(rootName, rt.getWaterTank());
 		}
 	}
 
-	private RandomTree copyRadnomTree(RandomTree rt) {
+	private RandomTree copyRandomTree(RandomTree rt) {
+		
 		Node newRoot = new Node(rt.getRoot().getValueName(), null);
 		Node newTreeCrrNode, oldTreeCrrNode;
 		newTreeCrrNode = newRoot;
@@ -104,8 +91,7 @@ public class DecisionMaker {
 
 		copyChildren(newTreeCrrNode, oldTreeCrrNode);
 
-		RandomTree randomTree = new RandomTree(newTreeCrrNode,
-				waterCopyWaterTank(rt.getWaterTank()));
+		RandomTree randomTree = new RandomTree(newTreeCrrNode, waterCopyWaterTank(rt.getWaterTank()));
 		return randomTree;
 	}
 
@@ -224,8 +210,8 @@ public class DecisionMaker {
 
 		Map<String, Double> priorityOfValues = new HashMap<String, Double>();
 		double sigma = 0;
-		for (String wtKey : waterTanks.keySet()) {
-			double priority = waterTanks.get(wtKey).getPriorityPercentage();
+		for (String wtKey : valueTrees.keySet()) {
+			double priority = getWaterTankFromTree(wtKey).getPriorityPercentage();
 			if (priority > 0) {
 				priorityOfValues.put(wtKey, priority);
 				sigma += priority;
@@ -247,11 +233,11 @@ public class DecisionMaker {
 	public void agentExecutesValuedAction(ValuedAction selectedActionTitle) {
 
 		for (String positiveValue : selectedActionTitle.getValuesPositive()) {
-			waterTanks.get(positiveValue).increaseLevel(0.25);
+			getWaterTankFromTree(positiveValue).increaseLevel(0.25);
 		}
 
 		for (String negativeValue : selectedActionTitle.getValuesNegative()) {
-			waterTanks.get(negativeValue).decreaseLevel(0.5);
+			getWaterTankFromTree(negativeValue).decreaseLevel(0.5);
 		}
 	}
 
@@ -273,19 +259,13 @@ public class DecisionMaker {
 		return possibleActions;
 	}
 
-	private ArrayList<ValuedAction> convertActionsToValuedActions(
-			ArrayList<Action> actions) {
+	private ArrayList<ValuedAction> convertActionsToValuedActions(ArrayList<Action> actions) {
+		
 		ArrayList<ValuedAction> valuedActions = new ArrayList<ValuedAction>();
 		for (Action action : actions) {
 			valuedActions.add(new ValuedAction(action.getTitle()));
 		}
 		return valuedActions;
-	}
-
-	public WaterTank mostImportantValue() {
-
-		return Facility.sort(new ArrayList<WaterTank>(waterTanks.values()))
-				.get(0);
 	}
 
 	private ArrayList<String> findPositiveAbstractValues(Action action) {
@@ -353,13 +333,13 @@ public class DecisionMaker {
 	}
 
 	public double getAbstractValueThreshold(AbstractValue abstractValue) {
-		return waterTanks.get(abstractValue.name()).getThreshold();
+		return getWaterTankFromTree(abstractValue.name()).getThreshold();
 	}
 
 	public int getSatisfiedValuesCount() {
 		int satisfiedValues = 0;
-		for (String key : waterTanks.keySet()) {
-			WaterTank wt = waterTanks.get(key);
+		for (String key : valueTrees.keySet()) {
+			WaterTank wt = getWaterTankFromTree(key);
 			if (wt.getFilledLevel() >= wt.getThreshold()) {
 				satisfiedValues++;
 			}
@@ -367,9 +347,13 @@ public class DecisionMaker {
 		return satisfiedValues;
 	}
 
+	public WaterTank getWaterTankFromTree(String key) {
+		return valueTrees.get(key).getWaterTank();
+	}
+	
 	public boolean getIsSatisfied() {
 
-		if (getSatisfiedValuesCount() > waterTanks.size() / 2) {
+		if (getSatisfiedValuesCount() > valueTrees.size() / 2) {
 			return true;
 		}
 		return false;
@@ -377,8 +361,7 @@ public class DecisionMaker {
 
 	public boolean isSelfDirectionSatisfied() {
 
-		if (waterTanks.get(AbstractValue.SELFDIRECTION.name()).getFilledLevel() >= waterTanks
-				.get(AbstractValue.SELFDIRECTION.name()).getThreshold()) {
+		if (getWaterTankFromTree(AbstractValue.SELFDIRECTION.name()).getFilledLevel() >= getWaterTankFromTree(AbstractValue.SELFDIRECTION.name()).getThreshold()) {
 			return true;
 		}
 		return false;
@@ -386,31 +369,32 @@ public class DecisionMaker {
 
 	public double getTankDrainAmount() {
 
-		for (String key : waterTanks.keySet()) {
-			return waterTanks.get(key).getDrainingAmount();
+		for (String key : valueTrees.keySet()) {
+			return getWaterTankFromTree(key).getDrainingAmount();
 		}
 		return 0;
 	}
 
+	/**
+	 * Set important data of a water tank.
+	 * @param data, this consists of 0: abstract value name, 1: level, 2: threshold
+	 */
 	public void setImportantWaterTankFromData(List<String> data) {
 		for (int i = 1; i < data.size(); i += 3) {
-			waterTanks.get(data.get(i)).setLevelAndThreshold(
-					Double.parseDouble(data.get(i + 1)),
-					Double.parseDouble(data.get(i + 2)));
+			getWaterTankFromTree(data.get(i)).setLevelAndThreshold(Double.parseDouble(data.get(i + 1)), Double.parseDouble(data.get(i + 2)));
 		}
 	}
 
 	public String importantData() {
 		String string = "";
 		boolean first = true;
-		for (String key : waterTanks.keySet()) {
+		for (String key : valueTrees.keySet()) {
 			if (!first) {
 				string += ",";
-
 			}
-			string += waterTanks.get(key).getRelatedAbstractValue() + ","
-					+ waterTanks.get(key).getFilledLevel() + ","
-					+ waterTanks.get(key).getThreshold();
+			string += getWaterTankFromTree(key).getRelatedAbstractValue() + ","
+					+ getWaterTankFromTree(key).getFilledLevel() + ","
+					+ getWaterTankFromTree(key).getThreshold();
 			first = false;
 		}
 		return string;
@@ -419,10 +403,16 @@ public class DecisionMaker {
 	@Override
 	public String toString() {
 		String string = "";
-		for (String key : waterTanks.keySet()) {
-			string += waterTanks.get(key).getRelatedAbstractValue().charAt(0)
-					+ ":" + waterTanks.get(key).getFilledLevel() + "/"
-					+ waterTanks.get(key).getThreshold() + ", ";
+		for (String key : valueTrees.keySet()) {
+			string += getWaterTankFromTree(key).getRelatedAbstractValue().charAt(0) + ":";
+			if (getWaterTankFromTree(key).getFilledLevel() < getWaterTankFromTree(key).getThreshold()) {
+				string += getWaterTankFromTree(key).getFilledLevel() + " < ["
+						+ getWaterTankFromTree(key).getThreshold() + "], ";
+			}
+			else {
+				string += getWaterTankFromTree(key).getFilledLevel() + " >= ["
+						+ getWaterTankFromTree(key).getThreshold() + "], ";
+			}		
 		}
 		return string;
 	}

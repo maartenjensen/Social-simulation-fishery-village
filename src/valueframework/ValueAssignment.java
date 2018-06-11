@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-import valueframework.common.FrameworkBuilder;
+import valueframework.common.Log;
 
 public class ValueAssignment {
 	private static Queue<String> queue;
@@ -16,6 +16,7 @@ public class ValueAssignment {
 	private final static double multiplier = 20;
 
 	public static void checkInitialConditions(Map<String, RandomTree> vTrees) {
+		
 		if (queue != null)
 			queue.clear();
 		queue = new LinkedList<String>();
@@ -24,28 +25,13 @@ public class ValueAssignment {
 			importanceRange.clear();
 		importanceRange = new ArrayList<String>();
 		initializeImportanceRange();
-		System.out.println("impotranceRange before sorting : " + importanceRange.toString());
 		sortImportanceRange();
-		System.out.println("importanceRange after sorting : " + importanceRange.toString());
 		initializeQueue();
-		printImportanceRange();
 		thresholdRangeCheck_buffer();
-		printImportanceRange();
-
 	}
 
-	/*
-	 * private static void initializeValueTree() {
-	 * if(valueTrees!=null)valueTrees.clear(); valueTrees = new HashMap<String,
-	 * RandomTree>(); // System.out.println("in initializeValueTree");
-	 * for(String key: FrameworkBuilder.getGlobalValueTrees().keySet()){ //
-	 * System
-	 * .out.println(FrameworkBuilder.getGlobalValueTrees().get(key).getWaterTank
-	 * ().getThreshold()); valueTrees.put(key,
-	 * FrameworkBuilder.getGlobalValueTrees().get(key)); } }
-	 */
-
 	private static void thresholdRangeCheck_buffer() {
+		
 		String valueTtl, qItem;
 		double lowerBound, upperBound;
 		while (queue.size() != 0) {
@@ -59,9 +45,7 @@ public class ValueAssignment {
 				if (lowerBound < 0 & upperBound < 0)
 					continue;
 				if (lowerBound < 0 | upperBound < 0)
-					System.err
-							.println("something is wrong! bcs one the L or U bounds is negative "
-									+ lowerBound + ";" + upperBound);
+					Log.printError("something is wrong! bcs one the L or U bounds is negative " + lowerBound + ";" + upperBound);
 				for (int irIdx = 0; irIdx < importanceRange.size(); irIdx++) {
 					String irItem = importanceRange.get(irIdx);
 					double originalLowerBound = getLowerBound(irItem);
@@ -161,8 +145,7 @@ public class ValueAssignment {
 		idx = AbstractValue.getIndexOfAbstractValue(secondItemName);
 		if (idx == -1)
 			return null;
-		int secondIdx = (idx <= (numOfAbstractValues / 2 + 1)) ? (idx)
-				: (numOfAbstractValues - idx);
+		int secondIdx = (idx <= (numOfAbstractValues / 2 + 1)) ? (idx) : (numOfAbstractValues - idx);
 
 		double firstThresLower = new Double(getLowerBound(firstItem));
 		double firstThresUpper = new Double(getUpperBound(firstItem));
@@ -281,15 +264,13 @@ public class ValueAssignment {
 		}
 		return null;
 	}
-
+/*
 	private static void printImportanceRange() {
-		// System.out.println("");
-		for (String s : importanceRange) {
-			System.out.print(getValueName(s) + " " + getThreshold(s) + ";\t");
-		}
-		System.out.println("\n");
 
-	}
+		for (String s : importanceRange) {
+			Log.printLog(getValueName(s) + " " + getThreshold(s) + ";\t");
+		}
+	}*/
 
 	private static void initializeQueue() {
 		double threhshold;

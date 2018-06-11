@@ -9,7 +9,7 @@ public final class Facility {
 	public static ArrayList<WaterTank> sort(ArrayList<WaterTank> whole) {
 		if(whole.size()==0)
 		{
-			System.out.println("the input array to sort is empty");
+			Log.printDebug("the input array to sort is empty");
 			return null;
 		}
         return mergeSort(whole);

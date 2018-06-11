@@ -9,6 +9,8 @@ import valueframework.ValuedAction;
 
 public final class Log {
 	
+	private static boolean debug = true;
+	
 	public static void printActions(ArrayList<Action> actions){
 	
 		for(Action act: actions)
@@ -47,7 +49,8 @@ public final class Log {
 	}
 	
 	public static void printDebug(String debug) {
-		System.out.println("VF-debug: " + debug);
+		if (Log.debug)
+			System.out.println("VF-debug: " + debug);
 	}
 	
 	public static void printError(String error) {

@@ -25,10 +25,6 @@ public class WaterTank implements Comparable<WaterTank> {
 		this.drainingAmount = drainingAmount;
 		increasingAmount = capacity - threshold;
 		this.relatedAbstractValue = relatedAbstractValue;
-
-		Log.printLog("Created watertank " + relatedAbstractValue + ", cap: "
-				+ capacity + ", lvl: " + filledLevel + ", thr: " + threshold
-				+ ", inc:" + increasingAmount + ", dra:" + drainingAmount);
 	}
 
 	public WaterTank(String waterTankInfo, String relatedAbstractValue) {
@@ -69,10 +65,6 @@ public class WaterTank implements Comparable<WaterTank> {
 		filledLevel = fl;
 		threshold = tr;
 		increasingAmount = capacity - threshold;
-
-		Log.printLog("Created watertank " + relatedAbstractValue + ", cap:"
-				+ capacity + ", lvl:" + filledLevel + ", thr:" + threshold
-				+ ", inc:" + increasingAmount + ", dra:" + drainingAmount);
 	}
 
 	public void setLevelAndThreshold(double filledLevel, double threshold) {

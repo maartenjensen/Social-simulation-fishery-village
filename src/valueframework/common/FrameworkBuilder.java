@@ -102,8 +102,7 @@ public final class FrameworkBuilder {
 					line = reader.readLine();
 				}
 				Log.printStars();
-				RandomTree tree = createGlobalValueTrees(treeInfo,
-						waterTankInfo);
+				RandomTree tree = createGlobalValueTrees(treeInfo, waterTankInfo);
 				globalValueTrees.put(tree.getRoot().getValueName(), tree);
 				Log.printLog("Basic-tree\n" + tree.getPrintableTree());
 			} else {
@@ -191,25 +190,14 @@ public final class FrameworkBuilder {
 	private static void printTrees() {
 
 		for (String key : globalValueTrees.keySet()) {
-			Log.printLog("Full-tree\n"
-					+ globalValueTrees.get(key).getPrintableTree());
+			Log.printLog("Full-tree\n" + globalValueTrees.get(key).getPrintableTree());
 		}
 	}
 
 	public static void printTrees(Map<String, RandomTree> gValueTrees) {
 
 		for (String key : gValueTrees.keySet()) {
-			Log.printLog("Full-tree\n"
-					+ gValueTrees.get(key).getPrintableTree());
-		}
-	}
-
-	public static void printThresholds(Map<String, RandomTree> gValueTrees) {
-		for (String key : gValueTrees.keySet()) {
-			System.out.println(key + " "
-					+ gValueTrees.get(key).getWaterTank().getThreshold());
-			// Log.printLog("Full-tree\n" +
-			// globalValueTrees.get(key).getPrintableTree());
+			Log.printLog("Full-tree\n" + gValueTrees.get(key).getPrintableTree());
 		}
 	}
 

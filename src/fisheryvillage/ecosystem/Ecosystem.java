@@ -37,7 +37,7 @@ public class Ecosystem {
 			return amountFish;
 		}
 		else {
-			System.out.println("Ecosystem, there is no fish left!");
+			Logger.logInfo("Ecosystem, there is no fish left!");
 			amountFish = (int) fish;
 			amountFished += amountFish;
 			fish = 0;

@@ -6,7 +6,6 @@ import java.util.List;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
-import fisheryvillage.common.RepastParam;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.property.Boat;
 import fisheryvillage.property.House;
@@ -39,7 +38,7 @@ public final class Resident extends Human {
 		super(id, gender, foreigner, age, money);
 
 		decisionMaker = new DecisionMaker();
-		initDecisionMakerWaterTanks();
+		//initDecisionMakerWaterTanks();
 	}
 
 	public Resident(int id, boolean gender, boolean foreigner, boolean hasBeenFisher, int age, double money, int childrenWanted,
@@ -371,7 +370,7 @@ public final class Resident extends Human {
 	 * Other methods 
 	 *=========================================
 	 */
-	
+	/*
 	private void initDecisionMakerWaterTanks() {
 		
 		String tradition = Integer.toString(RepastParam.getTradition());
@@ -394,7 +393,7 @@ public final class Resident extends Human {
 		data.add(11, selfdirection);
 		data.add(12, selfdirection);
 		decisionMaker.setImportantWaterTankFromData(data);
-	}
+	}*/
 	
 	private void updateValueThreshold() {
 		
