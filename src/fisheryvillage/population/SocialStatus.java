@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import fisheryvillage.common.Logger;
 import fisheryvillage.property.BoatType;
 import fisheryvillage.property.HouseType;
 import repast.simphony.random.RandomHelper;
@@ -111,7 +110,6 @@ public class SocialStatus {
 				statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), tradition * 0.5 + universalism * organizeFree));
 			}
 		}
-		Logger.logInfo("JWZ pre:" + statusMap.toString());
 		return selectBestAction(statusMap);
 	}
 
@@ -128,7 +126,6 @@ public class SocialStatus {
 		for (ValuedAction eventAction : eventActions) {
 			statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), power * ActionImplementation.getStatusFromString(eventAction.getTitle()).getSocialStatusWork() ));
 		}
-		Logger.logInfo("JWZ pre:" + statusMap.toString());
 		return selectBestAction(statusMap);
 	}
 
@@ -151,7 +148,6 @@ public class SocialStatus {
 				statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), universalism * 1 + tradition * 1)); //TODO tradition
 			}
 		}
-		Logger.logInfo("JWZ pre:" + statusMap.toString());
 		return selectBestAction(statusMap);
 	}
 
@@ -170,7 +166,6 @@ public class SocialStatus {
 			FishingAction fishingAction = FishingAction.getEnumByString(eventAction.getTitle());
 			statusMap.put(eventAction, getCalculate(eventAction.getActionGoodness(), power * fishingAction.getFisherEcon() + universalism * fishingAction.getFisherEcol() ));
 		}
-		Logger.logInfo("JWZ pre:" + statusMap.toString());
 		return selectBestAction(statusMap);
 	}
 
@@ -202,12 +197,10 @@ public class SocialStatus {
 		for (ValuedAction key : statusMap.keySet()) {
 			statusMap.put(key, statusMap.get(key) / combinedValues);
 		}
-		Logger.logInfo("JWZ after prob:" + statusMap.toString());
 		double prob = RandomHelper.nextDouble();
 		double value = 0;
 		ValuedAction keyBackup = null;
 		for (ValuedAction key : statusMap.keySet()) {
-			Logger.logInfo("JWZ prob:" + prob + ", value:" + statusMap.get(key));
 			value += statusMap.get(key);
 			if (prob <= value)
 				return key;

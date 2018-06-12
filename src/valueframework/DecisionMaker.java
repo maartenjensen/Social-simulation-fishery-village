@@ -35,7 +35,7 @@ public class DecisionMaker {
 			//Log.printDebug(valInfo);
 			// Copy WaterTank
 			WaterTank wt = waterCopyWaterTank(valueTrees.get(ValueAssignment.getValueName(valInfo)).getWaterTank());
-			
+
 			// Update WaterTank
 			wt.setThreshold(ValueAssignment.getThreshold(valInfo));
 			wt.setFilledLevel(wt.getThreshold()); // Set the filled level to the threshold
@@ -270,12 +270,11 @@ public class DecisionMaker {
 	}
 
 	private ArrayList<String> findPositiveAbstractValues(Action action) {
-		ArrayList<Node> absValues = new ArrayList<Node>();
+		ArrayList<String> absValues = new ArrayList<String>(); //TODO: I (Maarten) changed this to String instead of Node. To make sure they are recognized in line absValues.contains(
 		ArrayList<String> rndTrees = new ArrayList<String>();
 		// add all the related values including negative and positive related
 		// ones.
 		ArrayList<Node> concreteValues = action.getPositiveRelatedConcreteValues();
-		Logger.logDebug("Concrete values:" + concreteValues.toString());
 		for (int i = 0; i < concreteValues.size(); i++) {
 			Node crrPrnt = concreteValues.get(i);
 			Node prvPrnt = crrPrnt;
@@ -283,25 +282,26 @@ public class DecisionMaker {
 				prvPrnt = crrPrnt;
 				crrPrnt = crrPrnt.getParent();
 			}
-			if (!absValues.contains(prvPrnt))
-				absValues.add(prvPrnt);
+			if (!absValues.contains(prvPrnt.getValueName())) {
+				absValues.add(prvPrnt.getValueName());
+			}
 		}
 
 		for (RandomTree value : valueTrees.values()) {
-			if (absValues.contains(value.getRoot()))
+			if (absValues.contains(value.getRoot().getValueName())) {
 				rndTrees.add(value.getRoot().getValueName());
+			}
 		}
 
 		return rndTrees;
 	}
 
 	private ArrayList<String> findNegativeAbstractValues(Action action) {
-		ArrayList<Node> absValues = new ArrayList<Node>();
+		ArrayList<String> absValues = new ArrayList<String>(); //TODO: Same as in positive
 		ArrayList<String> rndTrees = new ArrayList<String>();
 		// add all the related values including negative and positive related
 		// ones.
-		ArrayList<Node> concreteValues = action
-				.getNegativeRelatedConcreteValues();
+		ArrayList<Node> concreteValues = action.getNegativeRelatedConcreteValues();
 		for (int i = 0; i < concreteValues.size(); i++) {
 			Node crrPrnt = concreteValues.get(i);
 			Node prvPrnt = crrPrnt;
@@ -309,12 +309,12 @@ public class DecisionMaker {
 				prvPrnt = crrPrnt;
 				crrPrnt = crrPrnt.getParent();
 			}
-			if (!absValues.contains(prvPrnt))
-				absValues.add(prvPrnt);
+			if (!absValues.contains(prvPrnt.getValueName()))
+				absValues.add(prvPrnt.getValueName());
 		}
 
 		for (RandomTree value : valueTrees.values()) {
-			if (absValues.contains(value.getRoot()))
+			if (absValues.contains(value.getRoot().getValueName()))
 				rndTrees.add(value.getRoot().getValueName());
 		}
 
