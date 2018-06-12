@@ -114,7 +114,7 @@ public final class Resident extends Human {
 		ValuedAction selectedAction = selectActionFromPossibleActionsJob(possibleActions);
 		if (selectedAction != null) {
 			actionToDo = selectedAction.getTitle();
-			decisionMaker.agentExecutesValuedAction(selectedAction);
+			decisionMaker.agentExecutesValuedAction(selectedAction, Constants.TICKS_PER_MONTH);
 		}
 
 		Logger.logInfo("H" + getId() + " selected action: " + actionToDo);
@@ -207,7 +207,7 @@ public final class Resident extends Human {
 		String actionToDo = selectedAction.getTitle();
 
 		if (actionToDo != null) {
-			decisionMaker.agentExecutesValuedAction(selectedAction);
+			decisionMaker.agentExecutesValuedAction(selectedAction, 1);
 			ActionImplementation.executeActionDonate(actionToDo, this);
 			socialStatus.setSocialStatusDonation(actionToDo);
 		}
@@ -340,13 +340,13 @@ public final class Resident extends Human {
 		ArrayList<String> fishingActions = new ArrayList<String>();
 		fishingActions.add(fishingActionTitle);
 		ArrayList<ValuedAction> evaluatedAction = decisionMaker.agentFilterActionsBasedOnValues(fishingActions);
-		decisionMaker.agentExecutesValuedAction(evaluatedAction.get(0));
+		decisionMaker.agentExecutesValuedAction(evaluatedAction.get(0), 1);
 		socialStatus.setSocialStatusFisher(fishingActionTitle);
 	}
 	
 	public void actionEventOrganize(int profit) {
 		if (eventAction != null) {
-			decisionMaker.agentExecutesValuedAction(eventAction);
+			decisionMaker.agentExecutesValuedAction(eventAction, 1);
 			socialStatus.setSocialStatusEvent(eventAction.getTitle(), canOrganize);
 			addMoney(profit);
 		}
@@ -357,7 +357,7 @@ public final class Resident extends Human {
 	
 	public void actionEventAttend(int fee) {
 		if (eventAction != null) {
-			decisionMaker.agentExecutesValuedAction(eventAction);
+			decisionMaker.agentExecutesValuedAction(eventAction, 1);
 			socialStatus.setSocialStatusEvent(eventAction.getTitle(), canOrganize);
 			addMoney(-1 * fee);
 		}

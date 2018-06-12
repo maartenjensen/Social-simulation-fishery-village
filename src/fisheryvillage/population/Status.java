@@ -9,28 +9,27 @@ package fisheryvillage.population;
 */
 public enum Status {
 	
-	CHILD(false,"none",0.5),
-	ELDER(false,"none",0.5),
-	ELDEST(false,"none",0.5),
-	UNEMPLOYED(false,"Job unemployed",0.0),
-	TEACHER(true,"Job teacher",0.5),
-	FACTORY_WORKER(false,"Job factory worker",0.25),
-	FACTORY_BOSS(true,"Job factory boss",1.0),
-	FISHER(false,"Job fisher",0.5),
-	MAYOR(true,"Job mayor",1.0),
-	CAPTAIN(true,"Job captain",0.75), 
-	ELDERLY_CARETAKER(false,"Job elderly caretaker",0.25),
-	STUDENT(false,"Job student",0.0),
-	WORK_OUT_OF_TOWN(false,"Job work outside village",0.0),
-	DEAD(false,"none",0.0),
-	NONE(false,"none",0.0);
+	CHILD("none",0.5),
+	ELDER("none",0.5),
+	ELDEST("none",0.5),
+	UNEMPLOYED("Job unemployed",0.0),
+	TEACHER("Job teacher",0.5),
+	FACTORY_WORKER("Job factory worker",0.25),
+	FACTORY_BOSS("Job factory boss",1.0),
+	FISHER("Job fisher",0.5),
+	MAYOR("Job mayor",1.0),
+	CAPTAIN("Job captain",0.75), 
+	ELDERLY_CARETAKER("Job elderly caretaker",0.25),
+	STUDENT("Job student",0.0),
+	WORK_OUT_OF_TOWN("Job work outside village",0.0),
+	DEAD("none",0.0),
+	NONE("none",0.0);
 	
-	private final boolean needHigherEducated;
 	private final String jobActionName;
 	private final double socialStatusWork;
 	
-	Status(boolean needHigherEducated, String jobActionName, Double socialStatusWork) {
-		this.needHigherEducated = needHigherEducated;
+	Status(String jobActionName, Double socialStatusWork) {
+		
 		this.jobActionName = jobActionName;
 		this.socialStatusWork = socialStatusWork;
 	}
@@ -41,10 +40,6 @@ public enum Status {
 				return e;
 		}
 		return null;
-	}
-	
-	public boolean getNeedHigherEducated() {
-		return needHigherEducated;
 	}
 	
 	public String getJobActionName() {

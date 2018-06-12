@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import valueframework.common.Log;
 
 public class ValueAssignment {
+	
 	private static Queue<String> queue;
 	private static ArrayList<String> importanceRange;
 	private static Map<String, RandomTree> valueTrees;

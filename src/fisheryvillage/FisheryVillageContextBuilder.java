@@ -214,15 +214,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.getEventHall().stepResetEventHall();
 		SimUtils.getCouncil().resetCounts();
 		
-		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
-		Logger.logMain("- Run Human.stepSocialEvent");
-		for (final Resident resident: residents) {
-			resident.stepSocialEvent();
-		}
-
-		Logger.logMain("- Run EventHall.stepPerformSocialEvent");
-		SimUtils.getEventHall().stepPerformSocialEvent();
-		
 		Logger.logMain("- Ecosystem.stepEcosystem");
 		SimUtils.getEcosystem().stepEcosystem();
 		
@@ -232,10 +223,19 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			boat.stepFish();
 		}
 		
+		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		Logger.logMain("- Run Human.stepDonate");
 		for (final Resident resident: residents) {
 			resident.stepDonate();
 		}
+		
+		Logger.logMain("- Run Human.stepSocialEvent");
+		for (final Resident resident: residents) {
+			resident.stepSocialEvent();
+		}
+
+		Logger.logMain("- Run EventHall.stepPerformSocialEvent");
+		SimUtils.getEventHall().stepPerformSocialEvent();
 	}
 
 	/**

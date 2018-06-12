@@ -30,7 +30,7 @@ public class Agent {
 			
 			ValuedAction selectedAction = valueFilteredActions.get(r.nextInt(valueFilteredActions.size()));
 			Log.printLog("Agent " + id + " executes action: " + selectedAction.getTitle());
-			decisionMaker.agentExecutesValuedAction(selectedAction);
+			decisionMaker.agentExecutesValuedAction(selectedAction, 1);
 		}
 		else {
 			Log.printLog("Agent " + id + " doesn't perform an action");

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import fisheryvillage.common.Logger;
 import valueframework.common.FrameworkBuilder;
 import valueframework.common.Log;
 
@@ -18,7 +19,6 @@ public class DecisionMaker {
 	public DecisionMaker() {
 
 		valueTrees = new HashMap<String, RandomTree>();
-		//waterTanks = new HashMap<String, WaterTank>();
 		allActions = new ArrayList<Action>();
 
 		assignAllActions(FrameworkBuilder.getAllPossibleActions());
@@ -38,7 +38,8 @@ public class DecisionMaker {
 			
 			// Update WaterTank
 			wt.setThreshold(ValueAssignment.getThreshold(valInfo));
-
+			wt.setFilledLevel(wt.getThreshold()); // Set the filled level to the threshold
+			
 			// Set WaterTank
 			RandomTree rt = valueTrees.get(wt.getRelatedAbstractValue());
 			rt.setWaterTank(wt);
@@ -139,8 +140,7 @@ public class DecisionMaker {
 			return convertActionsToValuedActions(possibleActions);
 		}
 		Log.printLog("Print weighted values" + weightedValues.toString());
-		ArrayList<ValuedAction> possibleValuedActions = evaluateActionsAccordingToValues(
-				possibleActions, weightedValues);
+		ArrayList<ValuedAction> possibleValuedActions = evaluateActionsAccordingToValues(possibleActions, weightedValues);
 		Log.printValuedActions("Evaluated VA: ", possibleValuedActions);
 
 		// Select actions
@@ -191,6 +191,7 @@ public class DecisionMaker {
 			HashMap<String, Integer> evaluatedValues = new HashMap<String, Integer>();
 			ArrayList<String> positiveAbstractValues = findPositiveAbstractValues(action);
 			ArrayList<String> negativeAbstractValues = findNegativeAbstractValues(action);
+			Logger.logDebug("Evaluate action -> " + action.getTitle() + ": + " + positiveAbstractValues.toString() + ", - " + negativeAbstractValues);
 			for (String key : weightedValues.keySet()) {
 				if (positiveAbstractValues.contains(key)) {
 					evaluatedValues.put(key, 1);
@@ -230,14 +231,14 @@ public class DecisionMaker {
 	 * 
 	 * @param selectedActionTitle
 	 */
-	public void agentExecutesValuedAction(ValuedAction selectedActionTitle) {
+	public void agentExecutesValuedAction(ValuedAction selectedActionTitle, double multiplier) {
 
 		for (String positiveValue : selectedActionTitle.getValuesPositive()) {
-			getWaterTankFromTree(positiveValue).increaseLevel(0.25);
+			getWaterTankFromTree(positiveValue).increaseLevel(multiplier);
 		}
 
 		for (String negativeValue : selectedActionTitle.getValuesNegative()) {
-			getWaterTankFromTree(negativeValue).decreaseLevel(0.5);
+			getWaterTankFromTree(negativeValue).decreaseLevel(multiplier);
 		}
 	}
 
@@ -273,8 +274,8 @@ public class DecisionMaker {
 		ArrayList<String> rndTrees = new ArrayList<String>();
 		// add all the related values including negative and positive related
 		// ones.
-		ArrayList<Node> concreteValues = action
-				.getPositiveRelatedConcreteValues();
+		ArrayList<Node> concreteValues = action.getPositiveRelatedConcreteValues();
+		Logger.logDebug("Concrete values:" + concreteValues.toString());
 		for (int i = 0; i < concreteValues.size(); i++) {
 			Node crrPrnt = concreteValues.get(i);
 			Node prvPrnt = crrPrnt;
@@ -384,7 +385,7 @@ public class DecisionMaker {
 			getWaterTankFromTree(data.get(i)).setLevelAndThreshold(Double.parseDouble(data.get(i + 1)), Double.parseDouble(data.get(i + 2)));
 		}
 	}
-
+	
 	public String importantData() {
 		String string = "";
 		boolean first = true;
@@ -404,14 +405,15 @@ public class DecisionMaker {
 	public String toString() {
 		String string = "";
 		for (String key : valueTrees.keySet()) {
-			string += getWaterTankFromTree(key).getRelatedAbstractValue().charAt(0) + ":";
-			if (getWaterTankFromTree(key).getFilledLevel() < getWaterTankFromTree(key).getThreshold()) {
-				string += getWaterTankFromTree(key).getFilledLevel() + " < ["
-						+ getWaterTankFromTree(key).getThreshold() + "], ";
+			WaterTank wt = getWaterTankFromTree(key);
+			string += wt.getRelatedAbstractValue().charAt(0) + ": ";
+			if (wt.getFilledLevel() < wt.getThreshold()) {
+				string += wt.getFilledLevel() + " < ["
+						+ wt.getThreshold() + "], ";
 			}
 			else {
-				string += getWaterTankFromTree(key).getFilledLevel() + " >= ["
-						+ getWaterTankFromTree(key).getThreshold() + "], ";
+				string += wt.getFilledLevel() + " >= ["
+						+ wt.getThreshold() + "], ";
 			}		
 		}
 		return string;
