@@ -128,13 +128,13 @@ public class PopulationBuilder {
 				owner.connectProperty(Integer.parseInt(pVars.get(i)));
 			}
 		}
-		
+		/*
 		for (String waterTankString : dataWaterTank) {
 			List<String> wVars = Arrays.asList(waterTankString.split(","));
 			Resident resident = HumanUtils.getResidentById(Integer.parseInt(wVars.get(0)));
 			resident.setImportantWaterTankFromData(wVars);
 		}
-		
+		*/
 		for (String socialStatusString : dataSocialStatus) {
 			List<String> sVars = Arrays.asList(socialStatusString.split(","));
 			Resident resident = HumanUtils.getResidentById(Integer.parseInt(sVars.get(0)));
