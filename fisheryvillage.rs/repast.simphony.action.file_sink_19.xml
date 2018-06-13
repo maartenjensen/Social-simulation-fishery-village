@@ -1,17 +1,23 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector general</name>
-  <dataSet>DataCollector general</dataSet>
+  <name>DataCollector Values Satisfied</name>
+  <dataSet>DataCollector Values Satisfied</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
+    <string>Satisfied values adult</string>
+    <string>Satisfied values elderly</string>
+    <string>Satisfied values adult + elderly</string>
+    <string>Satisfied values boss</string>
+    <string>Satisfied values captain</string>
+    <string>Satisfied values caretaker</string>
+    <string>Satisfied values fisher</string>
+    <string>Satisfied values mayor</string>
+    <string>Satisfied values teacher</string>
+    <string>Satisfied values unemployed</string>
+    <string>Satisfied values work out of town</string>
+    <string>Satisfied values factory worker</string>
     <string>tick</string>
-    <string>Avg wealth</string>
-    <string>Children born</string>
-    <string>Migrate in</string>
-    <string>Migrate out self</string>
-    <string>Migrate out with</string>
-    <string>Population number</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\DataCollector.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\ValuesSatisfied.txt</fileName>
   <addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

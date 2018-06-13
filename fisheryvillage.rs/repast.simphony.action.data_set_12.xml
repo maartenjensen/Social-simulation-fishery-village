@@ -1,62 +1,80 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Satisfied Values</name>
+  <name>DataCollector general</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>48.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>209948551</hashCode>
+    <hashCode>415105201</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Satisfied values 0</string>
+      <string>Avg wealth</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Satisfied values 0</id>
+        <id>Avg wealth</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getSatisfiedValues0</methodName>
+        <methodName>getAdultAndElderlyWealthAvg</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Satisfied values 1</string>
+      <string>Children born</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Satisfied values 1</id>
+        <id>Children born</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getSatisfiedValues1</methodName>
+        <methodName>getChildrenBorn</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Satisfied values 2</string>
+      <string>Migrate in</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Satisfied values 2</id>
+        <id>Migrate in</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getSatisfiedValues2</methodName>
+        <methodName>getMigratedIn</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Satisfied values 3</string>
+      <string>Migrate out self</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Satisfied values 3</id>
+        <id>Migrate out self</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getSatisfiedValues3</methodName>
+        <methodName>getMigratedOutSelf</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Satisfied values 4</string>
+      <string>Migrate out with</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Satisfied values 4</id>
+        <id>Migrate out with</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getSatisfiedValues4</methodName>
+        <methodName>getMigratedOutWith</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Population number</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Population number</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getPopulationNumber</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Died</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Died</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getDied</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
