@@ -3,6 +3,7 @@ package fisheryvillage.common;
 import java.util.ArrayList;
 import java.util.Random;
 
+import fisheryvillage.DataCollector;
 import fisheryvillage.ecosystem.Ecosystem;
 import fisheryvillage.property.Boat;
 import fisheryvillage.property.Property;
@@ -161,6 +162,10 @@ public final strictfp class SimUtils {
 	
 	public static Ecosystem getEcosystem() {
 		return getObjectsAll(Ecosystem.class).get(0);
+	}
+	
+	public static DataCollector getDataCollector() {
+		return getObjectsAll(DataCollector.class).get(0);
 	}
 	
 	/**

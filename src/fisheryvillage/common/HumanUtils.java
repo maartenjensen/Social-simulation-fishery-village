@@ -164,13 +164,13 @@ public final strictfp class HumanUtils {
 		if (human1.getAge() >= Constants.HUMAN_ADULT_AGE && human1.isSingle()) {
 			if (human1.isMan()) {
 				if (!human2.isMan() && (human2.getAge() + Constants.HUMAN_RELATIVE_WIFE_MIN_AGE) >= human1.getAge()
-										&& (human2.getAge() - Constants.HUMAN_RELATIVE_WIFE_MAX_AGE) <= human1.getAge()) {
+									&& (human2.getAge() - Constants.HUMAN_RELATIVE_WIFE_MAX_AGE) <= human1.getAge()) {
 					return true;
 				}
 			}
 			else {
 				if (human2.isMan()  && human2.getAge() >= (human1.getAge() + Constants.HUMAN_RELATIVE_WIFE_MIN_AGE)
-										&& human2.getAge() <= (human1.getAge() - Constants.HUMAN_RELATIVE_WIFE_MAX_AGE)) {
+									&& human2.getAge() <= (human1.getAge() - Constants.HUMAN_RELATIVE_WIFE_MAX_AGE)) {
 					return true;
 				}
 			}	
@@ -259,7 +259,7 @@ public final strictfp class HumanUtils {
 		else
 			return 0;
 	}
-	
+
 	public static Property getWorkingPlace(int workplaceId, Status status, SchoolType schoolType) {
 		
 		if (status == Status.CHILD) {
@@ -309,6 +309,7 @@ public final strictfp class HumanUtils {
 		double s = 0;
 		double p = 0;
 		int count = 0;
+		
 		ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
 		for (Resident resident : residents) {
 			u += resident.getThreshold(AbstractValue.UNIVERSALISM);
@@ -325,6 +326,7 @@ public final strictfp class HumanUtils {
 	
 	public static int spawnChild(Human mother, Human father) {
 
+		SimUtils.getDataCollector().addChildBorn();
 		Context<Object> context = SimUtils.getContext();
 		Logger.logDebug("m." + mother.getId() + ", f." + father.getId() + "spawnChild()");
 		final Human child = new Resident(getNewHumanId(), SimUtils.getRandomBoolean(), false, 0, Constants.HUMAN_INIT_STARTING_MONEY);

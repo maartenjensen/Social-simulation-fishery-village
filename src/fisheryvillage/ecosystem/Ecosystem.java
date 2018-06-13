@@ -57,6 +57,14 @@ public class Ecosystem {
 		return amountRepopulated * 10;
 	}
 	
+	public double getAmountFished() {
+		return amountFished;
+	}
+	
+	public double getAmountRepopulated() {
+		return amountRepopulated;
+	}
+	
 	public String getParametersString() {
 		return Double.toString(fish);
 	}

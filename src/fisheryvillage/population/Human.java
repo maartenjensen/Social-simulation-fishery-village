@@ -337,17 +337,19 @@ public class Human {
 	
 	protected void migrateOutOfTown() {
 	
-		SimUtils.getGrid().moveTo(this,  RandomHelper.nextIntFromTo(1, Constants.GRID_VILLAGE_START - 2), 
-				RandomHelper.nextIntFromTo(0, Constants.GRID_HEIGHT - 1));
+		SimUtils.getGrid().moveTo(this, RandomHelper.nextIntFromTo(1, Constants.GRID_VILLAGE_START - 2), RandomHelper.nextIntFromTo(0, Constants.GRID_HEIGHT - 1));
 		status = Status.DEAD;
 		// Remove partner
-		if (getPartner() != null) {
-			Logger.logInfo("and takes partner H" + getPartner().getId() + " with her/him");
-			getPartner().removeSelf();
+		Human partner = getPartner();
+		if (partner != null) {
+			Logger.logInfo("and takes partner H" + partner.getId() + " with her/him");
+			SimUtils.getDataCollector().addMigratorOut(false, partner.getId());
+			partner.removeSelf();
 		}
 		// Also remove children (in removeSelf the child removes the childrenIds id in the parent.
 		for (Human child : HumanUtils.getChildrenUnder18(this)) {
 			Logger.logInfo("and also child H" + child.getId());
+			SimUtils.getDataCollector().addMigratorOut(false, child.getId());
 			child.removeSelf();
 		}
 		removeSelf();

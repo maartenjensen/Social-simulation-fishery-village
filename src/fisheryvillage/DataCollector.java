@@ -1,22 +1,142 @@
 package fisheryvillage;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
 import fisheryvillage.common.Constants;
+import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
+import fisheryvillage.population.Human;
 import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
 import repast.simphony.space.grid.GridPoint;
+import valueframework.AbstractValue;
 
 public class DataCollector {
-
+	
+	private int migratedOutSelf;
+	private int migratedOutWith;
+	private int migratedIn;
+	private int childrenBorn;
+	private int died;
+	
+	List<String> migratedPersons;
+	
 	public DataCollector(GridPoint location) {
 		
 		SimUtils.getContext().add(this);
 		if (!SimUtils.getGrid().moveTo(this, location.getX(), location.getY())) {
 			Logger.logError("DataCollector could not be placed, coordinate: " + location);
 		}
+		
+		migratedOutSelf = 0;
+		migratedOutWith = 0;
+		migratedIn = 0;
+		childrenBorn = 0;
+		died = 0;
+		
+		migratedPersons = new ArrayList<String>();
 	}
 	
+	public void saveMigrationData() {
+		writeToFile("./output/migrationOutputData.txt", migratedPersons);
+	}
+	
+	public void writeToFile(String filePathAndName, List<String> data) {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(filePathAndName, "UTF-8");
+			for (String datum : data) {
+				writer.println(datum);
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void addMigratorOut(boolean ownInitiative, int id) {
+		
+		Resident r = HumanUtils.getResidentById(id);
+		if (r == null)
+			return ;
+		
+		addMigrator(ownInitiative, r.getId(), r.isMan(), r.getAge(), r.getStatus().name(), r.getThreshold(AbstractValue.POWER),
+				r.getThreshold(AbstractValue.SELFDIRECTION), r.getThreshold(AbstractValue.TRADITION), r.getThreshold(AbstractValue.UNIVERSALISM));
+	}
+
+	public void addMigrator(boolean ownInitiative, int id, boolean isMan, int age, String status, double p, double s, double t, double u) {
+		
+		String string = ownInitiative + "," + id + "," + isMan + "," + age + "," + status + "," + p + "," + s + "," + t + "," + u;
+		migratedPersons.add(string);
+		
+		if (ownInitiative)
+			migratedOutSelf ++;
+		else
+			migratedOutWith ++;
+	}
+
+	public void addChildBorn() {
+		childrenBorn ++;
+	}
+	
+	public void addMigratedIn() {
+		migratedIn ++;
+	}
+	
+	public void addDied() {
+		died ++;
+	}
+	
+	public int getMigratedOutSelf() {
+		return migratedOutSelf;
+	}
+	
+	public int getMigratedOutWith() {
+		return migratedOutWith;
+	}
+	
+	public int getMigratedIn() {
+		return migratedIn;
+	}
+	
+	public int getChildrenBorn() {
+		return childrenBorn;
+	}
+
+	public int getPopulationNumber() {
+		return SimUtils.getCouncil().getNumberOfPeople();
+	}
+	
+	public int getDied() {
+		return died;
+	}
+	
+	public double getAdultAndElderlyWealthAvg() {
+		
+		ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
+		int count = 0;
+		double money = 0;
+		for (Human human : humans) {
+			if (human.getAge() >= Constants.HUMAN_ADULT_AGE && human.getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
+				count ++;
+				money += human.getMoney();
+			}
+		}
+		if (count >= 1)
+			return money / count;
+		else
+			return 0;
+	}
+
 	/**
 	 * Average satisfied values times 0.25 which means the percentage of satisfied values is shown
 	 * @param ageMin

@@ -46,6 +46,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.resetPropertyId();
 		RepastParam.setRepastParameters();
 		Logger.enableLogger();
+		Logger.setLoggerAll(true, true, true, false, false, false);
 		
 		// Add context to this ID
 		Logger.logMain("Set context ID and add context to context");
@@ -119,6 +120,9 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		}
 		step6Tick();
 		if (tick == pauseRunTick && pauseRunTick >= 1) {
+			SimUtils.getDataCollector().saveMigrationData();
+			Logger.logMain("Save migration data");
+			Logger.logMain("------------------------------------------------------------------------------");
 			RunEnvironment.getInstance().pauseRun();
 			Logger.logMain("Pause simulation at : " + pauseRunTick);
 			Logger.logMain("------------------------------------------------------------------------------");
@@ -146,6 +150,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 									RandomHelper.nextIntFromTo(Constants.HUMAN_INIT_MIN_AGE, Constants.HUMAN_INIT_MAX_AGE),
 									Constants.HUMAN_INIT_STARTING_MONEY);
 			Logger.logMain("-- New human spawned : " + resident.getId());
+			SimUtils.getDataCollector().addMigratedIn();
 		}
 		
 		Logger.logMain("- Run Human.stepFamily");
@@ -379,7 +384,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		boolean initializePopulationFromFile = RepastParam.getPopInitFromFile();
 		PopulationBuilder populationBuilder = new PopulationBuilder();
 		
-		Logger.enableLogger();
 		
 		if (initializePopulationFromFile) {
 			String fileName = RepastParam.getPopInitFileName();
@@ -402,7 +406,6 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		HumanUtils.printAverageValues();
 		// Do a location step
 		step6Tick();
-		Logger.enableLogger();
 	}
 
 	private void savePopulation(int tick) {

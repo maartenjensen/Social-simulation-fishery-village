@@ -1,53 +1,53 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Ecosystem</name>
+  <name>Human avg values</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>4.0</interval>
+    <interval>1.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1296692271</hashCode>
+    <hashCode>1563312539</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>N Fish</string>
+      <string>Avg tradition level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N Fish</id>
-        <className>fisheryvillage.ecosystem.Ecosystem</className>
-        <methodName>getFish</methodName>
+        <id>Avg tradition level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgTradition</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N Fish caught x 10</string>
+      <string>Avg power level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N Fish caught x 10</id>
-        <className>fisheryvillage.ecosystem.Ecosystem</className>
-        <methodName>getAmountFishedX10</methodName>
+        <id>Avg power level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgPower</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N Fish repopulated x 10</string>
+      <string>Avg self-direction level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N Fish repopulated x 10</id>
-        <className>fisheryvillage.ecosystem.Ecosystem</className>
-        <methodName>getAmountRepopulatedX10</methodName>
+        <id>Avg self-direction level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgSelfDirection</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N Fish danger level</string>
+      <string>Avg universalism level</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N Fish danger level</id>
-        <className>fisheryvillage.ecosystem.Ecosystem</className>
-        <methodName>getFishInDangerLevel</methodName>
+        <id>Avg universalism level</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getAvgUniversalism</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

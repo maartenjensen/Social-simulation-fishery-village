@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Donation motivation</name>
-  <dataSet>Donation motivation</dataSet>
+  <name>Happiness overview</name>
+  <dataSet>DataCollector</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Amount</yAxisLabel>
-  <chartTitle>Donation motivation</chartTitle>
+  <yAxisLabel>Avg satisfied values / social status</yAxisLabel>
+  <chartTitle>Overview happiness</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,9 +21,33 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Donate self-direction</string>
+      <string>Avg social status elderly</string>
       <SeriesData>
-        <label>Donate self-direction</label>
+        <label>Avg social status elderly</label>
+        <color>
+          <red>255</red>
+          <green>204</green>
+          <blue>51</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Avg social status adult</string>
+      <SeriesData>
+        <label>Avg social status adult</label>
+        <color>
+          <red>0</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Happy adult + elderly</string>
+      <SeriesData>
+        <label>Happy adult + elderly</label>
         <color>
           <red>0</red>
           <green>255</green>
@@ -33,21 +57,21 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Donate tradition</string>
+      <string>Happy adult</string>
       <SeriesData>
-        <label>Donate tradition</label>
+        <label>Happy adult</label>
         <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>255</blue>
+          <red>153</red>
+          <green>255</green>
+          <blue>153</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Donate power</string>
+      <string>Avg satisfied values elderly</string>
       <SeriesData>
-        <label>Donate power</label>
+        <label>Avg satisfied values elderly</label>
         <color>
           <red>255</red>
           <green>0</green>
@@ -57,13 +81,49 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Donate universalism</string>
+      <string>Avg social status adult + elderly</string>
       <SeriesData>
-        <label>Donate universalism</label>
+        <label>Avg social status adult + elderly</label>
         <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>0</blue>
+          <red>255</red>
+          <green>102</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Avg satisfied values adult + elderly</string>
+      <SeriesData>
+        <label>Avg satisfied values adult + elderly</label>
+        <color>
+          <red>153</red>
+          <green>0</green>
+          <blue>153</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Avg satisfied values adult</string>
+      <SeriesData>
+        <label>Avg satisfied values adult</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Happy elderly</string>
+      <SeriesData>
+        <label>Happy elderly</label>
+        <color>
+          <red>0</red>
+          <green>153</green>
+          <blue>51</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>

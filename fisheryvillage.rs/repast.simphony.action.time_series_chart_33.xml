@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Happiness graph</name>
-  <dataSet>DataCollector Happiness</dataSet>
+  <name>DataCollector general</name>
+  <dataSet>DataCollector general</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Percentage happy</yAxisLabel>
-  <chartTitle>Happiness graph</chartTitle>
+  <yAxisLabel>Counts</yAxisLabel>
+  <chartTitle>DataCollector general</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,71 +21,11 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Happy % boss</string>
+      <string>Children born</string>
       <SeriesData>
-        <label>Happy % boss</label>
-        <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>102</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % factory worker</string>
-      <SeriesData>
-        <label>Happy % factory worker</label>
-        <color>
-          <red>0</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % captain</string>
-      <SeriesData>
-        <label>Happy % captain</label>
-        <color>
-          <red>153</red>
-          <green>153</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % caretaker</string>
-      <SeriesData>
-        <label>Happy % caretaker</label>
+        <label>Children born</label>
         <color>
           <red>255</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % unemployed</string>
-      <SeriesData>
-        <label>Happy % unemployed</label>
-        <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>204</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % work out of town</string>
-      <SeriesData>
-        <label>Happy % work out of town</label>
-        <color>
-          <red>0</red>
           <green>0</green>
           <blue>0</blue>
           <alpha>255</alpha>
@@ -93,36 +33,48 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Happy % mayor</string>
+      <string>Migrate out self</string>
       <SeriesData>
-        <label>Happy % mayor</label>
-        <color>
-          <red>102</red>
-          <green>255</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % teacher</string>
-      <SeriesData>
-        <label>Happy % teacher</label>
-        <color>
-          <red>153</red>
-          <green>51</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % fisher</string>
-      <SeriesData>
-        <label>Happy % fisher</label>
+        <label>Migrate out self</label>
         <color>
           <red>255</red>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate in</string>
+      <SeriesData>
+        <label>Migrate in</label>
+        <color>
+          <red>0</red>
           <green>255</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Population number</string>
+      <SeriesData>
+        <label>Population number</label>
+        <color>
+          <red>0</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate out with</string>
+      <SeriesData>
+        <label>Migrate out with</label>
+        <color>
+          <red>255</red>
+          <green>200</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>

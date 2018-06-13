@@ -86,7 +86,6 @@ public final class Resident extends Human {
 	}
 
 	public void stepWork() {
-		
 		retrieveAndShareSalary();
 		if (getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_AGE) {
 			socialStatus.setSocialStatusWork(getStatus());
@@ -271,7 +270,8 @@ public final class Resident extends Human {
 	 */
 	public void stepRemove() {
 	
-		if (doesHumanDie(getAge())) {		
+		if (doesHumanDie(getAge())) {
+			SimUtils.getDataCollector().addDied();
 			die();
 			return ;
 		}
@@ -279,9 +279,9 @@ public final class Resident extends Human {
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE)
 			return ;
 		
-		if (!getIsHappy() && RandomHelper.nextDouble() < 0.00001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)))
+		if (!getIsHappy() && RandomHelper.nextDouble() < 0.0001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)))
 		{
-			Logger.logAction("H" + getId() + " moves out because he/she is not happy : " + 0.00001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)));
+			Logger.logAction("H" + getId() + " moves out because he/she is not happy : " + 0.0001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)));
 			Logger.logInfo("H" + getId() + getDcString());
 			actionMigrateOutOfTown();
 		}
@@ -330,6 +330,7 @@ public final class Resident extends Human {
 	
 	private void actionMigrateOutOfTown() {
 		Logger.logAction("H" + getId() + " " + getStatus() + " migrates out of town");
+		SimUtils.getDataCollector().addMigratorOut(true, getId());
 		migrateOutOfTown();
 	}
 	
