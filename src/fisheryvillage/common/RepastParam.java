@@ -78,7 +78,6 @@ public final class RepastParam {
 	
 	public static int getAbstractValue(String valueName) {
 		
-		Logger.logDebug("GETABSTRACTVALUE : " + valueName);
 		if (valueName.equals(AbstractValue.POWER.name())) {
 			return getPower();
 		}

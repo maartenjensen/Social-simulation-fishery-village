@@ -235,7 +235,7 @@ public class Human {
 
 		ArrayList<Workplace> workplaces = SimUtils.getObjectsAllRandom(Workplace.class);
 		for (final Workplace workplace : workplaces) {
-			ArrayList<Status> vacancies = workplace.getVacancy(getHasBeenFisher(), getMoney());
+			ArrayList<Status> vacancies = workplace.getVacancy(false, getMoney()); //TODO: has been fisher getHasBeenFisher()
 			for (Status vacancy : vacancies) {
 				if (!possibleActions.contains(vacancy.getJobActionName())) {
 					possibleActions.add(vacancy.getJobActionName());
@@ -612,7 +612,7 @@ public class Human {
 	 *=========================================
 	 */
 	private void resetPartnerId() {
-		partnerId = -1;
+		partnerId = -2;
 	}
 	
 	public void setPartner(Human newPartner) {
@@ -764,7 +764,7 @@ public class Human {
 	}
 	
 	public Human getPartner() {
-		if (partnerId == -1)
+		if (partnerId <= -1)
 			return null;
 		Human partner = HumanUtils.getHumanById(partnerId);
 		if (partner != null)

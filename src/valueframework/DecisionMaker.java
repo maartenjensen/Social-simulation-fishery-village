@@ -58,6 +58,13 @@ public class DecisionMaker {
 		}
 		return -1;
 	}
+	
+	public double getWaterTankThreshold(AbstractValue abstractValue) {
+		if (valueTrees.containsKey(abstractValue.name())) {
+			return getWaterTankFromTree(abstractValue.name()).getThreshold();
+		}
+		return -1;
+	}
 
 	public void setWaterTankThreshold(String valueName, double threshold) {
 		getWaterTankFromTree(valueName).setThreshold(threshold);

@@ -399,6 +399,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			}
 		}
 		
+		HumanUtils.printAverageValues();
 		// Do a location step
 		step6Tick();
 		Logger.enableLogger();

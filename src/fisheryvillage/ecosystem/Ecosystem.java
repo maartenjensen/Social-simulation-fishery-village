@@ -61,7 +61,7 @@ public class Ecosystem {
 		return Double.toString(fish);
 	}
 	
-	public void setParameters(int fish) {
+	public void setParameters(double fish) {
 		this.fish = fish;
 	}
 	

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fisheryvillage.common.RepastParam;
 import valueframework.Action;
 import valueframework.Node;
 import valueframework.RandomTree;
@@ -58,8 +59,9 @@ public final class FrameworkBuilder {
 			// then read actions from file
 			readActionsFile("inputFiles\\actionList.txt");
 			assignRelatedActionsToConcreteValues();
+			setValueTreesWaterTanks();
 			printTrees();
-
+			
 			// checkInitialConditions();
 
 		} catch (IOException e) {
@@ -68,10 +70,16 @@ public final class FrameworkBuilder {
 		}
 	}
 
+	public static void setValueTreesWaterTanks() {
+		
+		for (String key : globalValueTrees.keySet()) {
+			globalValueTrees.get(key).getWaterTank().setThreshold(RepastParam.getAbstractValue(key));
+		}
+	}
+	
 	public static void addConcreteValue(Node nd) {
 
-		if (allConcreteValuesFromTrees != null
-				&& !allConcreteValuesFromTrees.contains(nd)) {
+		if (allConcreteValuesFromTrees != null && !allConcreteValuesFromTrees.contains(nd)) {
 			Log.printLog("FrameworkBuilder.addConcreteValue: "
 					+ nd.getValueName());
 			allConcreteValuesFromTrees.add(nd);

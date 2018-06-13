@@ -3,6 +3,7 @@ package fisheryvillage.property.municipality;
 import java.util.ArrayList;
 
 import fisheryvillage.common.Constants;
+import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
@@ -40,21 +41,20 @@ public class Council extends Workplace {
 	private int socialCount = 1;
 	private int elderlyCount = 1;
 	private int factoryCount = 1;
-	
+
 	public Council(int id, int price, int maintenanceCost, double money, GridPoint location) {
 		super(id, price, maintenanceCost, money, location, 3, 3, PropertyColor.COUNCIL);
 		allJobs.add(Status.MAYOR);
 		addToValueLayer();
 	}
-	
+
 	public void resetCounts() {
 		countUniversalism = 0;
 		countTradition = 0;
 		countPower = 0;
 		countSelfDirection = 0;
 	}
-	
-	//TODO make this dependent on values of residents
+
 	public void stepDistributeMoney() {
 		
 		if (decideSavings >= Constants.TICKS_PER_YEAR) {
@@ -62,7 +62,6 @@ public class Council extends Workplace {
 			decideSavings = 0;
 			
 			if (hasMayor()) {
-				
 				setBuildingSavingsCount();
 			}
 		}
@@ -87,16 +86,19 @@ public class Council extends Workplace {
 		
 		decideSavings ++;
 	}
-	
+
 	public void setBuildingSavingsCount() {
-		
+
 		boolean share = false;
-		if ((0.25 + getMayor().getUniversalismImportanceDistribution() * 0.75) > RandomHelper.nextDouble()) {
+		
+		double peopleUD = (1 - Constants.COUNCIL_MAYOR_IMPORTANCE) * HumanUtils.averageUniversalismDistributionWithoutMayor();
+		double mayorUD = Constants.COUNCIL_MAYOR_IMPORTANCE * getMayor().getUniversalismImportanceDistribution();
+		Logger.logInfo("Set building savings people:" + peopleUD + ", mayor: " + mayorUD);
+		if ((peopleUD + mayorUD) > RandomHelper.nextDouble()) {
 			share = true;
 		}
-		
+
 		if (share) {
-			
 			schoolCount = 0;
 			socialCount = 0;
 			elderlyCount = 0;

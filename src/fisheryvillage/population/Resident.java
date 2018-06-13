@@ -128,9 +128,9 @@ public final class Resident extends Human {
 
 	public void stepRelation() {
 
-		if (isSingle() && getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_CARE_AGE && RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_RELATION) {
+		if (isSingle() && getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_CARE_AGE && RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_RELATION && getPartnerId() != -2) {
 			for (final Resident resident: SimUtils.getObjectsAllExcluded(Resident.class, this)) {
-				if (isSingle() && HumanUtils.isPotentialCouple(resident, this)) {
+				if (isSingle() && HumanUtils.isPotentialCouple(resident, this) && getPartnerId() != -2) {
 					if (!getAncestorsMatch(getAncestors(), resident.getAncestors())) {
 						actionSetPartner(resident);
 					}
@@ -309,17 +309,22 @@ public final class Resident extends Human {
 		Logger.logAction("H" + getId() + " sells house");
 		removeAndSellProperty(myHouse.getId(), true);
 	}
-	
+
 	public void actionSetPartner(Resident newPartner) {
+		
 		Logger.logAction("H" + getId() + " got a relation with H" + newPartner.getId());
 		setPartner(newPartner);
 		newPartner.setPartner(this);
 		
-		if (!isMan() && childrenWanted == -1) {
-			childrenWanted = calculateChildrenWanted();
+		if (!isMan()) {
+			if (childrenWanted == -1) {
+				childrenWanted = calculateChildrenWanted();
+			}
 		}
-		else if (newPartner.getChildrenWanted() == -1){
-			newPartner.setChildrenWanted(calculateChildrenWanted());
+		else if (!newPartner.isMan()){
+			if (newPartner.getChildrenWanted() == -1) {
+				newPartner.setChildrenWanted(calculateChildrenWanted());
+			}
 		}
 	}
 	
@@ -566,6 +571,10 @@ public final class Resident extends Human {
 	
 	public double getLevelPower() {
 		return decisionMaker.getWaterTankLevel(AbstractValue.POWER.name());
+	}
+	
+	public double getThreshold(AbstractValue abstractValue) {
+		return decisionMaker.getWaterTankThreshold(abstractValue);
 	}
 	
 	public int getSatisfiedValuesCount() {

@@ -170,7 +170,7 @@ public class PopulationBuilder {
 				boat.setBoatType(BoatType.getEnumByString(pVars.get(4)));
 				break;
 			case "Ecosystem":
-				SimUtils.getEcosystem().setParameters(Integer.parseInt(pVars.get(1)));
+				SimUtils.getEcosystem().setParameters(Double.parseDouble(pVars.get(1)));
 				break;
 			}
 		}

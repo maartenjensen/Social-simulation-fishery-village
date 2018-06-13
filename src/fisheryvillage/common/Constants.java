@@ -122,6 +122,8 @@ public final class Constants {
 	public static final double TAX_PERCENTAGE = 50;
 	public static final double PERC_FROM_TAX_TO_COUNCIL = 50;
 	
+	public static final double COUNCIL_MAYOR_IMPORTANCE = 0.1;
+	
 	// Initialize salary and benefits parameters
 	public static final double SALARY_TEACHER = 3000;
 	public static final double SALARY_FACTORY_WORKER = 2000;

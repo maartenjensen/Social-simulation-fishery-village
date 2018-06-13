@@ -15,6 +15,7 @@ import fisheryvillage.property.other.SchoolOutside;
 import repast.simphony.context.Context;
 import repast.simphony.space.grid.Grid;
 import repast.simphony.space.grid.GridPoint;
+import valueframework.AbstractValue;
 
 /**
 * Supports the Human class with relevant getter functions
@@ -212,7 +213,7 @@ public final strictfp class HumanUtils {
 		}
 		return children;
 	}
-	
+
 	public static ArrayList<Human> getParents(Human human) {
 		
 		ArrayList<Human> parents = new ArrayList<Human>();
@@ -240,6 +241,23 @@ public final strictfp class HumanUtils {
 			}
 		}
 		return null;
+	}
+	
+	public static double averageUniversalismDistributionWithoutMayor() {
+		
+		double universalismDistr = 0;
+		int count = 0;
+		ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
+		for (Resident resident : residents) {
+			if (resident.getStatus() != Status.MAYOR) {
+				universalismDistr += resident.getUniversalismImportanceDistribution();
+				count ++;
+			}
+		}
+		if (count > 0)
+			return universalismDistr / count;
+		else
+			return 0;
 	}
 	
 	public static Property getWorkingPlace(int workplaceId, Status status, SchoolType schoolType) {
@@ -282,6 +300,27 @@ public final strictfp class HumanUtils {
 			properties.add(SimUtils.getPropertyById(propertyId));
 		}
 		return properties;
+	}
+	
+	public static void printAverageValues() {
+		
+		double u = 0;
+		double t = 0;
+		double s = 0;
+		double p = 0;
+		int count = 0;
+		ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
+		for (Resident resident : residents) {
+			u += resident.getThreshold(AbstractValue.UNIVERSALISM);
+			t += resident.getThreshold(AbstractValue.TRADITION);
+			s += resident.getThreshold(AbstractValue.SELFDIRECTION);
+			p += resident.getThreshold(AbstractValue.POWER);
+			count ++;
+		}
+		Logger.logMain("Average values for population: u:" + (u / count)
+													+ "t:" + (t / count)
+													+ "s:" + (s / count)
+													+ "p:" + (p / count));
 	}
 	
 	public static int spawnChild(Human mother, Human father) {
