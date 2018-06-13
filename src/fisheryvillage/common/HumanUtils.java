@@ -318,9 +318,9 @@ public final strictfp class HumanUtils {
 			count ++;
 		}
 		Logger.logMain("Average values for population: u:" + (u / count)
-													+ "t:" + (t / count)
-													+ "s:" + (s / count)
-													+ "p:" + (p / count));
+													+ ", t:" + (t / count)
+													+ ", s:" + (s / count)
+													+ ", p:" + (p / count));
 	}
 	
 	public static int spawnChild(Human mother, Human father) {

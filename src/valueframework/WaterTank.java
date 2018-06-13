@@ -10,10 +10,12 @@ public class WaterTank implements Comparable<WaterTank> {
 	private double capacity;
 	private double filledLevel;
 	private double drainingAmount;
-	private double increasingAmount;
-	private double decreasingAmount;
 	private double threshold;
 	private String relatedAbstractValue;
+	private double increaseAmount;
+	private double decreaseAmount;
+	private int satisfactionCountPos = 0;
+	private int satisfactionCountNeg = 0;
 
 	public WaterTank(double capacity, double filledLevel, double threshold, double drainingAmount, String relatedAbstractValue) {
 		
@@ -21,11 +23,21 @@ public class WaterTank implements Comparable<WaterTank> {
 		this.filledLevel = filledLevel;
 		this.threshold = threshold;
 		this.drainingAmount = drainingAmount;
-		increasingAmount = calculateIncreaseAmount(this.drainingAmount, this.capacity, this.threshold);
-		decreasingAmount = calculateDecreaseAmount(this.drainingAmount, this.capacity, this.threshold);
 		this.relatedAbstractValue = relatedAbstractValue;
+		this.increaseAmount = calculateBaseIncr();
+		this.decreaseAmount = calculateBaseDecr();
 	}
 
+	public double calculateBaseIncr() {
+		double value = (1 / Math.sqrt(capacity)) * (capacity - threshold);
+		return Math.pow(value, 2);
+	}
+	
+	public double calculateBaseDecr() {
+		double value = (1 / Math.sqrt(capacity)) * threshold;
+		return Math.pow(value, 2) * 0.5;
+	}
+	
 	public WaterTank(String waterTankInfo, String relatedAbstractValue) {
 
 		this.relatedAbstractValue = relatedAbstractValue;
@@ -35,16 +47,16 @@ public class WaterTank implements Comparable<WaterTank> {
 		capacity = Integer.valueOf(items.get(1));
 		filledLevel = Integer.valueOf(items.get(3));
 		drainingAmount = Integer.valueOf(items.get(5));
-		threshold = Integer.valueOf(items.get(6)); 
-		increasingAmount = calculateIncreaseAmount(this.drainingAmount, this.capacity, this.threshold);
-		decreasingAmount = calculateDecreaseAmount(this.drainingAmount, this.capacity, this.threshold);
+		threshold = Integer.valueOf(items.get(6));
+		this.increaseAmount = calculateBaseIncr();
+		this.decreaseAmount = calculateBaseDecr();
 	}
 
 	public void setLevelAndThreshold(double filledLevel, double threshold) {
 		this.filledLevel = filledLevel;
 		this.threshold = threshold;
-		increasingAmount = calculateIncreaseAmount(this.drainingAmount, this.capacity, this.threshold);
-		decreasingAmount = calculateDecreaseAmount(this.drainingAmount, this.capacity, this.threshold);
+		this.increaseAmount = calculateBaseIncr();
+		this.decreaseAmount = calculateBaseDecr();
 	}
 
 	@Override
@@ -55,50 +67,53 @@ public class WaterTank implements Comparable<WaterTank> {
 
 	public void draining() {
 		filledLevel = Math.max(0, filledLevel - drainingAmount);
+		satisfactionCountPos = 0;
+		satisfactionCountNeg = 0;
 	}
 
-	public double calculateIncreaseAmount(double drain, double capacity, double threshold) {
+	public double calculateIncr(double multiplier) {
 		
-		double thresholdFactor = (capacity - threshold) / 100.0;
-		return 0.5 * drain + drain * (thresholdFactor);
+		if (satisfactionCountPos == 1)
+			return drainingAmount * multiplier + increaseAmount;
+		else
+			return (1.0 / satisfactionCountPos) * increaseAmount;
 	}
 	
-	public double calculateDecreaseAmount(double drain, double capacity, double threshold) {
+	public double calculateDecr() {
 		
-		double thresholdFactor = (threshold) / 100.0;
-		return -0.5 * drain - drain * (thresholdFactor);
+		return (1.0 / satisfactionCountNeg) * decreaseAmount;
 	}
 
 	public void increaseLevel() {
+		
+		satisfactionCountPos ++;
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.min(capacity, filledLevel + increasingAmount);
-		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: "
-				+ oldFilledLevel + " + " + increasingAmount + ", new lvl:"
-				+ filledLevel);
+		filledLevel = Math.min(capacity, filledLevel + calculateIncr(1));
+		Log.printLog("Incr wt [" + relatedAbstractValue + "] count " + satisfactionCountPos + ": old lvl: " + oldFilledLevel + " + " + calculateIncr(1) + ", new lvl:" + filledLevel);
 	}
 
 	public void increaseLevel(double multiply) {
+		
+		satisfactionCountPos ++;
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.min(capacity, filledLevel + increasingAmount * multiply);
-		Log.printLog("Incr wt [" + relatedAbstractValue + "]: old lvl: "
-				+ oldFilledLevel + " + " + drainingAmount * multiply
-				+ ", new lvl:" + filledLevel);
+		filledLevel = Math.min(capacity, filledLevel + calculateIncr(multiply));
+		Log.printLog("Incr wt [" + relatedAbstractValue + "] count " + satisfactionCountPos + ": old lvl: " + oldFilledLevel + " + " + calculateIncr(multiply) + ", new lvl:" + filledLevel);
 	}
 
 	public void decreaseLevel() {
+		
+		satisfactionCountNeg ++;
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.max(capacity, filledLevel + decreasingAmount);
-		Log.printLog("Decr wt [" + relatedAbstractValue + "]: old lvl: "
-				+ oldFilledLevel + " - " + decreasingAmount + ", new lvl:"
-				+ filledLevel);
+		filledLevel = Math.max(0, filledLevel - calculateDecr());
+		Log.printLog("Decr wt [" + relatedAbstractValue + "] count " + satisfactionCountNeg + ": old lvl: " + oldFilledLevel + " - " + calculateDecr() + ", new lvl:" + filledLevel);
 	}
 
 	public void decreaseLevel(double multiply) {
+		
+		satisfactionCountNeg ++;
 		double oldFilledLevel = filledLevel;
-		filledLevel = Math.max(capacity, filledLevel + decreasingAmount * multiply);
-		Log.printLog("Decr wt [" + relatedAbstractValue + "]: old lvl: "
-				+ oldFilledLevel + " - " + decreasingAmount * multiply
-				+ ", new lvl:" + filledLevel);
+		filledLevel = Math.max(0, filledLevel - calculateDecr());
+		Log.printLog("Decr wt [" + relatedAbstractValue + "] count " + satisfactionCountNeg + ": old lvl: " + oldFilledLevel + " - " + calculateDecr()  + ", new lvl:" + filledLevel);
 	}
 	
 	public double getCapacity() {
@@ -111,10 +126,6 @@ public class WaterTank implements Comparable<WaterTank> {
 
 	public double getPriorityPercentage() {
 		return -1 * (((double) (filledLevel - threshold) / threshold) * 100.0);
-	}
-
-	public double getIncreasingAmount() {
-		return increasingAmount;
 	}
 
 	public double getDrainingAmount() {
@@ -131,8 +142,8 @@ public class WaterTank implements Comparable<WaterTank> {
 
 	public void setThreshold(double threshold) {
 		this.threshold = threshold;
-		increasingAmount = calculateIncreaseAmount(this.drainingAmount, this.capacity, this.threshold);
-		decreasingAmount = calculateDecreaseAmount(this.drainingAmount, this.capacity, this.threshold);
+		this.increaseAmount = calculateBaseIncr();
+		this.decreaseAmount = calculateBaseDecr();
 	}
 	
 	public void setFilledLevel(double level) {
@@ -141,8 +152,8 @@ public class WaterTank implements Comparable<WaterTank> {
 
 	public void adjustThreshold(double add, double min, double max) {
 		threshold = Math.max(min, Math.min(max, threshold + add));
-		increasingAmount = calculateIncreaseAmount(this.drainingAmount, this.capacity, this.threshold);
-		decreasingAmount = calculateDecreaseAmount(this.drainingAmount, this.capacity, this.threshold);
+		this.increaseAmount = calculateBaseIncr();
+		this.decreaseAmount = calculateBaseDecr();
 	}
 
 	public void setRelatedAbstractValue(String valueName) {
