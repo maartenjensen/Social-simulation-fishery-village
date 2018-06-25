@@ -1,23 +1,23 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector Values Satisfied</name>
-  <dataSet>DataCollector Values Satisfied</dataSet>
+  <name>DataCollector Happiness</name>
+  <dataSet>DataCollector Happiness</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
-    <string>Satisfied values adult</string>
-    <string>Satisfied values elderly</string>
-    <string>Satisfied values adult + elderly</string>
-    <string>Satisfied values boss</string>
-    <string>Satisfied values captain</string>
-    <string>Satisfied values caretaker</string>
-    <string>Satisfied values fisher</string>
-    <string>Satisfied values mayor</string>
-    <string>Satisfied values teacher</string>
-    <string>Satisfied values unemployed</string>
-    <string>Satisfied values work out of town</string>
-    <string>Satisfied values factory worker</string>
     <string>tick</string>
+    <string>Happy % adult</string>
+    <string>Happy % elderly</string>
+    <string>Happy % adult + elderly</string>
+    <string>Happy % boss</string>
+    <string>Happy % captain</string>
+    <string>Happy % caretaker</string>
+    <string>Happy % fisher</string>
+    <string>Happy % mayor</string>
+    <string>Happy % teacher</string>
+    <string>Happy % unemployed</string>
+    <string>Happy % work out of town</string>
+    <string>Happy % factory worker</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\ValuesSatisfied.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\Happiness.txt</fileName>
   <addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

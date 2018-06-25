@@ -45,6 +45,8 @@ public final class Constants {
 	
 	public static final double WORK_OUTSIDE_PROBABILITY = 0.5;
 	
+	public static final int EVENT_PERFORM_MIN_NUMBER_OF_ATTENDEES = 2;
+	
 	// Initialize employee numbers
 	public static final int FACTORY_INITIAL_MAX_WORKERS = 10;
 	public static final int FACTORY_MAX_WORKERS = 50;
@@ -89,7 +91,6 @@ public final class Constants {
 	public static final int HUMAN_ADULT_AGE = 18;
 	public static final int HUMAN_ELDERLY_AGE = 65;
 	public static final int HUMAN_ELDERLY_CARE_AGE = 85;
-	public static final int HUMAN_MONEY_DANGER_LEVEL = 3000;
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
 	public static final double HUMAN_PROB_KEEP_PREV_JOB = 0.9;
@@ -101,8 +102,8 @@ public final class Constants {
 	// Formula parameters given in Resident.calculateChildrenWanted()
 	
 	// Initialize population schwartz change
-	public static final double SCHWARTZ_CHANGE_SELF = -0.5;
-	public static final double SCHWARTZ_CHANGE_TRAD = 0.5;
+	public static final double SCHWARTZ_CHANGE_SELF = 0;//-0.5;
+	public static final double SCHWARTZ_CHANGE_TRAD = 0;//0.5;
 	public static final int SCHWARTZ_CHANGE_MIN_AGE = 30;
 	public static final int SCHWARTZ_CHANGE_MAX_AGE = 60;
 	public static final int SCHWARTZ_MIN = 10;
@@ -137,7 +138,7 @@ public final class Constants {
 
 	// Initialize donation
 	public static final double DONATE_FACTOR_OF_LEFT_OVER_MONEY = 0.1;
-	public static final double DONATE_MONEY_MINIMUM_SAVINGS = 5000;
+	public static final double MONEY_DANGER_LEVEL = 5000;
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 100000;
 	public static final double DONATE_MONEY_WITHOUT_INCOME = 50;
 

@@ -8,7 +8,6 @@ Job mayor,Sustain village,Be part of the community,Authority,Wealth,Independent
 Job elderly caretaker,Sustain village,Be part of the community,Care for the weak
 Job work outside village,Freedom,Independent,-Be part of the community
 Job unemployed,Be part of the community,-Wealth
-Job study,Wisdom,Freedom,Social recognition
 Organize free event,Equality,Be part of the community,Freedom
 Organize commercial event,Authority,Wealth,Be part of the community,Freedom,-Equality
 Attend free event,Be part of the community,Freedom
@@ -17,7 +16,7 @@ Donate nothing,Independent,Wealth,-Sustain village
 Donate to council,Sustain village,Equality,-Wealth
 Fish a lot,Wealth
 Fish a lot danger,Wealth,-Good for environment,-Sustain village
-Fish medium,Moderate,Unity with nature,
+Fish medium,Moderate,Unity with nature
 Fish medium danger,-Good for environment
 Fish less,Good for environment,Unity with nature,-Wealth
 Fish less danger,Sustain village,Unity with nature,-Wealth

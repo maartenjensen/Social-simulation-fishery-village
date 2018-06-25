@@ -33,6 +33,8 @@ public final class Resident extends Human {
 	private String jobActionName = "none";
 	private ValuedAction eventAction = null;
 	private boolean canOrganize = false;
+	private int graphDonateType = -1; //-1: undefined, 0: donation not possible, 1: not donate, 2: donate to council
+	private int graphEventType = -1; //-1: undefined, 0: no action possible, 1:OF, 2:OC, 3:AF, 4:AC
 
 	public Resident(int id, boolean gender, boolean foreigner, int age, double money) {
 		super(id, gender, foreigner, age, money);
@@ -102,7 +104,7 @@ public final class Resident extends Human {
 		}
 
 		ArrayList<String> possibleActions = new ArrayList<String>();
-		if (jobActionName.equals("none") || Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble()) {
+		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() && !getIsHappy())) {
 			possibleActions = getPossibleWorkActions(jobActionName);
 		}
 		else {
@@ -141,7 +143,13 @@ public final class Resident extends Human {
 
 	public void stepSocialEvent() {
 		
+		graphEventType = -1;
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+			return ;
+		}
+		
+		if ((getLeftoverMoney() <= 0 || getMoney() <= Constants.MONEY_DANGER_LEVEL) && getMoney() <= Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
+			graphEventType = 0;
 			return ;
 		}
 		
@@ -152,7 +160,7 @@ public final class Resident extends Human {
 		
 		//Create possible actions
 		ArrayList<String> possibleActions = new ArrayList<String>();
-		if (eventHall.getVacancyForNewEvent() && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
+		if (eventHall.getVacancyForNewEvent() && getMoney() > Constants.MONEY_DANGER_LEVEL) {
 			possibleActions.add("Organize free event");
 			possibleActions.add("Organize commercial event");
 			canOrganize = true;
@@ -161,7 +169,7 @@ public final class Resident extends Human {
 			if (event.getEventType().equals("Free") && !possibleActions.contains("Attend free event")) {
 				possibleActions.add("Attend free event");
 			}
-			else if (event.getEventType().equals("Commercial") && !possibleActions.contains("Attend commercial event") && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) {
+			else if (event.getEventType().equals("Commercial") && !possibleActions.contains("Attend commercial event") && getMoney() > Constants.MONEY_DANGER_LEVEL) {
 				possibleActions.add("Attend commercial event");
 			}
 		}
@@ -193,12 +201,19 @@ public final class Resident extends Human {
 			return ;
 		}
 		
+		graphDonateType = -1;
+		
 		ArrayList<String> possibleActions = new ArrayList<String>();
 		possibleActions.add("Donate nothing");
-		if ((getLeftoverMoney() > 0 && getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS) || getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
+		if ((getLeftoverMoney() > 0 && getMoney() > Constants.MONEY_DANGER_LEVEL) || getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
 			possibleActions.add("Donate to council");
 		}
-		Logger.logInfo("H" + getId() + " possible actions: " + possibleActions);
+		else {
+			Logger.logInfo("H" + getId() + " donation not possible, not enough money or income");
+			graphDonateType = 0;
+			return ;
+		}
+		Logger.logAction("H" + getId() + " possible actions: " + possibleActions);
 
 		ArrayList<ValuedAction> filteredActions = decisionMaker.agentFilterActionsBasedOnValues(possibleActions);
 
@@ -253,7 +268,7 @@ public final class Resident extends Human {
 					actionSellHouse(ownedHouse);
 					return;
 				}
-				if (getLeftoverMoney() < 0 && getMoney() < Constants.HUMAN_MONEY_DANGER_LEVEL) {
+				if (getLeftoverMoney() < 0 && getMoney() < Constants.MONEY_DANGER_LEVEL) {
 					if (ownedHouse.getHouseType() != HouseType.CHEAP) {
 						actionSellHouse(ownedHouse);
 					}
@@ -408,7 +423,7 @@ public final class Resident extends Human {
 		decisionMaker.adjustWaterTankThreshold(AbstractValue.SELFDIRECTION.name(), Constants.SCHWARTZ_CHANGE_SELF, Constants.SCHWARTZ_MIN, Constants.SCHWARTZ_MAX);
 		decisionMaker.adjustWaterTankThreshold(AbstractValue.TRADITION.name(), Constants.SCHWARTZ_CHANGE_TRAD, Constants.SCHWARTZ_MIN, Constants.SCHWARTZ_MAX);
 	}
-	
+
 	public boolean getIsHappy() {
 		if (socialStatus.getSocialStatusValue(decisionMaker, getStatus()) > 0.25 && decisionMaker.getSatisfiedValuesCount() >= 2) {
 			return true;
@@ -584,6 +599,27 @@ public final class Resident extends Human {
 	
 	public void setChildrenWanted(int childrenWanted) {
 		this.childrenWanted = childrenWanted;
+	}
+	
+	/*=========================================
+	 * Graph variables
+	 * ========================================
+	 */
+	
+	public void setGraphDonateType(int graphDonateType) {
+		this.graphDonateType = graphDonateType;
+	}
+	
+	public int getGraphDonateType() {
+		return graphDonateType;
+	}
+	
+	public void setGraphEventType(int graphEventType) {
+		this.graphEventType = graphEventType;
+	}
+	
+	public int getGraphEventType() {
+		return graphEventType;
 	}
 	
 	/*=========================================

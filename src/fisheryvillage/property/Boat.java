@@ -119,7 +119,7 @@ public class Boat extends Workplace {
 	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
-		if (hasBeenFisher) {
+		if (hasBeenFisher || !SimUtils.getEcosystem().getFishAlive()) {
 			return possibleJobs;
 		}
 		

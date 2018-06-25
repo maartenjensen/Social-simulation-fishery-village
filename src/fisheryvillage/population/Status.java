@@ -20,7 +20,6 @@ public enum Status {
 	MAYOR("Job mayor",1.0),
 	CAPTAIN("Job captain",0.75), 
 	ELDERLY_CARETAKER("Job elderly caretaker",0.25),
-	STUDENT("Job student",0.0),
 	WORK_OUT_OF_TOWN("Job work outside village",0.0),
 	DEAD("none",0.0),
 	NONE("none",0.0);

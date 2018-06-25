@@ -2,6 +2,7 @@ package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
+import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
 
@@ -31,7 +32,7 @@ public class Event {
 
 	public void stepPerformEvent() {
 		
-		if (organizerId >= 0 && attendeesIds.size() >= 2) {
+		if (organizerId >= 0 && attendeesIds.size() >= Constants.EVENT_PERFORM_MIN_NUMBER_OF_ATTENDEES) {
 			Logger.logInfo("PERFORM EVENT " + toString());
 			HumanUtils.getResidentById(organizerId).actionEventOrganize((attendeeFee - costPerAttendee) * attendeesIds.size());
 			for (int attendee : attendeesIds) {

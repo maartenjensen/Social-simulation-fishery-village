@@ -403,4 +403,112 @@ public class DataCollector {
 		
 		return "DataCollector";
 	}
+	
+	public double donationPercentageDonate() {
+		int total = 0;
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphDonateType() != -1) {
+					total ++;
+					if (resident.getGraphDonateType() == 2) {
+						count ++;
+					}
+				}
+			}
+		}
+		return ((double) count) / total;
+	}
+	
+	public double donationPercentageNoDonate() {
+		int total = 0;
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphDonateType() != -1) {
+					total ++;
+					if (resident.getGraphDonateType() == 1) {
+						count ++;
+					}
+				}
+			}
+		}
+		return ((double) count) / total;
+	}
+
+	public double donationPercentageNoMoney() {
+		int total = 0;
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphDonateType() != -1) {
+					total ++;
+					if (resident.getGraphDonateType() == 0) {
+						count ++;
+					}
+				}
+			}
+		}
+		return ((double) count) / total;
+	}
+	
+	public int eventNoMoney() {
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphEventType() == 0) {
+					count ++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	public int eventOrgFree() {
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphEventType() == 1) {
+					count ++;
+				}
+			}
+		}
+		return count;
+	}
+
+	public int eventOrgCom() {
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphEventType() == 2) {
+					count ++;
+				}
+			}
+		}
+		return count;
+	}
+	
+	public int eventAttFree() {
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphEventType() == 3) {
+					count ++;
+				}
+			}
+		}
+		return count;
+	}
+
+	public int eventAttCom() {
+		int count = 0;
+		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
+			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
+				if (resident.getGraphEventType() == 4) {
+					count ++;
+				}
+			}
+		}
+		return count;
+	}
 }

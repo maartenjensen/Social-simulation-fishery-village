@@ -1,23 +1,15 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>Datacollector Social status</name>
-  <dataSet>DataCollector Social Status</dataSet>
+  <name>Values</name>
+  <dataSet>Human avg values</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
-    <string>Social status adult</string>
-    <string>Social status elderly</string>
-    <string>Social status adult + elderly</string>
-    <string>Social status boss</string>
-    <string>Social status work out of town</string>
-    <string>Social status captain</string>
-    <string>Social status caretaker</string>
-    <string>Social status fisher</string>
-    <string>Social status mayor</string>
-    <string>Social status teacher</string>
-    <string>Social status unemployed</string>
-    <string>Social status factory worker</string>
     <string>tick</string>
+    <string>Avg tradition level</string>
+    <string>Avg power level</string>
+    <string>Avg self-direction level</string>
+    <string>Avg universalism level</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\SocialStatus.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\Values.txt</fileName>
   <addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

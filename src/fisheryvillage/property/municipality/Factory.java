@@ -142,6 +142,9 @@ public class Factory extends Workplace {
 	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		if (!SimUtils.getEcosystem().getFishAlive() && fishUnprocessedKg == 0)
+			return possibleJobs;
+		
 		if (hasBoss()) {
 			if (getEmployeeCount(Status.FACTORY_WORKER) < maxEmployees) {
 				possibleJobs.add(Status.FACTORY_WORKER);

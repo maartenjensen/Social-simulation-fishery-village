@@ -130,4 +130,10 @@ public class Ecosystem {
 	public double getFishInDangerLevel() {
 		return Constants.ECOSYSTEM_IN_DANGER;
 	}
+	
+	public boolean getFishAlive() {
+		if (fish > 0)
+			return true;
+		return false;
+	}
 }

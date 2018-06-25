@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Satisfied values (happiness)</name>
-  <dataSet>Satisfied Values</dataSet>
+  <name>DataCollector general</name>
+  <dataSet>DataCollector general</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Adult Count</yAxisLabel>
-  <chartTitle>Satisfied values (happiness)</chartTitle>
+  <yAxisLabel>Counts</yAxisLabel>
+  <chartTitle>DataCollector general</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,23 +21,47 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Satisfied values 4</string>
+      <string>Children born</string>
       <SeriesData>
-        <label>Satisfied values 4</label>
+        <label>Children born</label>
         <color>
-          <red>0</red>
-          <green>204</green>
-          <blue>51</blue>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Satisfied values 3</string>
+      <string>Migrate out self</string>
       <SeriesData>
-        <label>Satisfied values 3</label>
+        <label>Migrate out self</label>
         <color>
-          <red>204</red>
+          <red>255</red>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Died</string>
+      <SeriesData>
+        <label>Died</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate in</string>
+      <SeriesData>
+        <label>Migrate in</label>
+        <color>
+          <red>0</red>
           <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
@@ -45,37 +69,25 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Satisfied values 2</string>
+      <string>Population number</string>
       <SeriesData>
-        <label>Satisfied values 2</label>
+        <label>Population number</label>
         <color>
-          <red>255</red>
-          <green>153</green>
-          <blue>0</blue>
+          <red>0</red>
+          <green>255</green>
+          <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Satisfied values 1</string>
+      <string>Migrate out with</string>
       <SeriesData>
-        <label>Satisfied values 1</label>
+        <label>Migrate out with</label>
         <color>
           <red>255</red>
-          <green>51</green>
+          <green>200</green>
           <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Satisfied values 0</string>
-      <SeriesData>
-        <label>Satisfied values 0</label>
-        <color>
-          <red>153</red>
-          <green>0</green>
-          <blue>51</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>

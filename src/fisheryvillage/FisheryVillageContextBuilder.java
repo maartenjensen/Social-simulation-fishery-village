@@ -191,7 +191,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (final Resident resident: residents) {
 			resident.stepHousing();
 		}
-		
+
 		Logger.logMain("- Run Human.stepChildrenSchooling");
 		for (final Resident resident: residents) {
 			resident.stepChildrenSchooling();
@@ -217,7 +217,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		Logger.logMain("- Run EventHall.resetEventHall");
 		SimUtils.getEventHall().stepResetEventHall();
-		SimUtils.getCouncil().resetCounts();
+		SimUtils.getCouncil().resetCounts(); //For data analysis
 		
 		Logger.logMain("- Ecosystem.stepEcosystem");
 		SimUtils.getEcosystem().stepEcosystem();
@@ -278,7 +278,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		Logger.logMain("- Run Council.stepDistributeMoney");
 		SimUtils.getCouncil().stepDistributeMoney();
-		
+	
 		// Human.stepDeath should be the last one before Human.stepLocation
 		Logger.logMain("- Run Human.stepRemove");
 		ArrayList<Integer> humanIds = new ArrayList<Integer>();

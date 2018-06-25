@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Happiness graph</name>
-  <dataSet>DataCollector Happiness</dataSet>
+  <name>Fish population</name>
+  <dataSet>Ecosystem</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Percentage happy</yAxisLabel>
-  <chartTitle>Happiness graph</chartTitle>
+  <yAxisLabel>Count</yAxisLabel>
+  <chartTitle>Fish population</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,59 +21,23 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Happy % boss</string>
+      <string>N Fish</string>
       <SeriesData>
-        <label>Happy % boss</label>
+        <label>N Fish</label>
         <color>
           <red>0</red>
           <green>0</green>
-          <blue>102</blue>
+          <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Happy % factory worker</string>
+      <string>N Fish repopulated x 10</string>
       <SeriesData>
-        <label>Happy % factory worker</label>
+        <label>N Fish repopulated x 10</label>
         <color>
           <red>0</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % captain</string>
-      <SeriesData>
-        <label>Happy % captain</label>
-        <color>
-          <red>153</red>
-          <green>153</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % caretaker</string>
-      <SeriesData>
-        <label>Happy % caretaker</label>
-        <color>
-          <red>255</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % unemployed</string>
-      <SeriesData>
-        <label>Happy % unemployed</label>
-        <color>
-          <red>204</red>
           <green>204</green>
           <blue>204</blue>
           <alpha>255</alpha>
@@ -81,11 +45,11 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Happy % work out of town</string>
+      <string>N Fish danger level</string>
       <SeriesData>
-        <label>Happy % work out of town</label>
+        <label>N Fish danger level</label>
         <color>
-          <red>0</red>
+          <red>255</red>
           <green>0</green>
           <blue>0</blue>
           <alpha>255</alpha>
@@ -93,36 +57,12 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Happy % mayor</string>
+      <string>N Fish caught x 10</string>
       <SeriesData>
-        <label>Happy % mayor</label>
+        <label>N Fish caught x 10</label>
         <color>
-          <red>102</red>
-          <green>255</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % teacher</string>
-      <SeriesData>
-        <label>Happy % teacher</label>
-        <color>
-          <red>153</red>
-          <green>51</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Happy % fisher</string>
-      <SeriesData>
-        <label>Happy % fisher</label>
-        <color>
-          <red>255</red>
-          <green>255</green>
+          <red>204</red>
+          <green>204</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>

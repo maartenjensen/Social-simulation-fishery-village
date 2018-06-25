@@ -117,7 +117,7 @@ public class Human {
 			schoolType = SchoolType.NO_SCHOOL;
 		}
 	}
-	
+
 	protected void equalizeMoneyWithPartner() {
 		if (partnerId >= 0) {
 			Human partner = getPartner();
@@ -620,7 +620,7 @@ public class Human {
 	public void setPartner(Human newPartner) {
 		partnerId = newPartner.getId();
 	}
-	
+
 	protected void setStatusByAge() {
 		
 		if (age < Constants.HUMAN_ADULT_AGE) {

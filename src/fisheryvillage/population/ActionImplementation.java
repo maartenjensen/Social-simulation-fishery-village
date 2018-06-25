@@ -115,9 +115,11 @@ public class ActionImplementation {
 		switch(actionTitle) {
 		case "Donate nothing":
 			Logger.logAction("H" + resident.getId() + " donated nothing");
+			resident.setGraphDonateType(1);
 			break;
 		case "Donate to council":
 			actionDonate(resident, SimUtils.getCouncil());
+			resident.setGraphDonateType(2);
 			break;
 		default:
 			Logger.logError("H" + resident.getId() + " action '" + actionTitle + "' doesn't exist");
@@ -133,11 +135,13 @@ public class ActionImplementation {
 		case "Organize free event":
 			moneyEvent = eventHall.createEvent("Free", resident.getId());
 			resident.addMoney(-1 * moneyEvent);
+			resident.setGraphEventType(1);
 			Logger.logAction("CREATE EVENT F - H" + resident.getId() + " event cost: " + moneyEvent);
 			break;
 		case "Organize commercial event":
 			moneyEvent = eventHall.createEvent("Commercial", resident.getId());
 			resident.addMoney(-1 * moneyEvent);
+			resident.setGraphEventType(2);
 			Logger.logAction("CREATE EVENT C - H" + resident.getId() + " event cost: " + moneyEvent);
 			
 			break;
@@ -146,6 +150,7 @@ public class ActionImplementation {
 				if (event.getEventType().equals("Free")) {
 					Logger.logAction("ATTEND EVENT F - H" + resident.getId());
 					eventHall.joinEvent(event, resident.getId());
+					resident.setGraphEventType(3);
 					break;
 				}
 			}
@@ -155,6 +160,7 @@ public class ActionImplementation {
 				if (event.getEventType().equals("Commercial")) {
 					Logger.logAction("ATTEND EVENT C - H" + resident.getId());
 					eventHall.joinEvent(event, resident.getId());
+					resident.setGraphEventType(4);
 					break;
 				}
 			}

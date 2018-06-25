@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Values satisfied graph</name>
-  <dataSet>DataCollector Values Satisfied</dataSet>
+  <name>Satisfied values (happiness)</name>
+  <dataSet>Satisfied Values</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Percentage</yAxisLabel>
-  <chartTitle>Satisfied values</chartTitle>
+  <yAxisLabel>Adult Count</yAxisLabel>
+  <chartTitle>Satisfied values (happiness)</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,71 +21,23 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Satisfied values boss</string>
+      <string>Satisfied values 4</string>
       <SeriesData>
-        <label>Satisfied values boss</label>
+        <label>Satisfied values 4</label>
         <color>
           <red>0</red>
-          <green>51</green>
-          <blue>153</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Satisfied values factory worker</string>
-      <SeriesData>
-        <label>Satisfied values factory worker</label>
-        <color>
-          <red>51</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Satisfied values teacher</string>
-      <SeriesData>
-        <label>Satisfied values teacher</label>
-        <color>
-          <red>153</red>
-          <green>102</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Satisfied values caretaker</string>
-      <SeriesData>
-        <label>Satisfied values caretaker</label>
-        <color>
-          <red>255</red>
-          <green>102</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Satisfied values mayor</string>
-      <SeriesData>
-        <label>Satisfied values mayor</label>
-        <color>
-          <red>51</red>
-          <green>255</green>
+          <green>204</green>
           <blue>51</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Satisfied values fisher</string>
+      <string>Satisfied values 3</string>
       <SeriesData>
-        <label>Satisfied values fisher</label>
+        <label>Satisfied values 3</label>
         <color>
-          <red>255</red>
+          <red>204</red>
           <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
@@ -93,37 +45,37 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Satisfied values captain</string>
+      <string>Satisfied values 2</string>
       <SeriesData>
-        <label>Satisfied values captain</label>
+        <label>Satisfied values 2</label>
         <color>
-          <red>204</red>
-          <green>204</green>
+          <red>255</red>
+          <green>153</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Satisfied values work out of town</string>
+      <string>Satisfied values 1</string>
       <SeriesData>
-        <label>Satisfied values work out of town</label>
+        <label>Satisfied values 1</label>
         <color>
-          <red>0</red>
+          <red>255</red>
+          <green>51</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Satisfied values 0</string>
+      <SeriesData>
+        <label>Satisfied values 0</label>
+        <color>
+          <red>153</red>
           <green>0</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Satisfied values unemployed</string>
-      <SeriesData>
-        <label>Satisfied values unemployed</label>
-        <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>204</blue>
+          <blue>51</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
