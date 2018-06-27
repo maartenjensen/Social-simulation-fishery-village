@@ -33,18 +33,6 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>N [75 - ...]</string>
-      <SeriesData>
-        <label>N [75 - ...]</label>
-        <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>153</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
       <string>N [18 - 64]</string>
       <SeriesData>
         <label>N [18 - 64]</label>
@@ -57,13 +45,25 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>N [65 - 74]</string>
+      <string>N [65 - 84]</string>
       <SeriesData>
-        <label>N [65 - 74]</label>
+        <label>N [65 - 84]</label>
         <color>
           <red>0</red>
           <green>102</green>
           <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>N [85 - ...]</string>
+      <SeriesData>
+        <label>N [85 - ...]</label>
+        <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>153</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>

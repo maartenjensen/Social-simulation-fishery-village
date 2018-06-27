@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector Social Status</name>
+  <name>DataCollector Values Satisfied</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,115 +11,115 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1528791042</hashCode>
+    <hashCode>797112393</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Social status adult</string>
+      <string>Satisfied values adult</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status adult</id>
+        <id>Satisfied values adult</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusAdult</methodName>
+        <methodName>getAverageSatisfiedValuesAdult</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status adult + elderly</string>
+      <string>Satisfied values adult + elderly</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status adult + elderly</id>
+        <id>Satisfied values adult + elderly</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusAdultElderly</methodName>
+        <methodName>getAverageSatisfiedValuesAdultElderly</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status boss</string>
+      <string>Satisfied values boss</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status boss</id>
+        <id>Satisfied values boss</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusBoss</methodName>
+        <methodName>getAverageSatisfiedValuesBoss</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status work out of town</string>
+      <string>Satisfied values captain</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status work out of town</id>
+        <id>Satisfied values captain</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusWorkOutOfTown</methodName>
+        <methodName>getAverageSatisfiedValuesCaptain</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status captain</string>
+      <string>Satisfied values caretaker</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status captain</id>
+        <id>Satisfied values caretaker</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusCaptain</methodName>
+        <methodName>getAverageSatisfiedValuesCaretaker</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status caretaker</string>
+      <string>Satisfied values elderly</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status caretaker</id>
+        <id>Satisfied values elderly</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusCaretaker</methodName>
+        <methodName>getAverageSatisfiedValuesElderly</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status elderly</string>
+      <string>Satisfied values fisher</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status elderly</id>
+        <id>Satisfied values fisher</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusElderly</methodName>
+        <methodName>getAverageSatisfiedValuesFisher</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status fisher</string>
+      <string>Satisfied values mayor</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status fisher</id>
+        <id>Satisfied values mayor</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusFisher</methodName>
+        <methodName>getAverageSatisfiedValuesMayor</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status mayor</string>
+      <string>Satisfied values teacher</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status mayor</id>
+        <id>Satisfied values teacher</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusMayor</methodName>
+        <methodName>getAverageSatisfiedValuesTeacher</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status teacher</string>
+      <string>Satisfied values unemployed</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status teacher</id>
+        <id>Satisfied values unemployed</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusTeacher</methodName>
+        <methodName>getAverageSatisfiedValuesUnemployed</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status unemployed</string>
+      <string>Satisfied values work out of town</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status unemployed</id>
+        <id>Satisfied values work out of town</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusUnemployed</methodName>
+        <methodName>getAverageSatisfiedValuesWorkOutOfTown</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Social status factory worker</string>
+      <string>Satisfied values factory worker</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Social status factory worker</id>
+        <id>Satisfied values factory worker</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAverageSocialStatusWorker</methodName>
+        <methodName>getAverageSatisfiedValuesWorker</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

@@ -1,80 +1,44 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector general</name>
+  <name>DataCollector Donation</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>48.0</interval>
+    <interval>1.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>415105201</hashCode>
+    <hashCode>-1101874947</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Avg wealth</string>
+      <string>Donation percentage</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg wealth</id>
+        <id>Donation percentage</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getAdultAndElderlyWealthAvg</methodName>
+        <methodName>donationPercentageDonate</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Children born</string>
+      <string>No money percentage</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Children born</id>
+        <id>No money percentage</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getChildrenBorn</methodName>
+        <methodName>donationPercentageNoMoney</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Migrate in</string>
+      <string>No donation percentage</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate in</id>
+        <id>No donation percentage</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedIn</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>Migrate out self</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate out self</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedOutSelf</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>Migrate out with</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate out with</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedOutWith</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>Population number</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Population number</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getPopulationNumber</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>Died</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Died</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getDied</methodName>
+        <methodName>donationPercentageNoDonate</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

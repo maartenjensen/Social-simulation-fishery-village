@@ -14,6 +14,7 @@ import fisheryvillage.property.House;
 import fisheryvillage.property.Property;
 import fisheryvillage.property.Workplace;
 import fisheryvillage.property.municipality.Council;
+import fisheryvillage.property.municipality.Factory;
 import fisheryvillage.property.municipality.School;
 import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
@@ -552,7 +553,13 @@ public class Human {
 				((Boat) workplace).removeFisher(getId());
 			}
 			status = Status.UNEMPLOYED;
-			workplaceId = -1;
+			workplaceId = -1;/*
+			if (workplace instanceof Boat) {
+				((Boat) workplace).checkNeedNewCaptain();
+			}
+			else if (workplace instanceof Factory) {
+				((Factory) workplace).checkNeedNewBoss();
+			}*/
 		}
 	}
 	

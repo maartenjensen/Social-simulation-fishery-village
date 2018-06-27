@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector Donation</name>
+  <name>DataCollector Event</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,34 +11,52 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>-1101874947</hashCode>
+    <hashCode>1796591574</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Donation percentage</string>
+      <string>No Money</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Donation percentage</id>
+        <id>No Money</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>donationPercentageDonate</methodName>
+        <methodName>eventNoMoney</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>No money percentage</string>
+      <string>Organize Free</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>No money percentage</id>
+        <id>Organize Free</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>donationPercentageNoMoney</methodName>
+        <methodName>eventOrgFree</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>No donation percentage</string>
+      <string>Organize Commercial</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>No donation percentage</id>
+        <id>Organize Commercial</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>donationPercentageNoDonate</methodName>
+        <methodName>eventOrgCom</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Attend Free</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Attend Free</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>eventAttFree</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Attend Commercial</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Attend Commercial</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>eventAttCom</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

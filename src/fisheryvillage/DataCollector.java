@@ -452,63 +452,42 @@ public class DataCollector {
 		return ((double) count) / total;
 	}
 	
-	public int eventNoMoney() {
+	public double eventPercentage(int type) {
+		int total = 0;
 		int count = 0;
 		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
 			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
-				if (resident.getGraphEventType() == 0) {
+				total ++;
+				if (resident.getGraphEventType() == type) {
 					count ++;
 				}
 			}
 		}
-		return count;
+		return ((double) count) / total;
 	}
 	
-	public int eventOrgFree() {
-		int count = 0;
-		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
-			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
-				if (resident.getGraphEventType() == 1) {
-					count ++;
-				}
-			}
-		}
-		return count;
-	}
+	public double eventNoMoney() {
 
-	public int eventOrgCom() {
-		int count = 0;
-		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
-			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
-				if (resident.getGraphEventType() == 2) {
-					count ++;
-				}
-			}
-		}
-		return count;
+		return eventPercentage(0);
 	}
 	
-	public int eventAttFree() {
-		int count = 0;
-		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
-			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
-				if (resident.getGraphEventType() == 3) {
-					count ++;
-				}
-			}
-		}
-		return count;
+	public double eventOrgFree() {
+
+		return eventPercentage(1);
 	}
 
-	public int eventAttCom() {
-		int count = 0;
-		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
-			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
-				if (resident.getGraphEventType() == 4) {
-					count ++;
-				}
-			}
-		}
-		return count;
+	public double eventOrgCom() {
+
+		return eventPercentage(2);
+	}
+	
+	public double eventAttFree() {
+
+		return eventPercentage(3);
+	}
+
+	public double eventAttCom() {
+
+		return eventPercentage(4);
 	}
 }

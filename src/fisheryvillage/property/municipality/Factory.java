@@ -6,6 +6,7 @@ import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
+import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
 import fisheryvillage.property.PropertyColor;
 import fisheryvillage.property.Workplace;
@@ -93,6 +94,9 @@ public class Factory extends Workplace {
 			if (maxEmployees > Constants.FACTORY_MIN_WORKERS) {
 				maxEmployees --;
 			}
+			if (!SimUtils.getEcosystem().getFishAlive()) {
+				fireEmployees();
+			}
 		}
 		addSavings(fishProcessedKg * Constants.PRICE_PER_KG_FISH_PROCESSED);
 	}
@@ -173,12 +177,13 @@ public class Factory extends Workplace {
 		return true;
 	}
 	
-	public void fireEmployees() {
+	private void fireEmployees() {
 		
-		final ArrayList<Human> humans = SimUtils.getObjectsAll(Human.class);
-		for (final Human human: humans) {
-			if (human.getStatus() == Status.FACTORY_WORKER) {
-				human.setStatus(Status.UNEMPLOYED);
+		Logger.logAction("Factory fires all employees, since there is no fish and nothing to process");
+		final ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
+		for (final Resident resident: residents) {
+			if (resident.getWorkplaceId() == getId()) {
+				resident.stopWorkingAtWorkplace();
 			}
 		}
 	}

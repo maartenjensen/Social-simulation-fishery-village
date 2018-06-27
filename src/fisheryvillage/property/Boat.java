@@ -218,6 +218,9 @@ public class Boat extends Workplace {
 			paymentCount += Constants.SALARY_MULTIPLIER_CAPTAIN;
 		}
 		paymentAmount = getSavings() / paymentCount;
+		
+		if (!SimUtils.getEcosystem().getFishAlive())
+			fireFishers();
 	}
 	
 	public void addFisher(int id) {
@@ -258,18 +261,18 @@ public class Boat extends Workplace {
 		}
 		return true;
 	}
+
 	
 	/**
 	 * Fire the fishers that belong to this boat
 	 */
 	public void fireFishers() {
 		
-		for (final Integer fisherId: fishersIds) {
-			Human human = HumanUtils.getHumanById(fisherId);
-			if (human != null) {
-				if (human.getStatus() == Status.FISHER) {
-					human.setStatus(Status.UNEMPLOYED);
-				}
+		Logger.logAction("Boat fires all employees, since there is no fish to catch");
+		final ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
+		for (final Resident resident: residents) {
+			if (resident.getWorkplaceId() == getId()) {
+				resident.stopWorkingAtWorkplace();
 			}
 		}
 	}
@@ -285,24 +288,6 @@ public class Boat extends Workplace {
 		paymentCount -= 1;
 		addSavings(-1 * paymentAmount);
 		return paymentAmount;
-		/*
-		if (paymentCount < 0) {
-			
-			Logger.logError("Error in Boat " + getId() + ", paymentCount lower than zero: " + paymentCount);
-			return 0;
-		}
-		else if (paymentCount == 0) {
-			
-			paymentCount = getFisherCount();
-			if (hasCaptain()) {
-				paymentCount += Constants.SALARY_MULTIPLIER_CAPTAIN;
-			}
-			paymentAmount = getSavings() / paymentCount;
-		}
-		paymentCount -= 1;
-		addSavings(-1 * paymentAmount);
-		Logger.logInfo("Boat " + getId() + " pay fisher " + fisherId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
-		return paymentAmount;*/
 	}
 
 	/**
@@ -317,20 +302,6 @@ public class Boat extends Workplace {
 		paymentCount -= Constants.SALARY_MULTIPLIER_CAPTAIN;
 		addSavings(-1 * paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN);
 		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;
-		/*
-		if (paymentCount < 0) {
-			Logger.logError("Error in Boat " + getId() + ", captain exceeded paymentCount : " + paymentCount);
-			return 0;
-		}
-		else if (paymentCount == 0) {
-			
-			paymentCount = getFisherCount() + Constants.SALARY_MULTIPLIER_CAPTAIN;
-			paymentAmount = getSavings() / paymentCount;
-		}
-		paymentCount -= Constants.SALARY_MULTIPLIER_CAPTAIN;
-		addSavings(-1 * paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN);
-		Logger.logInfo("Boat " + getId() + " pay captain " + captainId + ", count:" + paymentCount + ", fishercount:" + getFisherCount());
-		return paymentAmount * Constants.SALARY_MULTIPLIER_CAPTAIN;*/
 	}
 	
 	public String getFishersIdsString() {
