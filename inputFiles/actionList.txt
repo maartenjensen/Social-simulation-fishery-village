@@ -2,7 +2,7 @@
 Job fisher,Sustain village,Be part of the community
 Job captain,Sustain village,Be part of the community,Authority,Independent
 Job teacher,Sustain village,Be part of the community,Authority,Independent
-Job factory worker,Sustain village,Be part of the community,-Authority,-Independent
+Job factory worker,Sustain village,Be part of the community,-Authority
 Job factory boss,Sustain village,Be part of the community,Authority,Wealth,Independent
 Job mayor,Sustain village,Be part of the community,Authority,Wealth,Independent
 Job elderly caretaker,Sustain village,Be part of the community,Care for the weak

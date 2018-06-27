@@ -10,8 +10,10 @@ import fisheryvillage.common.SimUtils;
 import fisheryvillage.property.Boat;
 import fisheryvillage.property.House;
 import fisheryvillage.property.HouseType;
+import fisheryvillage.property.Property;
 import fisheryvillage.property.municipality.Event;
 import fisheryvillage.property.municipality.EventHall;
+import fisheryvillage.property.municipality.Factory;
 import repast.simphony.random.RandomHelper;
 import valueframework.AbstractValue;
 import valueframework.DecisionMaker;
@@ -108,7 +110,8 @@ public final class Resident extends Human {
 			possibleActions = getPossibleWorkActions(jobActionName);
 		}
 		else {
-			possibleActions.add(jobActionName);
+			//possibleActions.add(jobActionName);
+			possibleActions = getExtraWorkActions(jobActionName);
 		}
 		Logger.logInfo("H" + getId() + " possible actions: " + possibleActions);
 		String actionToDo = null;
@@ -127,6 +130,32 @@ public final class Resident extends Human {
 		}
 	}
 
+	private ArrayList<String> getExtraWorkActions(String jobName) {
+		
+		ArrayList<String> possibleActions = new ArrayList<String>();
+		possibleActions.add(jobName);
+		Property workplace = HumanUtils.getWorkingPlace(getWorkplaceId(), getStatus(), getSchoolType());
+		if (workplace != null) {
+			if (workplace instanceof Boat) {
+				Boat boat = (Boat) workplace;
+				ArrayList<Status> jobs = boat.getVacancy(false, getMoney());
+				if (jobs.contains(Status.CAPTAIN) && jobName != "Job captain") {
+					possibleActions.add("Job captain");
+					Logger.logAction("H" + getId() + ", B" + boat.getId() + " add captain as possible job to fisher since there is no captain");
+				}
+			}
+			else if (workplace instanceof Factory) {
+				Factory factory = (Factory) workplace;
+				ArrayList<Status> jobs = factory.getVacancy(false, getMoney());
+				if (jobs.contains(Status.FACTORY_BOSS) && jobName != "Job factory boss") {
+					possibleActions.add("Job factory boss");
+					Logger.logAction("H" + getId() + ", Factory add Boss as possible job for factory worker since there is no Boss");
+				}
+			}
+		}
+		return possibleActions;
+	}
+	
 	public void stepRelation() {
 
 		if (isSingle() && getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_CARE_AGE && RandomHelper.nextDouble() < Constants.HUMAN_PROB_GET_RELATION && getPartnerId() != -2) {

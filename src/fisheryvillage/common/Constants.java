@@ -28,7 +28,7 @@ public final class Constants {
 	public static final int TICKS_PER_YEAR = 12 * TICKS_PER_MONTH;
 	
 	// Initialize building parameters
-	public static final int BUILDING_INITIAL_MONEY = 10000;
+	public static final int BUILDING_INITIAL_MONEY = 100000;
 	public static final int PROPERTY_SELL_PERCENTAGE = 50;
 	
 	public static final int NUMBER_OF_HOUSES_CHEAP = 16;

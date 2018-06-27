@@ -261,7 +261,6 @@ public class Boat extends Workplace {
 		}
 		return true;
 	}
-
 	
 	/**
 	 * Fire the fishers that belong to this boat
@@ -270,7 +269,7 @@ public class Boat extends Workplace {
 		
 		Logger.logAction("Boat fires all employees, since there is no fish to catch");
 		final ArrayList<Resident> residents = SimUtils.getObjectsAll(Resident.class);
-		for (final Resident resident: residents) {
+		for (final Resident resident : residents) {
 			if (resident.getWorkplaceId() == getId()) {
 				resident.stopWorkingAtWorkplace();
 			}
@@ -289,7 +288,7 @@ public class Boat extends Workplace {
 		addSavings(-1 * paymentAmount);
 		return paymentAmount;
 	}
-
+	
 	/**
 	 * Retrieves the payment of the captain by dividing the total savings
 	 * Should only be called in the work function of Human

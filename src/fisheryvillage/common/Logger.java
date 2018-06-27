@@ -43,7 +43,7 @@ public final class Logger {
 	
 	public static void logError(String error) {
 		if (logErrors) {
-			System.err.println(error);
+			System.err.println("Error: " + error);
 			new Exception().printStackTrace();
 			RunEnvironment.getInstance().endRun();
 		}
