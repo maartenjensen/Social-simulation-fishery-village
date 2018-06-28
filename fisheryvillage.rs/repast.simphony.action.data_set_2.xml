@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Buildings savings</name>
+  <name>Human by age</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -16,47 +16,38 @@
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>$ Council</string>
+      <string>N [0 - 17]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Council</id>
+        <id>N [0 - 17]</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getSavings</methodName>
+        <methodName>getNumberOfChildren</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>$ Factory</string>
+      <string>N [18 - 64]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Factory</id>
-        <className>fisheryvillage.property.municipality.Factory</className>
-        <methodName>getSavings</methodName>
+        <id>N [18 - 64]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfAdults</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>$ School</string>
+      <string>N [65 - 84]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ School</id>
-        <className>fisheryvillage.property.municipality.School</className>
-        <methodName>getSavings</methodName>
+        <id>N [65 - 84]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfElderlyYoung</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>$ Elderly Care</string>
+      <string>N [85 - ...]</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Elderly Care</id>
-        <className>fisheryvillage.property.municipality.ElderlyCare</className>
-        <methodName>getSavings</methodName>
-        <aggType>SUM</aggType>
-      </repast.simphony.data2.engine.MethodDataSourceDefinition>
-    </entry>
-    <entry>
-      <string>$ Social Care</string>
-      <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>$ Social Care</id>
-        <className>fisheryvillage.property.municipality.SocialCare</className>
-        <methodName>getSavings</methodName>
+        <id>N [85 - ...]</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfElderlyOld</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

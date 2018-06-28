@@ -9,7 +9,7 @@ import valueframework.ValuedAction;
 
 public final class Log {
 	
-	private static boolean debug = true;
+	private static boolean debug = false;
 	
 	public static void printActions(ArrayList<Action> actions){
 	

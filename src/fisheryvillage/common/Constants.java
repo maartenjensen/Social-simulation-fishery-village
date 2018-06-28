@@ -22,7 +22,7 @@ public final class Constants {
 	public static final int GRID_CELL_SIZE = 25;
 	public static final int GRID_SEA_START = GRID_WIDTH - 12;
 	public static final int GRID_VILLAGE_START = 18;
-	public static final int INITIAL_POPULATION_SIZE = 60;
+	public static final int INITIAL_POPULATION_SIZE = 50;
 	public static final double NEW_RESIDENT_PROB = 0.05;
 	public static final int TICKS_PER_MONTH = 4; // If you change this make sure you change the interval parameters of the repast charts
 	public static final int TICKS_PER_YEAR = 12 * TICKS_PER_MONTH;
@@ -43,7 +43,7 @@ public final class Constants {
 	
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
 	
-	public static final double WORK_OUTSIDE_PROBABILITY = 0.5;
+	public static final double WORK_OUTSIDE_PROBABILITY = 0.4;
 	
 	public static final int EVENT_PERFORM_MIN_NUMBER_OF_ATTENDEES = 2;
 	
@@ -79,7 +79,7 @@ public final class Constants {
 	public static final int BOAT_LARGE_EMPLOYEES = 8;
 	
 	// Initialize population generate parameters
-	public static final int HUMAN_INIT_STARTING_MONEY = 100000;
+	public static final int HUMAN_INIT_STARTING_MONEY = 50000;
 	public static final int HUMAN_INIT_MIN_AGE = 18;
 	public static final int HUMAN_INIT_MAX_AGE = 65;
 	
@@ -94,7 +94,7 @@ public final class Constants {
 	public static final double HUMAN_PROB_GET_RELATION = 0.5;
 	public static final double HUMAN_PROB_GET_HOUSE = 0.5;
 	public static final double HUMAN_PROB_KEEP_PREV_JOB = 0.9;
-	public static final double HUMAN_PROB_SEARCH_NEW_JOB = 0.033; //Roughly every 2.5 years
+	public static final double HUMAN_PROB_SEARCH_NEW_JOB = 0.1; //Roughly every year
 
 	public static final int HUMAN_CHILDREN_WANTED_MIN = 1;
 	public static final int HUMAN_CHILDREN_WANTED_MAX = 6;
@@ -119,11 +119,11 @@ public final class Constants {
 	// Initialize money parameters
 	public static final double LIVING_COST_ADULT = 300;
 	public static final double LIVING_COST_CHILD = 150;
-	public static final double LIVING_COST_ELDERLY = 100;
+	public static final double LIVING_COST_ELDERLY = 150;
 	public static final double COST_SCHOOL_INSIDE = 25;
 	public static final double COST_SCHOOL_OUTSIDE = 100;
 	public static final double TAX_PERCENTAGE = 50;
-	public static final double PERC_FROM_TAX_TO_COUNCIL = 75;
+	public static final double PERC_FROM_TAX_TO_COUNCIL = 50;
 	
 	public static final double COUNCIL_MAYOR_IMPORTANCE = 0.1;
 	

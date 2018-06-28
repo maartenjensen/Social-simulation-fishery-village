@@ -108,8 +108,9 @@ public final class Resident extends Human {
 
 		double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
 		ArrayList<String> possibleActions = new ArrayList<String>();
-		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() && getNotHappyTick() > 0.25 * (100 - self_dir))) {
-			possibleActions = getPossibleWorkActions(jobActionName);
+		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() &&
+										(getNotHappyTick() > 0.1 * (100 - self_dir) || (jobActionName.equals("Job unemployed")) ) ) ) {
+			possibleActions = getPossibleWorkActions(jobActionName); 
 		}
 		else {
 			//possibleActions.add(jobActionName);
@@ -326,7 +327,7 @@ public final class Resident extends Human {
 			return ;
 		
 		double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
-		if (getNotHappyTick() > (100 - self_dir) && RandomHelper.nextDouble() < Constants.MIGRATE_CHANCE)
+		if (getNotHappyTick() > 0.5 * (100 - self_dir) && RandomHelper.nextDouble() < Constants.MIGRATE_CHANCE)
 		{
 			Logger.logAction("H" + getId() + " moves out because he/she is not happy tick: " + getNotHappyTick() + ", self-dir:" + self_dir);
 			Logger.logInfo("H" + getId() + getDcString());

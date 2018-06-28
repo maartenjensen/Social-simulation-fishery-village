@@ -1,27 +1,63 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human non-aggregate variables</name>
-  <type>NON_AGGREGATE</type>
-  <sourceType>fisheryvillage.population.Resident</sourceType>
+  <name>Buildings savings</name>
+  <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>1.0</interval>
+    <interval>4.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1987264256</hashCode>
+    <hashCode>-1614299654</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Money</string>
+      <string>$ Council</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Money</id>
-        <className>fisheryvillage.population.Resident</className>
-        <methodName>getMoney</methodName>
+        <id>$ Council</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getSavings</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>$ Factory</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>$ Factory</id>
+        <className>fisheryvillage.property.municipality.Factory</className>
+        <methodName>getSavings</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>$ School</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>$ School</id>
+        <className>fisheryvillage.property.municipality.School</className>
+        <methodName>getSavings</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>$ Elderly Care</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>$ Elderly Care</id>
+        <className>fisheryvillage.property.municipality.ElderlyCare</className>
+        <methodName>getSavings</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>$ Social Care</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>$ Social Care</id>
+        <className>fisheryvillage.property.municipality.SocialCare</className>
+        <methodName>getSavings</methodName>
+        <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
   </methodDataSources>

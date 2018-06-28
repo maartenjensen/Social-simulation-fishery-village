@@ -1,23 +1,15 @@
 <repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector Happiness</name>
-  <dataSet>DataCollector Happiness</dataSet>
+  <name>Values</name>
+  <dataSet>Human avg values</dataSet>
   <delimiter>,</delimiter>
   <format>TABULAR</format>
   <sourceIds class="linked-hash-set">
     <string>tick</string>
-    <string>Happy % adult</string>
-    <string>Happy % elderly</string>
-    <string>Happy % adult + elderly</string>
-    <string>Happy % boss</string>
-    <string>Happy % captain</string>
-    <string>Happy % caretaker</string>
-    <string>Happy % fisher</string>
-    <string>Happy % mayor</string>
-    <string>Happy % teacher</string>
-    <string>Happy % unemployed</string>
-    <string>Happy % work out of town</string>
-    <string>Happy % factory worker</string>
+    <string>Avg tradition level</string>
+    <string>Avg power level</string>
+    <string>Avg self-direction level</string>
+    <string>Avg universalism level</string>
   </sourceIds>
-  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\Happiness.txt</fileName>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\Values.txt</fileName>
   <addTimeStamp>false</addTimeStamp>
 </repast.simphony.data2.engine.FileSinkDescriptor>

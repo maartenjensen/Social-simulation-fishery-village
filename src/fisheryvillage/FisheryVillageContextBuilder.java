@@ -175,6 +175,8 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		for (final Resident resident: residents) {
 			resident.stepDrainTanks();
 		}
+		
+		SimUtils.getDataCollector().stepReset(); // This is only for data collection
 	}
 	
 	/**

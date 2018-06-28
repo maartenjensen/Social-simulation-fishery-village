@@ -23,6 +23,8 @@ public class DataCollector {
 	private int migratedIn;
 	private int childrenBorn;
 	private int died;
+	private int migratedOutSelfTick;
+	private int migratedOutWithTick;
 	
 	List<String> migratedPersons;
 	
@@ -38,6 +40,8 @@ public class DataCollector {
 		migratedIn = 0;
 		childrenBorn = 0;
 		died = 0;
+		migratedOutSelfTick = 0;
+		migratedOutWithTick = 0;
 		
 		migratedPersons = new ArrayList<String>();
 	}
@@ -63,6 +67,11 @@ public class DataCollector {
 		}
 	}
 	
+	public void stepReset() {
+		migratedOutSelfTick = 0;
+		migratedOutWithTick = 0;
+	}
+	
 	public void addMigratorOut(boolean ownInitiative, int id) {
 		
 		Resident r = HumanUtils.getResidentById(id);
@@ -78,10 +87,14 @@ public class DataCollector {
 		String string = ownInitiative + "," + id + "," + isMan + "," + age + "," + status + "," + money + "," + p + "," + s + "," + t + "," + u;
 		migratedPersons.add(string);
 		
-		if (ownInitiative)
+		if (ownInitiative) {
 			migratedOutSelf ++;
-		else
+			migratedOutSelfTick ++;
+		}
+		else {
 			migratedOutWith ++;
+			migratedOutWithTick ++;
+		}
 	}
 
 	public void addChildBorn() {
@@ -102,6 +115,14 @@ public class DataCollector {
 	
 	public int getMigratedOutWith() {
 		return migratedOutWith;
+	}
+	
+	public int getMigratedOutSelfTick() {
+		return migratedOutSelfTick;
+	}
+	
+	public int getMigratedOutWithTick() {
+		return migratedOutWithTick;
 	}
 	
 	public int getMigratedIn() {

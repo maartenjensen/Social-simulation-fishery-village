@@ -82,7 +82,12 @@ public class Ecosystem {
 		for (Boat boat : SimUtils.getObjectsAll(Boat.class)) {
 			fishers += boat.getFisherAndCaptainCount();
 		}
-		allowedLessFish = (int) Math.round(amountRepopulated / (2 * fishers));
+		if (fish < Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) {
+			allowedLessFish = (int) Math.round(amountRepopulated / (2 * fishers));
+		}
+		else {
+			allowedLessFish = Constants.FISH_CATCH_AMOUNT_MIN_PP;
+		}
 		fish += amountRepopulated;
 		Logger.logInfo("Ecosystem fish: " + fish + ", increased amount: " + amountRepopulated + ", allowed to catch: " + allowedLessFish);
 		amountFished = 0;

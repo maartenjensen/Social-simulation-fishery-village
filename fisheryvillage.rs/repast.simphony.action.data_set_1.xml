@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>Human by age</name>
+  <name>Human by status</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -16,38 +16,83 @@
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>N [0 - 17]</string>
+      <string>N Fishers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N [0 - 17]</id>
+        <id>N Fishers</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getNumberOfChildren</methodName>
+        <methodName>getNumberOfFishers</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N [18 - 64]</string>
+      <string>N Teachers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N [18 - 64]</id>
-        <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getNumberOfAdults</methodName>
+        <id>N Teachers</id>
+        <className>fisheryvillage.property.municipality.School</className>
+        <methodName>getTeacherCount</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N [65 - 84]</string>
+      <string>N Unemployed</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N [65 - 84]</id>
+        <id>N Unemployed</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getNumberOfElderlyYoung</methodName>
+        <methodName>getNumberOfUnemployed</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>N [85 - ...]</string>
+      <string>N Workers outside</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>N [85 - ...]</id>
+        <id>N Workers outside</id>
         <className>fisheryvillage.property.municipality.Council</className>
-        <methodName>getNumberOfElderlyOld</methodName>
+        <methodName>getNumberOfWorkersOutside</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N F. workers</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N F. workers</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfFactoryWorkers</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N Caretakers</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N Caretakers</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfElderlyCaretakers</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N Mayor</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N Mayor</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfMayor</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N F. boss</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N F. boss</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfBoss</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>N. Captain</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>N. Captain</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfCaptains</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
