@@ -106,10 +106,9 @@ public final class Resident extends Human {
 			return ;
 		}
 
-		double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
+		//double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
 		ArrayList<String> possibleActions = new ArrayList<String>();
-		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() &&
-										(getNotHappyTick() > 0.1 * (100 - self_dir) || (jobActionName.equals("Job unemployed")) ) ) ) {
+		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() && (!getIsHappy() || jobActionName.equals("Job unemployed")) ) )  { //getNotHappyTick() > 0.1 * (100 - self_dir) 
 			possibleActions = getPossibleWorkActions(jobActionName); 
 		}
 		else {
