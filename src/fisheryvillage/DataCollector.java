@@ -43,7 +43,7 @@ public class DataCollector {
 	}
 	
 	public void saveMigrationData() {
-		writeToFile("./output/migrationOutputData.txt", migratedPersons);
+		writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\MigrationData.txt", migratedPersons);
 	}
 	
 	public void writeToFile(String filePathAndName, List<String> data) {
@@ -69,13 +69,13 @@ public class DataCollector {
 		if (r == null)
 			return ;
 		
-		addMigrator(ownInitiative, r.getId(), r.isMan(), r.getAge(), r.getStatus().name(), r.getThreshold(AbstractValue.POWER),
+		addMigrator(ownInitiative, r.getId(), r.isMan(), r.getAge(), r.getStatus().name(), r.getMoney(), r.getThreshold(AbstractValue.POWER),
 				r.getThreshold(AbstractValue.SELFDIRECTION), r.getThreshold(AbstractValue.TRADITION), r.getThreshold(AbstractValue.UNIVERSALISM));
 	}
 
-	public void addMigrator(boolean ownInitiative, int id, boolean isMan, int age, String status, double p, double s, double t, double u) {
+	public void addMigrator(boolean ownInitiative, int id, boolean isMan, int age, String status, double money, double p, double s, double t, double u) {
 		
-		String string = ownInitiative + "," + id + "," + isMan + "," + age + "," + status + "," + p + "," + s + "," + t + "," + u;
+		String string = ownInitiative + "," + id + "," + isMan + "," + age + "," + status + "," + money + "," + p + "," + s + "," + t + "," + u;
 		migratedPersons.add(string);
 		
 		if (ownInitiative)
@@ -405,65 +405,65 @@ public class DataCollector {
 	}
 	
 	public double donationPercentageDonate() {
-		int total = 0;
+		//int total = 0;
 		int count = 0;
 		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
 			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
 				if (resident.getGraphDonateType() != -1) {
-					total ++;
+					//total ++;
 					if (resident.getGraphDonateType() == 2) {
 						count ++;
 					}
 				}
 			}
 		}
-		return ((double) count) / total;
+		return count; //((double) count) / total;
 	}
 	
 	public double donationPercentageNoDonate() {
-		int total = 0;
+		//int total = 0;
 		int count = 0;
 		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
 			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
 				if (resident.getGraphDonateType() != -1) {
-					total ++;
+					//total ++;
 					if (resident.getGraphDonateType() == 1) {
 						count ++;
 					}
 				}
 			}
 		}
-		return ((double) count) / total;
+		return count; //((double) count) / total;
 	}
 
 	public double donationPercentageNoMoney() {
-		int total = 0;
+		//int total = 0;
 		int count = 0;
 		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
 			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
 				if (resident.getGraphDonateType() != -1) {
-					total ++;
+					//total ++;
 					if (resident.getGraphDonateType() == 0) {
 						count ++;
 					}
 				}
 			}
 		}
-		return ((double) count) / total;
+		return count; //((double) count) / total;
 	}
 	
 	public double eventPercentage(int type) {
-		int total = 0;
+		//int total = 0;
 		int count = 0;
 		for (Resident resident : SimUtils.getObjectsAll(Resident.class)) {
 			if (resident.getAge() >= Constants.HUMAN_ADULT_AGE && resident.getAge() < Constants.HUMAN_ELDERLY_AGE) {
-				total ++;
+				//total ++;
 				if (resident.getGraphEventType() == type) {
 					count ++;
 				}
 			}
 		}
-		return ((double) count) / total;
+		return count; //((double) count) / total;
 	}
 	
 	public double eventNoMoney() {

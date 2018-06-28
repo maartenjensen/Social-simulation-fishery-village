@@ -4,7 +4,6 @@ import fisheryvillage.common.Constants;
 import fisheryvillage.common.Logger;
 import fisheryvillage.common.SimUtils;
 import fisheryvillage.property.Boat;
-import fisheryvillage.property.BoatType;
 import repast.simphony.space.grid.GridPoint;
 
 /**
@@ -98,7 +97,7 @@ public class Ecosystem {
 		else if (fish > Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) {
 			repopulationMultiplier = Math.max(0, (Constants.ECOSYSTEM_STABLE_FISH - fish) / (Constants.ECOSYSTEM_STABLE_FISH - Constants.ECOSYSTEM_MAX_REPOPULATE_UPPER) );
 		}
-		return Constants.FISH_CATCH_AMOUNT_MEDIUM_PP * Constants.NUMBER_OF_BOATS * BoatType.LARGE.getEmployeeCapacity() * repopulationMultiplier;
+		return Constants.ECOSYSTEM_REPOPULATE_AMOUNT * repopulationMultiplier;
 	}
 
 	public int getAllowedToCatchLess() {

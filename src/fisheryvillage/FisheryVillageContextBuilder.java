@@ -47,6 +47,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		RepastParam.setRepastParameters();
 		Logger.enableLogger();
 		Logger.setLoggerAll(true, true, true, false, false, false);
+		Logger.disableLogger();
 		
 		// Add context to this ID
 		Logger.logMain("Set context ID and add context to context");
@@ -119,7 +120,10 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 			step5Month();
 		}
 		step6Tick();
-		if (tick == pauseRunTick && pauseRunTick >= 1) {
+		
+		int stopYear = RepastParam.getPopGenTickLimit();
+		boolean saveToFile = RepastParam.getPopGenToFile();
+		if ((tick == pauseRunTick && pauseRunTick >= 1) || (saveToFile && (tick == Constants.TICKS_PER_YEAR * stopYear))) {
 			SimUtils.getDataCollector().saveMigrationData();
 			Logger.logMain("Save migration data");
 			Logger.logMain("------------------------------------------------------------------------------");

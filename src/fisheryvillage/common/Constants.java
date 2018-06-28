@@ -22,7 +22,7 @@ public final class Constants {
 	public static final int GRID_CELL_SIZE = 25;
 	public static final int GRID_SEA_START = GRID_WIDTH - 12;
 	public static final int GRID_VILLAGE_START = 18;
-	public static final int INITIAL_POPULATION_SIZE = 40;
+	public static final int INITIAL_POPULATION_SIZE = 60;
 	public static final double NEW_RESIDENT_PROB = 0.05;
 	public static final int TICKS_PER_MONTH = 4; // If you change this make sure you change the interval parameters of the repast charts
 	public static final int TICKS_PER_YEAR = 12 * TICKS_PER_MONTH;
@@ -34,12 +34,12 @@ public final class Constants {
 	public static final int NUMBER_OF_HOUSES_CHEAP = 16;
 	public static final int NUMBER_OF_HOUSES_STANDARD = 10;
 	public static final int NUMBER_OF_HOUSES_EXPENSIVE = 5;
-	public static final int HOUSE_CHEAP_PRICE = 20000;
-	public static final int HOUSE_CHEAP_MAINTENANCE = 500;
-	public static final int HOUSE_STANDARD_PRICE = 40000;
-	public static final int HOUSE_STANDARD_MAINTENANCE = 1000;
-	public static final int HOUSE_EXPENSIVE_PRICE = 60000;
-	public static final int HOUSE_EXPENSIVE_MAINTENANCE = 1500;
+	public static final int HOUSE_CHEAP_PRICE = 25000;
+	public static final int HOUSE_CHEAP_MAINTENANCE = 300;
+	public static final int HOUSE_STANDARD_PRICE = 50000;
+	public static final int HOUSE_STANDARD_MAINTENANCE = 600;
+	public static final int HOUSE_EXPENSIVE_PRICE = 75000;
+	public static final int HOUSE_EXPENSIVE_MAINTENANCE = 900;
 	
 	public static final int BUILDING_MONEY_DANGER_LEVEL = 30000;
 	
@@ -68,18 +68,18 @@ public final class Constants {
 	public static final int FISH_CATCH_AMOUNT_MAX_PP = 175;
 	public static final double FISH_CAUGHT_NO_CAPTAIN_DECREASE = 25;
 	
-	public static final int BOAT_SMALL_PRICE = 5000;
+	public static final int BOAT_SMALL_PRICE = 10000;
 	public static final int BOAT_SMALL_MAINTENANCE = 100;
 	public static final int BOAT_SMALL_EMPLOYEES = 4;
-	public static final int BOAT_MEDIUM_PRICE = 10000;
+	public static final int BOAT_MEDIUM_PRICE = 20000;
 	public static final int BOAT_MEDIUM_MAINTENANCE = 200;
 	public static final int BOAT_MEDIUM_EMPLOYEES = 6;
-	public static final int BOAT_LARGE_PRICE = 15000;
+	public static final int BOAT_LARGE_PRICE = 30000;
 	public static final int BOAT_LARGE_MAINTENANCE = 300;
 	public static final int BOAT_LARGE_EMPLOYEES = 8;
 	
 	// Initialize population generate parameters
-	public static final int HUMAN_INIT_STARTING_MONEY = 50000;
+	public static final int HUMAN_INIT_STARTING_MONEY = 100000;
 	public static final int HUMAN_INIT_MIN_AGE = 18;
 	public static final int HUMAN_INIT_MAX_AGE = 65;
 	
@@ -114,14 +114,16 @@ public final class Constants {
 	public static final int ECOSYSTEM_MAX_REPOPULATE_UPPER = 150000;
 	public static final int ECOSYSTEM_MAX_REPOPULATE_LOWER = 50000;
 	public static final int ECOSYSTEM_IN_DANGER = 75000;
+	public static final int ECOSYSTEM_REPOPULATE_AMOUNT = 2000; //Based on Constants.FISH_CATCH_AMOUNT_MEDIUM_PP (125) * Constants.NUMBER_OF_BOATS (2) * BoatType.LARGE.getEmployeeCapacity() (8);
 	
 	// Initialize money parameters
 	public static final double LIVING_COST_ADULT = 300;
 	public static final double LIVING_COST_CHILD = 150;
+	public static final double LIVING_COST_ELDERLY = 100;
 	public static final double COST_SCHOOL_INSIDE = 25;
 	public static final double COST_SCHOOL_OUTSIDE = 100;
 	public static final double TAX_PERCENTAGE = 50;
-	public static final double PERC_FROM_TAX_TO_COUNCIL = 50;
+	public static final double PERC_FROM_TAX_TO_COUNCIL = 75;
 	
 	public static final double COUNCIL_MAYOR_IMPORTANCE = 0.1;
 	
@@ -133,15 +135,18 @@ public final class Constants {
 	public static final double SALARY_OUTSIDE_WORK = 2500;
 	public static final double SALARY_ELDERLY_CARETAKER = 2000;
 	public static final double BENEFIT_UNEMPLOYED = 800;
-	public static final double BENEFIT_ELDERLY = 500;
+	public static final double BENEFIT_ELDERLY = 800;
 	public static final int SALARY_MULTIPLIER_CAPTAIN = 2;
-
+	public static final double ELDERLY_CARE_COST = BENEFIT_ELDERLY - LIVING_COST_ELDERLY;
+	
 	// Initialize donation
 	public static final double DONATE_FACTOR_OF_LEFT_OVER_MONEY = 0.1;
 	public static final double MONEY_DANGER_LEVEL = 5000;
-	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 100000;
+	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 50000;
 	public static final double DONATE_MONEY_WITHOUT_INCOME = 50;
 
+	public static final double MIGRATE_CHANCE = 0.1;
+	
 	// Initialize icon paths
 	public static final String ICON_CHILD = "./icons/child";
 	public static final String ICON_TEACHER = "./icons/teacher";

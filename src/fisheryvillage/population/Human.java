@@ -51,7 +51,8 @@ public class Human {
 	private double salaryUntaxed = 0;
 	private int partnerId = -1;
 	private int workplaceId = -1;
-
+	private int notHappyTick = 0;
+	
 	protected Human(int id, boolean gender, boolean foreigner, int age, double money) {
 
 		this.id = id;
@@ -68,7 +69,7 @@ public class Human {
 	}
 
 	protected Human(int id, boolean gender, boolean foreigner, boolean hasBeenFisher, int age, double money,
-				 double nettoIncome, double necessaryCost, Status status, int workplaceId) {
+				 double nettoIncome, double necessaryCost, Status status, int workplaceId, int notHappyTick) {
 		
 		this.id = id;
 		this.gender = gender;
@@ -81,6 +82,7 @@ public class Human {
 		this.workplaceId = workplaceId;
 		this.necessaryCost = necessaryCost;
 		this.nettoIncome = nettoIncome;
+		this.notHappyTick = notHappyTick;
 		
 		addToContext();
 	}
@@ -170,11 +172,21 @@ public class Human {
 		if (partner != null)
 			partnerMultiplier = 0.5;
 		
-		money -= Constants.LIVING_COST_ADULT;
-		necessaryCost += Constants.LIVING_COST_ADULT;
-
+		if (status != Status.ELDEST && status != Status.ELDER) {
+			money -= Constants.LIVING_COST_ADULT;
+			necessaryCost += Constants.LIVING_COST_ADULT;
+		}
+		else {
+			money -= Constants.LIVING_COST_ELDERLY;
+			necessaryCost += Constants.LIVING_COST_ELDERLY;
+		}
 		payChildren(partnerMultiplier);
 		payPropertyMaintenance(partnerMultiplier);
+		if (status == Status.ELDEST) {
+			SimUtils.getElderlyCare().payElderlyCareCost(Constants.ELDERLY_CARE_COST);
+			money -= Constants.ELDERLY_CARE_COST;
+			necessaryCost += Constants.ELDERLY_CARE_COST;
+		}
 	}
 	
 	/**
@@ -793,6 +805,26 @@ public class Human {
 	
 	public void setHasBeenFisher() {
 		this.hasBeenFisher = true;
+	}
+	
+	protected void setNotHappyTick(boolean isHappy) {
+		
+		if (isHappy)
+			resetNotHappyTick();
+		else 
+			addNotHappyTick();
+	}
+	
+	private void resetNotHappyTick() {
+		notHappyTick = 0;
+	}
+	
+	private void addNotHappyTick() {
+		notHappyTick ++;
+	}
+	
+	public int getNotHappyTick() {
+		return notHappyTick;
 	}
 	
 	public ArrayList<Integer> getParentsIds() {

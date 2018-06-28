@@ -124,6 +124,10 @@ public class ElderlyCare extends Workplace {
 		return paymentAmount;
 	}
 	
+	public void payElderlyCareCost(double elderlyCareCost) {
+		addSavings(elderlyCareCost);
+	}
+	
 	@Override
 	public VSpatial getSpatial() {
 		

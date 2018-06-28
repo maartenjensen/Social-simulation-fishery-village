@@ -50,7 +50,7 @@ public class Factory extends Workplace {
 	}
 
 	public int calculatedFishToBuy(int fishProposed) {
-		if (getOwner() != null) { //&& getSavings() > 0
+		if (getOwner() != null && getSavings() > 0) {
 			//int fishBought = (int) (Math.min(getSavings(), fishProposed * Constants.PRICE_PER_KG_FISH_UNPROCESSED) / Constants.PRICE_PER_KG_FISH_UNPROCESSED);
 			int fishBought = fishProposed;
 			return fishBought;

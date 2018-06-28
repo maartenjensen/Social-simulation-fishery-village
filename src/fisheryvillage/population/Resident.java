@@ -37,7 +37,7 @@ public final class Resident extends Human {
 	private boolean canOrganize = false;
 	private int graphDonateType = -1; //-1: undefined, 0: donation not possible, 1: not donate, 2: donate to council
 	private int graphEventType = -1; //-1: undefined, 0: no action possible, 1:OF, 2:OC, 3:AF, 4:AC
-
+	
 	public Resident(int id, boolean gender, boolean foreigner, int age, double money) {
 		super(id, gender, foreigner, age, money);
 
@@ -46,9 +46,9 @@ public final class Resident extends Human {
 	}
 
 	public Resident(int id, boolean gender, boolean foreigner, boolean hasBeenFisher, int age, double money, int childrenWanted,
-					double nettoIncome, double necessaryCost, String jobTitle, Status status, int workplaceId) {
+					double nettoIncome, double necessaryCost, String jobTitle, Status status, int workplaceId, int notHappyTick) {
 		
-		super(id, gender, foreigner, hasBeenFisher, age, money, nettoIncome, necessaryCost, status, workplaceId);
+		super(id, gender, foreigner, hasBeenFisher, age, money, nettoIncome, necessaryCost, status, workplaceId, notHappyTick);
 
 		this.childrenWanted = childrenWanted;
 		this.jobActionName = jobTitle;
@@ -77,6 +77,7 @@ public final class Resident extends Human {
 	public void stepResetStandardCosts() {
 		resetCostIndicators();
 		equalizeMoneyWithPartner();
+		setNotHappyTick(getIsHappy());
 	}
 
 	public void stepPayStandardCosts() {
@@ -105,8 +106,9 @@ public final class Resident extends Human {
 			return ;
 		}
 
+		double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
 		ArrayList<String> possibleActions = new ArrayList<String>();
-		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() && !getIsHappy())) {
+		if (jobActionName.equals("none") || (Constants.HUMAN_PROB_SEARCH_NEW_JOB <= RandomHelper.nextDouble() && getNotHappyTick() > 0.25 * (100 - self_dir))) {
 			possibleActions = getPossibleWorkActions(jobActionName);
 		}
 		else {
@@ -323,9 +325,10 @@ public final class Resident extends Human {
 		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE)
 			return ;
 		
-		if (!getIsHappy() && RandomHelper.nextDouble() < 0.0001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)))
+		double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
+		if (getNotHappyTick() > (100 - self_dir) && RandomHelper.nextDouble() < Constants.MIGRATE_CHANCE)
 		{
-			Logger.logAction("H" + getId() + " moves out because he/she is not happy : " + 0.0001 * (2 + decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION)));
+			Logger.logAction("H" + getId() + " moves out because he/she is not happy tick: " + getNotHappyTick() + ", self-dir:" + self_dir);
 			Logger.logInfo("H" + getId() + getDcString());
 			actionMigrateOutOfTown();
 		}
@@ -420,30 +423,6 @@ public final class Resident extends Human {
 	 * Other methods 
 	 *=========================================
 	 */
-	/*
-	private void initDecisionMakerWaterTanks() {
-		
-		String tradition = Integer.toString(RepastParam.getTradition());
-		String power = Integer.toString(RepastParam.getPower());
-		String universalism = Integer.toString(RepastParam.getUniversalism());
-		String selfdirection = Integer.toString(RepastParam.getSelfDirection());
-		
-		List<String> data = new ArrayList<String>();
-		data.add(0, Integer.toString(getId()));
-		data.add(1, "TRADITION");
-		data.add(2, tradition);
-		data.add(3, tradition);
-		data.add(4, "POWER");
-		data.add(5, power);
-		data.add(6, power);
-		data.add(7, "UNIVERSALISM");
-		data.add(8, universalism);
-		data.add(9, universalism);
-		data.add(10, "SELFDIRECTION");
-		data.add(11, selfdirection);
-		data.add(12, selfdirection);
-		decisionMaker.setImportantWaterTankFromData(data);
-	}*/
 	
 	private void updateValueThreshold() {
 		
@@ -663,6 +642,6 @@ public final class Resident extends Human {
 	public String getHumanVarsAsString() { 
 
 		return getId() + "," + (!isMan()) + "," + getForeigner() + "," + getHasBeenFisher() + "," + getAge() + "," + getMoney() + "," + childrenWanted +
-			   "," + getNettoIncome() + "," + getNecessaryCost() + "," + jobActionName + "," + getStatus().name() + "," + getWorkplaceId(); 
+			   "," + getNettoIncome() + "," + getNecessaryCost() + "," + jobActionName + "," + getStatus().name() + "," + getWorkplaceId() + "," + getNotHappyTick(); 
 	}
 }

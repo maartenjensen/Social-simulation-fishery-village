@@ -95,8 +95,9 @@ public class PopulationBuilder {
 			String jobTitle = hVars.get(9);
 			Status status = Status.valueOf(hVars.get(10));
 			int workplaceId = Integer.parseInt(hVars.get(11));
+			int notHappyTick = Integer.parseInt(hVars.get(12));
 			Resident resident = new Resident(id, gender, foreigner, hasBeenFisher, age, money, childrenWanted,
-									nettoIncome, necessaryCost, jobTitle, status, workplaceId);
+									nettoIncome, necessaryCost, jobTitle, status, workplaceId, notHappyTick);
 			Logger.logInfo("Initialized H" + resident.getId() + ", age: " + resident.getAge());
 			if (maxHumanId < id)
 				maxHumanId = id;

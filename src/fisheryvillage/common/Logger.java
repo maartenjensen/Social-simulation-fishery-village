@@ -28,6 +28,15 @@ public final class Logger {
 		logProb = true;
 	}
 	
+	public static void disableLogger() {
+		logErrors = true;
+		logMain = false;
+		logAction = false;
+		logInfo = false;
+		logDebug = false;
+		logProb = false;
+	}
+	
 	public static void setLoggerAll(boolean logErrors, boolean logMain, boolean logAction, boolean logInfo, boolean logDebug, boolean logProb) {
 		Logger.logErrors = logErrors;
 		Logger.logMain = logMain;
