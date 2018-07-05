@@ -58,6 +58,10 @@ public final class Logger {
 		}
 	}
 	
+	public static void logExtreme(String output) {
+		System.out.println(output);
+	}
+	
 	public static void logMain(String output) {
 		if (logMain) {
 			System.out.println(output);

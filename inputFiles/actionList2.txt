@@ -1,0 +1,22 @@
+%action title,related concrete values
+Job fisher,Sustain village,Be part of the community
+Job captain,Sustain village,Be part of the community,Authority,Independent
+Job teacher,Sustain village,Be part of the community,Authority,Independent
+Job factory worker,Sustain village,Independent,Be part of the community,-Authority
+Job factory boss,Sustain village,Be part of the community,Authority,Wealth,Independent
+Job mayor,Sustain village,Be part of the community,Authority,Wealth,Independent
+Job elderly caretaker,Sustain village,Be part of the community,Care for the weak,Independent
+Job work outside village,Freedom,Independent,-Be part of the community
+Job unemployed,Be part of the community,-Wealth
+Organize free event,Equality,Be part of the community,Freedom
+Organize commercial event,Authority,Wealth,Be part of the community,Freedom,-Equality
+Attend free event,Be part of the community,Freedom
+Attend commercial event,Be part of the community,Freedom,-Wealth
+Donate nothing,Independent,Wealth,-Sustain village
+Donate to council,Sustain village,Equality,-Wealth
+Fish a lot,Wealth
+Fish a lot danger,Wealth,-Good for environment,-Sustain village
+Fish medium,Moderate,Unity with nature
+Fish medium danger,-Good for environment
+Fish less,Good for environment,Unity with nature,-Wealth
+Fish less danger,Sustain village,Unity with nature,-Wealth

@@ -4,7 +4,7 @@ import repast.simphony.engine.environment.RunEnvironment;
 import valueframework.AbstractValue;
 
 public final class RepastParam {
-		
+
 	private static boolean popGenToFile = false;
 	private static String popGenFileName = "none";
 	private static int popGenTickLimit = 1;
@@ -18,7 +18,7 @@ public final class RepastParam {
 	private static int valueTradition = 50;
 	private static int valueUniversalism = 50;
 	private static int valueSelfDirection = 50;
-	
+
 	public static void setRepastParameters() {
 		
 		popGenToFile = RunEnvironment.getInstance().getParameters().getBoolean("popGenToFile");
@@ -34,6 +34,24 @@ public final class RepastParam {
 		valueSelfDirection = RunEnvironment.getInstance().getParameters().getInteger("valueSelfDirection");
 		valueUniversalism = RunEnvironment.getInstance().getParameters().getInteger("valueUniversalism");
 		valueTradition = RunEnvironment.getInstance().getParameters().getInteger("valueTradition");
+	}
+	
+	public static void setRepastParameters(boolean pGenToFile, String pGenFileName, int pGenTickLimit,
+										   boolean pInitFromFile, String pInitFileName, int pPauseAtTick,
+										   int pPower, int pSelf, int pUni, int pTrad) {
+		popGenToFile = pGenToFile;
+		popGenFileName = pGenFileName;
+		popGenTickLimit = pGenTickLimit;
+		
+		popInitFromFile = pInitFromFile;
+		popInitFileName = pInitFileName;
+		
+		pauseSimulationAt = pPauseAtTick;
+		
+		valuePower = pPower;
+		valueSelfDirection = pSelf;
+		valueUniversalism = pUni;
+		valueTradition = pTrad;
 	}
 	
 	public static boolean getPopGenToFile() {

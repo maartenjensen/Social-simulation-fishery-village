@@ -318,7 +318,7 @@ public final strictfp class HumanUtils {
 			p += resident.getThreshold(AbstractValue.POWER);
 			count ++;
 		}
-		Logger.logMain("Average values for population: u:" + (u / count)
+		Logger.logExtreme("Average values for population: u:" + (u / count)
 													+ ", t:" + (t / count)
 													+ ", s:" + (s / count)
 													+ ", p:" + (p / count));

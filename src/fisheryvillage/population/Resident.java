@@ -473,8 +473,15 @@ public final class Resident extends Human {
 	}
 
 	private int calculateChildrenWanted() {
-		double y = 7 - (1.0/15.0) * (double) SimUtils.getCouncil().getNumberOfPeople();
-		return Math.max(Constants.HUMAN_CHILDREN_WANTED_MIN, Math.min(Constants.HUMAN_CHILDREN_WANTED_MAX, (int) Math.round(y)));
+
+		//double y = 7 - (1.0/15.0) * (double) SimUtils.getCouncil().getNumberOfPeople();
+		//return Math.max(Constants.HUMAN_CHILDREN_WANTED_MIN, Math.min(Constants.HUMAN_CHILDREN_WANTED_MAX, (int) Math.round(y)));
+		if (RandomHelper.nextDouble() < Constants.GET_NO_CHILDREN) {
+			return 0;
+		}
+		else {
+			return RandomHelper.nextIntFromTo(1, Constants.HUMAN_CHILDREN_WANTED_MAX);
+		}
 	}
 	
 	private ValuedAction selectActionFromPossibleActionsJob(ArrayList<String> possibleActions) {

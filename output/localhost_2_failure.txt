@@ -1,0 +1,24 @@
+BatchSchedule.execute: error when running the schedule
+Current tick (1.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.batch.BatchScheduleRunner$ScheduleLoopRunnable.run(BatchScheduleRunner.java:37)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at valueframework.DecisionMaker.getWaterTankFromTree(DecisionMaker.java:359)
+	at valueframework.DecisionMaker.adjustWaterTankThreshold(DecisionMaker.java:74)
+	at fisheryvillage.population.Resident.updateValueThreshold(Resident.java:431)
+	at fisheryvillage.population.Resident.stepAging(Resident.java:70)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:148)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:113)
+	... 10 more

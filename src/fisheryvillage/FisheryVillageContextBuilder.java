@@ -2,6 +2,7 @@ package fisheryvillage;
 
 import java.util.ArrayList;
 
+import fisheryvillage.common.BatchRun;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -25,6 +26,7 @@ import repast.simphony.space.grid.GridPoint;
 import repast.simphony.space.grid.SimpleGridAdder;
 import repast.simphony.valueLayer.GridValueLayer;
 import valueframework.common.FrameworkBuilder;
+import valueframework.common.Log;
 
 /**
 * The FisheryVillageContextBuilder builds the repast simulation
@@ -41,13 +43,23 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	@Override
 	public Context<Object> build(Context<Object> context) {
 
+		// Batch run
+		boolean initFramework = BatchRun.setEnable();
+		
 		// Reset human id
 		HumanUtils.resetHumanId();
 		SimUtils.resetPropertyId();
-		RepastParam.setRepastParameters();
 		Logger.enableLogger();
-		Logger.setLoggerAll(true, true, true, false, false, false);
-		Logger.disableLogger();
+		
+		if (BatchRun.getEnable()) {
+			BatchRun.setRepastParameters();
+			Logger.setLoggerAll(true, false, false, false, false, false);
+			Log.disableLogger();
+		}
+		else {
+			RepastParam.setRepastParameters();
+			Logger.setLoggerAll(true, true, false, false, false, false);
+		}
 		
 		// Add context to this ID
 		Logger.logMain("Set context ID and add context to context");
@@ -72,8 +84,13 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		SimUtils.getValueLayer();
 		
 		// Create value framework
-		FrameworkBuilder.initialize();
-		
+		if (initFramework) {
+			FrameworkBuilder.initialize();
+		}
+		else { //Else only set the water tanks of the value trees
+			FrameworkBuilder.setValueTreesWaterTanks();
+		}
+
 		// Create village
 		VillageBuilder villageBuilder = new VillageBuilder();
 		villageBuilder.buildVillage();
@@ -124,12 +141,21 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		int stopYear = RepastParam.getPopGenTickLimit();
 		boolean saveToFile = RepastParam.getPopGenToFile();
 		if ((tick == pauseRunTick && pauseRunTick >= 1) || (saveToFile && (tick == Constants.TICKS_PER_YEAR * stopYear))) {
-			SimUtils.getDataCollector().saveMigrationData();
-			Logger.logMain("Save migration data");
-			Logger.logMain("------------------------------------------------------------------------------");
-			RunEnvironment.getInstance().pauseRun();
-			Logger.logMain("Pause simulation at : " + pauseRunTick);
-			Logger.logMain("------------------------------------------------------------------------------");
+			
+			if (BatchRun.getEnable()) {
+				BatchRun.saveRunData();
+				RunEnvironment.getInstance().endRun();
+				Logger.logExtreme("End simulation at : " + pauseRunTick + ", batch run: " + BatchRun.getRunNumber());
+				Logger.logExtreme("------------------------------------------------------------------------------");
+			}
+			else {
+				SimUtils.getDataCollector().saveMigrationData();
+				Logger.logMain("Save migration data");
+				Logger.logMain("------------------------------------------------------------------------------");
+				RunEnvironment.getInstance().pauseRun();
+				Logger.logMain("Pause simulation at : " + pauseRunTick);
+				Logger.logMain("------------------------------------------------------------------------------");
+			}
 		}
 	}
 
@@ -310,16 +336,18 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	//@ScheduledMethod(start = 1, interval = 1, priority = -5)
 	public void step6Tick() {
 	
-		Logger.logMain("6TICK: human location");
-		
-		final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
-		Logger.logMain("- Run Human.stepLocation");
-		for (final Resident resident: residents) {
-			resident.stepLocation();
-		}
+		if (!BatchRun.getEnable()) {
+			
+			Logger.logMain("6TICK: human location");
+			final ArrayList<Resident> residents = SimUtils.getObjectsAllRandom(Resident.class);
+			Logger.logMain("- Run Human.stepLocation");
+			for (final Resident resident: residents) {
+				resident.stepLocation();
+			}
 
-		Logger.logMain("------------------------------------------------------------------------------");
-		Logger.logMain("End of this step");
+			Logger.logMain("------------------------------------------------------------------------------");
+			Logger.logMain("End of this step");
+		}
 		
 		// checks whether to save the population to a file
 		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
