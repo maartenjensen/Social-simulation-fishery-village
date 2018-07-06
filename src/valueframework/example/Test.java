@@ -10,7 +10,7 @@ public class Test {
 	public static void main(String [] args) {
 
 		//first create value files
-		FrameworkBuilder.initialize();
+		FrameworkBuilder.initialize("inputFiles\\actionList.txt");
 		Log.printStars();
 		ArrayList<Agent> agents = new ArrayList<Agent>();
 		Log.printLog("Create agents");

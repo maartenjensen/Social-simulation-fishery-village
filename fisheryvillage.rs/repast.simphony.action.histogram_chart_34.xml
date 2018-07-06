@@ -1,0 +1,34 @@
+<repast.simphony.chart2.engine.HistogramChartDescriptor simphonyVersion="2.5.0">
+  <name>Not happy tick</name>
+  <dataSet>Human non-aggregate variables</dataSet>
+  <xAxisLabel>Tick</xAxisLabel>
+  <yAxisLabel>Count</yAxisLabel>
+  <chartTitle>Not happy tick</chartTitle>
+  <type>HISTOGRAM</type>
+  <background>
+    <red>255</red>
+    <green>255</green>
+    <blue>255</blue>
+    <alpha>255</alpha>
+  </background>
+  <gridLineColor>
+    <red>204</red>
+    <green>204</green>
+    <blue>204</blue>
+    <alpha>255</alpha>
+  </gridLineColor>
+  <showGrid>true</showGrid>
+  <showLegend>true</showLegend>
+  <histType>DYNAMIC</histType>
+  <binCount>10</binCount>
+  <sourceId>NotHappyTick</sourceId>
+  <outOfRange>IGNORE</outOfRange>
+  <min>0.0</min>
+  <max>0.0</max>
+  <barColor>
+    <red>255</red>
+    <green>0</green>
+    <blue>0</blue>
+    <alpha>255</alpha>
+  </barColor>
+</repast.simphony.chart2.engine.HistogramChartDescriptor>

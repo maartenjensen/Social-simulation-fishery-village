@@ -1,0 +1,20 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
+  <name>Human work</name>
+  <dataSet>Human by status</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>N Fishers</string>
+    <string>N Teachers</string>
+    <string>N Unemployed</string>
+    <string>N Workers outside</string>
+    <string>N F. workers</string>
+    <string>N Caretakers</string>
+    <string>N Mayor</string>
+    <string>N F. boss</string>
+    <string>N. Captain</string>
+  </sourceIds>
+  <fileName>D:\UniversiteitUtrecht\7MasterThesis\Repast-filesink\fisheryvillage\Work.txt</fileName>
+  <addTimeStamp>false</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>

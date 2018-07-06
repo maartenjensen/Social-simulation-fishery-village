@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Humans by work</name>
-  <dataSet>Human by status</dataSet>
+  <name>Satisfied values (happiness)</name>
+  <dataSet>Satisfied Values</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Count</yAxisLabel>
-  <chartTitle>Humans by work</chartTitle>
+  <yAxisLabel>Adult Count</yAxisLabel>
+  <chartTitle>Satisfied values (happiness)</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,47 +21,23 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>N F. boss</string>
+      <string>Satisfied values 4</string>
       <SeriesData>
-        <label>N F. boss</label>
+        <label>Satisfied values 4</label>
         <color>
           <red>0</red>
-          <green>0</green>
-          <blue>153</blue>
+          <green>204</green>
+          <blue>51</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>N Teachers</string>
+      <string>Satisfied values 3</string>
       <SeriesData>
-        <label>N Teachers</label>
+        <label>Satisfied values 3</label>
         <color>
           <red>204</red>
-          <green>102</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Caretakers</string>
-      <SeriesData>
-        <label>N Caretakers</label>
-        <color>
-          <red>255</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Fishers</string>
-      <SeriesData>
-        <label>N Fishers</label>
-        <color>
-          <red>255</red>
           <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
@@ -69,61 +45,37 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>N F. workers</string>
+      <string>Satisfied values 2</string>
       <SeriesData>
-        <label>N F. workers</label>
+        <label>Satisfied values 2</label>
         <color>
-          <red>0</red>
+          <red>255</red>
           <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Mayor</string>
-      <SeriesData>
-        <label>N Mayor</label>
-        <color>
-          <red>0</red>
-          <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>N Unemployed</string>
+      <string>Satisfied values 1</string>
       <SeriesData>
-        <label>N Unemployed</label>
+        <label>Satisfied values 1</label>
         <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>204</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N. Captain</string>
-      <SeriesData>
-        <label>N. Captain</label>
-        <color>
-          <red>204</red>
-          <green>204</green>
+          <red>255</red>
+          <green>51</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>N Workers outside</string>
+      <string>Satisfied values 0</string>
       <SeriesData>
-        <label>N Workers outside</label>
+        <label>Satisfied values 0</label>
         <color>
-          <red>0</red>
+          <red>153</red>
           <green>0</green>
-          <blue>0</blue>
+          <blue>51</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>

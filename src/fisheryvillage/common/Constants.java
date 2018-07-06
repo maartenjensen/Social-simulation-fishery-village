@@ -103,14 +103,6 @@ public final class Constants {
 	public static final double HUMAN_PROB_GET_CHILD = 0.5;
 	// Formula parameters given in Resident.calculateChildrenWanted()
 	
-	// Initialize population schwartz change
-	public static final double SCHWARTZ_CHANGE_SELF = 0;//-0.5;
-	public static final double SCHWARTZ_CHANGE_TRAD = 0;//0.5;
-	public static final int SCHWARTZ_CHANGE_MIN_AGE = 30;
-	public static final int SCHWARTZ_CHANGE_MAX_AGE = 60;
-	public static final int SCHWARTZ_MIN = 10;
-	public static final int SCHWARTZ_MAX = 90;
-	
 	// Initialize ecosystem parameters
 	public static final int ECOSYSTEM_STABLE_FISH = 200000;
 	public static final int ECOSYSTEM_MAX_REPOPULATE_UPPER = 150000;
@@ -147,7 +139,7 @@ public final class Constants {
 	public static final double DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME = 50000;
 	public static final double DONATE_MONEY_WITHOUT_INCOME = 50;
 
-	public static final double MIGRATE_CHANCE = 0.1;
+	public static final double MIGRATE_CHANCE = 0.2;
 	
 	// Initialize icon paths
 	public static final String ICON_CHILD = "./icons/child";

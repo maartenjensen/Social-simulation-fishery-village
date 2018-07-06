@@ -1,4 +1,4 @@
-%action title,related concrete values
+%action title,related concrete values ATTEND COMMERCIAL EVENT +Power
 Job fisher,Sustain village,Be part of the community
 Job captain,Sustain village,Be part of the community,Authority,Independent
 Job teacher,Sustain village,Be part of the community,Authority,Independent

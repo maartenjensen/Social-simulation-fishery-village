@@ -44,7 +44,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	public Context<Object> build(Context<Object> context) {
 
 		// Batch run
-		boolean initFramework = BatchRun.setEnable();
+		boolean initFramework = BatchRun.setEnable(true);
 		
 		// Reset human id
 		HumanUtils.resetHumanId();
@@ -85,7 +85,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		// Create value framework
 		if (initFramework) {
-			FrameworkBuilder.initialize();
+			FrameworkBuilder.initialize(BatchRun.getActionlistPath());
 		}
 		else { //Else only set the water tanks of the value trees
 			FrameworkBuilder.setValueTreesWaterTanks();

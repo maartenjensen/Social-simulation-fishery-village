@@ -24,6 +24,14 @@
         <methodName>getMoney</methodName>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
+    <entry>
+      <string>NotHappyTick</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>NotHappyTick</id>
+        <className>fisheryvillage.population.Resident</className>
+        <methodName>getNotHappyTick</methodName>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
   </methodDataSources>
   <countSources class="linked-hash-map"/>
   <customNADataSources class="linked-hash-map"/>

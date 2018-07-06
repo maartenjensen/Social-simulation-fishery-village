@@ -43,7 +43,7 @@ public final class FrameworkBuilder {
 	 * Initialize the framework builder, always call this function first before
 	 * using the value framework.
 	 */
-	public static void initialize() {
+	public static void initialize(String actionListPath) {
 
 		Log.printLog("Initialize FrameworkBuilder");
 		valueNumber = 0;
@@ -57,7 +57,7 @@ public final class FrameworkBuilder {
 			readValueTreeFile("inputFiles\\valueTree.txt");
 
 			// then read actions from file
-			readActionsFile("inputFiles\\actionList.txt");
+			readActionsFile(actionListPath);
 			assignRelatedActionsToConcreteValues();
 			setValueTreesWaterTanks();
 			printTrees();

@@ -67,7 +67,6 @@ public final class Resident extends Human {
 	 */
 	public void stepAging() {
 		addAge();
-		updateValueThreshold();
 	}
 	
 	public void stepChildrenSchooling() {
@@ -77,7 +76,6 @@ public final class Resident extends Human {
 	public void stepResetStandardCosts() {
 		resetCostIndicators();
 		equalizeMoneyWithPartner();
-		setNotHappyTick(getIsHappy());
 	}
 
 	public void stepPayStandardCosts() {
@@ -86,8 +84,14 @@ public final class Resident extends Human {
 	
 	public void stepDrainTanks() {
 
-		if (getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_CARE_AGE)
+		if (getAge() >= Constants.HUMAN_ADULT_AGE && getAge() < Constants.HUMAN_ELDERLY_CARE_AGE) {
+			
+			setNotHappyTick(getIsHappy());
 			decisionMaker.drainTanks();
+		}
+		else {
+			setNotHappyTick(true);
+		}
 	}
 
 	public void stepWork() {
@@ -326,7 +330,10 @@ public final class Resident extends Human {
 			return ;
 		
 		double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
-		if (getNotHappyTick() > 0.5 * (100 - self_dir) && RandomHelper.nextDouble() < Constants.MIGRATE_CHANCE)
+		double tradition = decisionMaker.getAbstractValueThreshold(AbstractValue.TRADITION);
+		double calculated_tick = 4 + (24 * Math.min(1, Math.max(0, (50 + tradition - self_dir) * 0.01)));
+		Logger.logInfo("H" + getId() + ", self-dir:" + self_dir + ", tradition:" + tradition + ", not_happy_tick:" + getNotHappyTick() + ", calculated tick:" + calculated_tick);
+		if (getNotHappyTick() >= calculated_tick && RandomHelper.nextDouble() <= Constants.MIGRATE_CHANCE)
 		{
 			Logger.logAction("H" + getId() + " moves out because he/she is not happy tick: " + getNotHappyTick() + ", self-dir:" + self_dir);
 			Logger.logInfo("H" + getId() + getDcString());
@@ -423,14 +430,6 @@ public final class Resident extends Human {
 	 * Other methods 
 	 *=========================================
 	 */
-	
-	private void updateValueThreshold() {
-		
-		if (getAge() < Constants.SCHWARTZ_CHANGE_MIN_AGE || getAge() > Constants.SCHWARTZ_MAX)
-			return ;
-		decisionMaker.adjustWaterTankThreshold(AbstractValue.SELFDIRECTION.name(), Constants.SCHWARTZ_CHANGE_SELF, Constants.SCHWARTZ_MIN, Constants.SCHWARTZ_MAX);
-		decisionMaker.adjustWaterTankThreshold(AbstractValue.TRADITION.name(), Constants.SCHWARTZ_CHANGE_TRAD, Constants.SCHWARTZ_MIN, Constants.SCHWARTZ_MAX);
-	}
 
 	public boolean getIsHappy() {
 		if (socialStatus.getSocialStatusValue(decisionMaker, getStatus()) > 0.25 && decisionMaker.getSatisfiedValuesCount() >= 2) {
