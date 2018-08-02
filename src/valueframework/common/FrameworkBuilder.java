@@ -73,7 +73,7 @@ public final class FrameworkBuilder {
 	public static void setValueTreesWaterTanks() {
 		
 		for (String key : globalValueTrees.keySet()) {
-			globalValueTrees.get(key).getWaterTank().setThreshold(RepastParam.getAbstractValue(key));
+			globalValueTrees.get(key).getWaterTank().setThreshold(RepastParam.getAbstractValue(key, 1));
 		}
 	}
 	

@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Human avg values</name>
-  <dataSet>Human avg values</dataSet>
+  <name>Boat 2</name>
+  <dataSet>Boat for graph</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Level</yAxisLabel>
-  <chartTitle>Human average value</chartTitle>
+  <yAxisLabel>Amount</yAxisLabel>
+  <chartTitle>Boat 2</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,49 +21,49 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Avg tradition level</string>
+      <string>Boat 2 has captain normalized</string>
       <SeriesData>
-        <label>Avg tradition level</label>
-        <color>
-          <red>0</red>
-          <green>0</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Avg power level</string>
-      <SeriesData>
-        <label>Avg power level</label>
+        <label>Boat 2 has captain normalized</label>
         <color>
           <red>255</red>
-          <green>0</green>
+          <green>153</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Avg self-direction level</string>
+      <string>Boat 2 fish to catch normalized</string>
       <SeriesData>
-        <label>Avg self-direction level</label>
+        <label>Boat 2 fish to catch normalized</label>
+        <color>
+          <red>51</red>
+          <green>255</green>
+          <blue>51</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Boat 2 employee cap</string>
+      <SeriesData>
+        <label>Boat 2 employee cap</label>
         <color>
           <red>0</red>
+          <green>51</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Boat 2 fishers</string>
+      <SeriesData>
+        <label>Boat 2 fishers</label>
+        <color>
+          <red>255</red>
           <green>255</green>
           <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Avg universalism level</string>
-      <SeriesData>
-        <label>Avg universalism level</label>
-        <color>
-          <red>255</red>
-          <green>0</green>
-          <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>

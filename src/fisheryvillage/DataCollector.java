@@ -13,6 +13,8 @@ import fisheryvillage.common.SimUtils;
 import fisheryvillage.population.Human;
 import fisheryvillage.population.Resident;
 import fisheryvillage.population.Status;
+import fisheryvillage.property.Boat;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.space.grid.GridPoint;
 import valueframework.AbstractValue;
 
@@ -20,6 +22,7 @@ public class DataCollector {
 	
 	private int migratedOutSelf;
 	private int migratedOutWith;
+	private int migratedOutChildren;
 	private int migratedIn;
 	private int childrenBorn;
 	private int died;
@@ -27,6 +30,8 @@ public class DataCollector {
 	private int migratedOutWithTick;
 	
 	List<String> migratedPersons;
+	List<String> boats;
+	List<String> migratedPersonsExt;
 	
 	public DataCollector(GridPoint location) {
 		
@@ -37,6 +42,7 @@ public class DataCollector {
 		
 		migratedOutSelf = 0;
 		migratedOutWith = 0;
+		migratedOutChildren = 0;
 		migratedIn = 0;
 		childrenBorn = 0;
 		died = 0;
@@ -44,10 +50,22 @@ public class DataCollector {
 		migratedOutWithTick = 0;
 		
 		migratedPersons = new ArrayList<String>();
+		migratedPersons.add("Tick,OwnInitiative,id,isMan,age,status,money,p,s,t,u");
+		boats = new ArrayList<String>();
+		boats.add("Tick,ID,Max cap,Fishers,Has captain,Fish amount,P Thr.,P Lvl.,S Thr., S Lvl.,U Thr.,U Lvl.,T Thr.,T Lvl.,MoneyForExtras");
+		migratedPersonsExt = new ArrayList<String>();
+		migratedPersonsExt.add("Tick,id,gender,foreigner,hasBeenFisher,age,money,childrenWanted,nettoIncome,necessaryCost,jobTitle,status,workplaceId,notHappyTick,migrTickRequired,socialStatus" +
+			 	  ",partnerId,salaryTaxed,hasEnoughMoney,childrenUnder18,house,P Thr.,P Lvl.,S Thr., S Lvl.,U Thr.,U Lvl.,T Thr.,T Lvl.,s_job,s_house,s_boat,s_ecol,s_econ,s_don,s_events,s_free_ev");
+	}
+	
+	public void addMigratedPersonsExt(boolean initiative, String datum) {
+		migratedPersonsExt.add(initiative + "," + datum);
 	}
 	
 	public void saveMigrationData() {
 		writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\MigrationData.txt", migratedPersons);
+		writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\BoatData.txt", boats);
+		writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\MigrationDataExt.txt", migratedPersonsExt);
 	}
 	
 	public void writeToFile(String filePathAndName, List<String> data) {
@@ -72,6 +90,11 @@ public class DataCollector {
 		migratedOutWithTick = 0;
 	}
 	
+	public void addFishingData(int id, String datum) {
+		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		boats.add(tick + "," + id + "," + datum);
+	}
+	
 	public void addMigratorOut(boolean ownInitiative, int id) {
 		
 		Resident r = HumanUtils.getResidentById(id);
@@ -84,7 +107,8 @@ public class DataCollector {
 
 	public void addMigrator(boolean ownInitiative, int id, boolean isMan, int age, String status, double money, double p, double s, double t, double u) {
 		
-		String string = ownInitiative + "," + id + "," + isMan + "," + age + "," + status + "," + money + "," + p + "," + s + "," + t + "," + u;
+		int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		String string = tick + "," + ownInitiative + "," + id + "," + isMan + "," + age + "," + status + "," + money + "," + p + "," + s + "," + t + "," + u;
 		migratedPersons.add(string);
 		
 		if (ownInitiative) {
@@ -92,8 +116,13 @@ public class DataCollector {
 			migratedOutSelfTick ++;
 		}
 		else {
-			migratedOutWith ++;
-			migratedOutWithTick ++;
+			if (age < Constants.HUMAN_ADULT_AGE) {
+				migratedOutChildren ++;
+			}
+			else {
+				migratedOutWith ++;
+				migratedOutWithTick ++;
+			}
 		}
 	}
 
@@ -115,6 +144,14 @@ public class DataCollector {
 	
 	public int getMigratedOutWith() {
 		return migratedOutWith;
+	}
+	
+	public int getMigratedOutChildren() {
+		return migratedOutChildren;
+	}
+	
+	public int getMigratedOutTotal() {
+		return migratedOutSelf + migratedOutWith + migratedOutChildren;
 	}
 	
 	public int getMigratedOutSelfTick() {
@@ -139,6 +176,11 @@ public class DataCollector {
 	
 	public int getDied() {
 		return died;
+	}
+	
+	public double getFactoryWealth() {
+		
+		return SimUtils.getFactory().getSavings();
 	}
 	
 	public double getAdultAndElderlyWealthAvg() {
@@ -510,5 +552,47 @@ public class DataCollector {
 	public double eventAttCom() {
 
 		return eventPercentage(4);
+	}
+	
+	public Boat getBoatById(int id) {
+		
+		ArrayList<Boat> boats = SimUtils.getObjectsAll(Boat.class);
+		for (Boat boat : boats) {
+			if (boat.getId() == id)
+				return boat;
+		}
+		return null;
+	}
+	
+	public int getBoat1EmployeeCap() {
+		return getBoatById(31).getBoatType().getEmployeeCapacity();
+	}
+	
+	public int getBoat1FisherCount() {
+		return getBoatById(31).getFisherCount();
+	}
+	
+	public int getBoat1HasCaptain() {
+		return getBoatById(31).getCaptainIndex();
+	}
+	
+	public double getBoat1FishToCatchNorm() {
+		return getBoatById(31).getNormalizedFishToCatchPerPerson();
+	}
+	
+	public int getBoat2EmployeeCap() {
+		return getBoatById(32).getBoatType().getEmployeeCapacity();
+	}
+
+	public int getBoat2FisherCount() {
+		return getBoatById(32).getFisherCount();
+	}
+	
+	public int getBoat2HasCaptain() {
+		return getBoatById(32).getCaptainIndex();
+	}
+	
+	public double getBoat2FishToCatchNorm() {
+		return getBoatById(32).getNormalizedFishToCatchPerPerson();
 	}
 }

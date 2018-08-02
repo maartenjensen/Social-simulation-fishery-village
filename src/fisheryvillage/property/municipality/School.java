@@ -47,8 +47,12 @@ public class School extends Workplace {
 	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		
+		if (!allJobs.contains(Status.TEACHER))
+			return possibleJobs;
+		
 		int teachers = getTeacherCount();
-		if (teachers < Math.ceil(getChildrenCount()/ (float) maxChildrenPerTeacher)) {
+		if (teachers < Math.ceil(getChildrenCount() / (float) maxChildrenPerTeacher)) {
 			possibleJobs.add(Status.TEACHER);
 		}
 		return possibleJobs;
@@ -121,6 +125,19 @@ public class School extends Workplace {
 				return ;
 		}
 		Logger.logError("Error no teachers left to remove, need to still remove:" + teachersToRemove);
+	}
+	
+	public void disableSchool() {
+		
+		// Remove teacher job
+		allJobs.remove(0);
+		// Remove all humans that are teacher
+		final ArrayList<Human> humans = SimUtils.getObjectsAllRandom(Human.class);
+		for (final Human human: humans) {
+			if (human.getStatus() == Status.TEACHER) {
+				human.stopWorkingAtWorkplace();
+			}
+		}
 	}
 	
 	/**

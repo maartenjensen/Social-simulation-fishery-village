@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Event frequency</name>
-  <dataSet>DataCollector Event</dataSet>
+  <name>Happiness overview</name>
+  <dataSet>DataCollector</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Count</yAxisLabel>
-  <chartTitle>Event frequency</chartTitle>
+  <yAxisLabel>Avg satisfied values / social status</yAxisLabel>
+  <chartTitle>Overview happiness</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,60 +21,36 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Organize Free</string>
+      <string>Happy adult + elderly</string>
       <SeriesData>
-        <label>Organize Free</label>
+        <label>Happy adult + elderly</label>
         <color>
           <red>0</red>
-          <green>153</green>
+          <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>Attend Commercial</string>
+      <string>Happy adult</string>
       <SeriesData>
-        <label>Attend Commercial</label>
+        <label>Happy adult</label>
         <color>
-          <red>255</red>
+          <red>204</red>
+          <green>255</green>
+          <blue>204</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Happy elderly</string>
+      <SeriesData>
+        <label>Happy elderly</label>
+        <color>
+          <red>0</red>
           <green>153</green>
-          <blue>51</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Organize Commercial</string>
-      <SeriesData>
-        <label>Organize Commercial</label>
-        <color>
-          <red>255</red>
-          <green>0</green>
-          <blue>51</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Attend Free</string>
-      <SeriesData>
-        <label>Attend Free</label>
-        <color>
-          <red>102</red>
-          <green>255</green>
-          <blue>102</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>No Money</string>
-      <SeriesData>
-        <label>No Money</label>
-        <color>
-          <red>255</red>
-          <green>255</green>
           <blue>51</blue>
           <alpha>255</alpha>
         </color>

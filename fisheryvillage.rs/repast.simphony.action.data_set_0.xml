@@ -1,98 +1,98 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector general</name>
+  <name>Human by status</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
   <inclRandomSeed>false</inclRandomSeed>
   <scheduleParams>
     <start>1.0</start>
-    <interval>48.0</interval>
+    <interval>4.0</interval>
     <priority>-Infinity</priority>
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>415105201</hashCode>
+    <hashCode>-1614299654</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>Avg wealth</string>
+      <string>N Fishers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Avg wealth</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getAdultAndElderlyWealthAvg</methodName>
+        <id>N Fishers</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfFishers</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Children born</string>
+      <string>N Teachers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Children born</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getChildrenBorn</methodName>
+        <id>N Teachers</id>
+        <className>fisheryvillage.property.municipality.School</className>
+        <methodName>getTeacherCount</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Migrate in</string>
+      <string>N Unemployed</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate in</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedIn</methodName>
+        <id>N Unemployed</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfUnemployed</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Migrate out self</string>
+      <string>N Workers outside</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate out self</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedOutSelf</methodName>
+        <id>N Workers outside</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfWorkersOutside</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Migrate out with</string>
+      <string>N F. workers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate out with</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedOutWith</methodName>
+        <id>N F. workers</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfFactoryWorkers</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Population number</string>
+      <string>N Caretakers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Population number</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getPopulationNumber</methodName>
+        <id>N Caretakers</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfElderlyCaretakers</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Died</string>
+      <string>N Mayor</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Died</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getDied</methodName>
+        <id>N Mayor</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfMayor</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Migrate out self tick</string>
+      <string>N F. boss</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate out self tick</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedOutSelfTick</methodName>
+        <id>N F. boss</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfBoss</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Migrate out with tick</string>
+      <string>N. Captain</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Migrate out with tick</id>
-        <className>fisheryvillage.DataCollector</className>
-        <methodName>getMigratedOutWithTick</methodName>
+        <id>N. Captain</id>
+        <className>fisheryvillage.property.municipality.Council</className>
+        <methodName>getNumberOfCaptains</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

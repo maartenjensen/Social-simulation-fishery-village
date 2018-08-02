@@ -2,6 +2,8 @@ package fisheryvillage.property;
 
 import java.util.ArrayList;
 
+import fisheryvillage.batch.BatchRun;
+import fisheryvillage.batch.RunningCondition;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -32,8 +34,15 @@ public class Boat extends Workplace {
 	private int fishCaught = 0; //Kilograms
 	private int fishSold = 0;
 	private int fishThrownAway = 0;
-	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
+	private boolean disabled = false;
+	private boolean enoughMoneyActionChooser = false;
 
+	ArrayList<Integer> fishersIds = new ArrayList<Integer>();
+	
+	// Pure for analysis
+	private int fishToCatchData = 0;
+	private String valuesOfActionChooser = "0,0,0,0";
+	
 	public Boat(int id, BoatType boatType, double money, GridPoint location) {
 		
 		super(id, boatType.getPrice(), boatType.getMaintenanceCost(), money, location, boatType.getDimensions().getX(), boatType.getDimensions().getY(), PropertyColor.BOAT);
@@ -119,7 +128,7 @@ public class Boat extends Workplace {
 	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
-		if (hasBeenFisher || !SimUtils.getEcosystem().getFishAlive()) {
+		if (hasBeenFisher || !SimUtils.getEcosystem().getFishAlive() || allJobs.size() == 0) {
 			return possibleJobs;
 		}
 		
@@ -141,8 +150,12 @@ public class Boat extends Workplace {
 		
 		fishThrownAway = 0;
 		fishSold = 0;
+		fishToCatchData = 0;
+		valuesOfActionChooser = "0,0,0,0,0,0,0,0";
+		enoughMoneyActionChooser = false;
 		
 		if (getFisherAndCaptainCount() == 0) {
+			SimUtils.getDataCollector().addFishingData(getId(), toString());
 			return ;
 		}
 		
@@ -151,11 +164,15 @@ public class Boat extends Workplace {
 			fishingAction = getOwner().selectFishingAction();
 			Logger.logAction(getName() + " captain chooses action " + fishingAction);
 			getOwner().actionFish(fishingAction);
+			valuesOfActionChooser = getOwner().getThresholds();
+			enoughMoneyActionChooser = getOwner().getHasEnoughMoney();
 		}
 		else {
 			Resident fisher = HumanUtils.getResidentById( fishersIds.get(RandomHelper.nextIntFromTo(0, fishersIds.size() - 1)) );
 			fishingAction = fisher.selectFishingAction();
 			Logger.logAction(getName() + " fisher chooses action " + fishingAction);
+			valuesOfActionChooser = fisher.getThresholds();
+			enoughMoneyActionChooser = fisher.getHasEnoughMoney();
 		}
 		
 		for (int fisherId : fishersIds) { // Update values for each fisher
@@ -164,6 +181,8 @@ public class Boat extends Workplace {
 		
 		int fishToCatch = actionFish(fishingAction);
 		fishCaught += SimUtils.getEcosystem().fishFish(fishToCatch);
+		
+		SimUtils.getDataCollector().addFishingData(getId(), toString());
 	}
 	
 	public int actionFish(String fishingAction) {
@@ -192,6 +211,7 @@ public class Boat extends Workplace {
 		default:
 			Logger.logError("Error in fish catch");
 		}
+		fishToCatchData = amountPerFisher;
 		int fishToCatch = getFisherAndCaptainCount() * amountPerFisher;
 		if (!hasCaptain())
 			fishToCatch *= (100 - Constants.FISH_CAUGHT_NO_CAPTAIN_DECREASE) / 100.0;
@@ -203,8 +223,15 @@ public class Boat extends Workplace {
 		
 		Factory factory = SimUtils.getFactory();
 		if (factory != null && fishCaught > 0) {
-			fishSold = factory.calculatedFishToBuy(fishCaught);
-			addSavings(factory.buyFish(fishSold));
+			
+			if (BatchRun.getRunningCondition() != RunningCondition.NO_FACTORY) {
+				fishSold = factory.calculatedFishToBuy(fishCaught);
+				addSavings(factory.buyFish(fishSold));
+			}
+			else {
+				fishSold = fishCaught;
+				addSavings(fishSold * 4);
+			}
 			fishThrownAway = fishCaught - fishSold;
 		}
 		else {
@@ -274,6 +301,18 @@ public class Boat extends Workplace {
 				resident.stopWorkingAtWorkplace();
 			}
 		}
+	}
+	
+	public void disableBoat() {
+		
+		fireFishers();
+		allJobs.remove(0);
+		allJobs.remove(0);
+		disabled = true;
+	}
+	
+	public boolean getDisabled() {
+		return disabled;
 	}
 	
 	/**
@@ -346,5 +385,22 @@ public class Boat extends Workplace {
 			captainId = getOwner().getId();
 		}
 		return "Boat " + boatType + " ["+ getId() +"] price:" + getPrice() + "\nCaptain ID:" + captainId + ", F:" + fishersIds.toString() + "\nF:" + getFisherCount() + ", $:" + Math.round(getSavings()) + "\nFish caught (kg):" + fishCaught + "\nFish sold (kg): " + fishSold + "\nFish thrown away (kg): " + fishThrownAway;
+	}
+
+	@Override
+	public String toString() {
+		//Employee capacity, fisher count, has captain, value of person p, s, u, t
+		return boatType.getEmployeeCapacity() + "," + getFisherCount() + "," + hasCaptain() + "," + fishToCatchData + "," + valuesOfActionChooser + "," + enoughMoneyActionChooser;
+	}
+
+	public double getNormalizedFishToCatchPerPerson() {
+		return (((double) fishToCatchData) / Constants.FISH_CATCH_AMOUNT_MAX_PP) * 8;
+	}
+
+	public int getCaptainIndex() {
+		if (hasCaptain())
+			return 1;
+		else
+			return 0;
 	}
 }

@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Random;
 
 import fisheryvillage.common.Logger;
+import fisheryvillage.common.RepastParam;
+import repast.simphony.random.RandomHelper;
 import valueframework.common.FrameworkBuilder;
 import valueframework.common.Log;
 
@@ -84,10 +86,13 @@ public class DecisionMaker {
 	 * Here we copy each value tree (make a new reference)
 	 */
 	private void copyNewValueTrees() {
+		int thresholdIndex = RandomHelper.nextIntFromTo(1, 2);
 		for (String rootName : FrameworkBuilder.getGlobalValueTrees().keySet()) {
 			RandomTree rt = copyRandomTree(FrameworkBuilder.getGlobalValueTrees().get(rootName));
+			rt.getWaterTank().setThreshold(RepastParam.getAbstractValue(rootName, thresholdIndex));
 			valueTrees.put(rootName, rt);
 		}
+		//Logger.logExtreme("Index:" + thresholdIndex + ", " + toString());
 	}
 
 	private RandomTree copyRandomTree(RandomTree rt) {
@@ -130,8 +135,7 @@ public class DecisionMaker {
 	 * @param possibleActionsIn
 	 * @return
 	 */
-	public ArrayList<ValuedAction> agentFilterActionsBasedOnValues(
-			ArrayList<String> possibleActionTitlesIn) {
+	public ArrayList<ValuedAction> agentFilterActionsBasedOnValues(ArrayList<String> possibleActionTitlesIn) {
 
 		// Return if input is an array list of zero
 		if (possibleActionTitlesIn.size() == 0) {
@@ -423,6 +427,15 @@ public class DecisionMaker {
 						+ wt.getThreshold() + "], ";
 			}		
 		}
+		return string;
+	}
+
+	public String getThresholds() {
+		String string = "";
+		string += Math.round(getWaterTankFromTree("POWER").getThreshold()) + "," + Math.round(getWaterTankFromTree("POWER").getFilledLevel()) + ",";
+		string += Math.round(getWaterTankFromTree("SELFDIRECTION").getThreshold()) + "," + Math.round(getWaterTankFromTree("SELFDIRECTION").getFilledLevel()) + ",";
+		string += Math.round(getWaterTankFromTree("UNIVERSALISM").getThreshold()) + "," + Math.round(getWaterTankFromTree("UNIVERSALISM").getFilledLevel()) + ",";
+		string += Math.round(getWaterTankFromTree("TRADITION").getThreshold()) + "," + Math.round(getWaterTankFromTree("TRADITION").getFilledLevel());
 		return string;
 	}
 }

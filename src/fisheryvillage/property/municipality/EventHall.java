@@ -22,6 +22,7 @@ public class EventHall extends Property {
 	int countTradition = 0;
 	int countPower = 0;
 	int countSelfDirection = 0;
+	boolean eventHallDisabled = false;
 	
 	public EventHall(int id, int price, int maintenanceCost, double money, GridPoint location) {
 		super(id, price, maintenanceCost, money, location, 5, 3, PropertyColor.COUNCIL);
@@ -29,6 +30,9 @@ public class EventHall extends Property {
 	}
 	
 	public boolean getVacancyForNewEvent() {
+		
+		if (eventHallDisabled)
+			return false;
 		
 		int eventPeoplePotential = SimUtils.getCouncil().getNumberOfAdults() + SimUtils.getCouncil().getNumberOfElderlyYoung() + 6;
 		int eventPeopleCapacity = 0;
@@ -77,6 +81,10 @@ public class EventHall extends Property {
 		countTradition = 0;
 		countPower = 0;
 		countSelfDirection = 0;
+	}
+	
+	public void disableEventHall() {
+		eventHallDisabled = true;
 	}
 	
 	public void increaseUniversalism() {

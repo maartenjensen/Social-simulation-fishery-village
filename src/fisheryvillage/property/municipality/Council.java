@@ -2,6 +2,8 @@ package fisheryvillage.property.municipality;
 
 import java.util.ArrayList;
 
+import fisheryvillage.batch.BatchRun;
+import fisheryvillage.batch.RunningCondition;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -29,14 +31,14 @@ public class Council extends Workplace {
 	private double moneyForSocialCare = 0;
 	private double moneyForElderlyCare = 0;
 	private double moneyForFactory = 0;
-	
+
 	private int countUniversalism = 0;
 	private int countTradition = 0;
 	private int countPower = 0;
 	private int countSelfDirection = 0;
-	
+
 	private int decideSavings = 0;
-	
+
 	private int schoolCount = 1;
 	private int socialCount = 1;
 	private int elderlyCount = 1;
@@ -77,12 +79,22 @@ public class Council extends Workplace {
 		moneyForElderlyCare = moneyPart.get(elderlyCount);
 		moneyForFactory = moneyPart.get(factoryCount);
 		
-		SimUtils.getSchool().addSavings(moneyForSchool);
 		SimUtils.getSocialCare().addSavings(moneyForSocialCare);
 		SimUtils.getElderlyCare().addSavings(moneyForElderlyCare);
-		SimUtils.getFactory().addSavings(moneyForFactory);
 		
-		addSavings(-1 * (moneyForSchool + moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
+		if (BatchRun.getRunningCondition() == RunningCondition.NONE) {
+			SimUtils.getFactory().addSavings(moneyForFactory);
+			SimUtils.getSchool().addSavings(moneyForSchool);
+			addSavings(-1 * (moneyForSchool + moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
+		}
+		else if (BatchRun.getRunningCondition() == RunningCondition.NO_SCHOOL) {
+			SimUtils.getFactory().addSavings(moneyForFactory);
+			addSavings(-1 * (moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
+		}
+		else if (BatchRun.getRunningCondition() == RunningCondition.NO_FACTORY) {
+			SimUtils.getSchool().addSavings(moneyForSchool);
+			addSavings(-1 * (moneyForSocialCare + moneyForElderlyCare + moneyForFactory));
+		}
 		
 		decideSavings ++;
 	}
@@ -108,6 +120,13 @@ public class Council extends Workplace {
 			double socialCareMoney = SimUtils.getSocialCare().getSavings();
 			double elderlyCareMoney = SimUtils.getElderlyCare().getSavings();
 			double factoryMoney = SimUtils.getFactory().getSavings();
+			
+			if (BatchRun.getRunningCondition() == RunningCondition.NO_SCHOOL) {
+				schoolMoney = -Double.MAX_VALUE;
+			}
+			else if (BatchRun.getRunningCondition() == RunningCondition.NO_FACTORY) {
+				factoryMoney = -Double.MAX_VALUE;
+			}
 			
 			ArrayList<Integer> buildingSavings = new ArrayList<Integer>();
 			buildingSavings.add((int) Math.ceil(schoolMoney));
@@ -156,6 +175,13 @@ public class Council extends Workplace {
 	
 	public Resident getMayor() {
 		return getOwner();
+	}
+	
+	public double getMayorPayment() {
+
+		double mayorPayment = Math.max(0, Math.min(Constants.SALARY_MAYOR, getSavings()));
+		addSavings(-1 * mayorPayment);
+		return mayorPayment;
 	}
 	
 	public boolean hasMayor() {

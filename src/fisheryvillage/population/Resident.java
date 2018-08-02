@@ -3,6 +3,8 @@ package fisheryvillage.population;
 import java.util.ArrayList;
 import java.util.List;
 
+import fisheryvillage.batch.BatchRun;
+import fisheryvillage.batch.RunningCondition;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -14,6 +16,7 @@ import fisheryvillage.property.Property;
 import fisheryvillage.property.municipality.Event;
 import fisheryvillage.property.municipality.EventHall;
 import fisheryvillage.property.municipality.Factory;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.random.RandomHelper;
 import valueframework.AbstractValue;
 import valueframework.DecisionMaker;
@@ -65,6 +68,20 @@ public final class Resident extends Human {
 	 * Main human steps 
 	 *=========================================
 	 */
+	public void stepSaveCurrentData() {
+		
+		if (!BatchRun.getEnable()) {
+			double self_dir = decisionMaker.getAbstractValueThreshold(AbstractValue.SELFDIRECTION);
+			double tradition = decisionMaker.getAbstractValueThreshold(AbstractValue.TRADITION);
+			double calculated_tick = 4 + (24 * Math.min(1, Math.max(0, (50 + tradition - self_dir) * 0.01)));
+			
+			String datum = getHumanVarsAsString() + "," + calculated_tick + "," + getSocialStatusValue() + "," + getPartnerId() + "," + getSalaryTaxedData() + "," + getHasEnoughMoney() + "," + HumanUtils.getChildrenUnder18(this).size() + "," + HumanUtils.getLivingPlaceType(this).name();
+			datum += "," + getThresholds();
+			int tick = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+			agentInfo.add(tick + "," + datum + "," + socialStatusString());
+		}
+	}
+	
 	public void stepAging() {
 		addAge();
 	}
@@ -232,7 +249,9 @@ public final class Resident extends Human {
 
 	public void stepDonate() {
 		
-		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE) {
+		if (getAge() < Constants.HUMAN_ADULT_AGE || getAge() >= Constants.HUMAN_ELDERLY_CARE_AGE
+				|| BatchRun.getRunningCondition() == RunningCondition.NO_DONATION
+				|| BatchRun.getRunningCondition() == RunningCondition.NO_EV_AND_DON) {
 			return ;
 		}
 		
@@ -432,7 +451,7 @@ public final class Resident extends Human {
 	 */
 
 	public boolean getIsHappy() {
-		if (socialStatus.getSocialStatusValue(decisionMaker, getStatus()) > 0.25 && decisionMaker.getSatisfiedValuesCount() >= 2) {
+		if (socialStatus.getSocialStatusValue(decisionMaker, getStatus()) > 0.25 && decisionMaker.getSatisfiedValuesCount() >= BatchRun.getValuesSatisfiedForHappy()) {
 			return true;
 		}
 		return false;
@@ -527,6 +546,15 @@ public final class Resident extends Human {
 		return decisionMaker.importantData();
 	}
 	
+	public boolean getHasEnoughMoney() {
+		if ((getLeftoverMoney() > 0 && getMoney() > Constants.MONEY_DANGER_LEVEL) || getMoney() > Constants.DONATE_MONEY_MINIMUM_SAVINGS_WITHOUT_INCOME) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	/*=========================================
 	 * Getters and setters
 	 *=========================================
@@ -619,7 +647,6 @@ public final class Resident extends Human {
 	 * Graph variables
 	 * ========================================
 	 */
-	
 	public void setGraphDonateType(int graphDonateType) {
 		this.graphDonateType = graphDonateType;
 	}
@@ -640,6 +667,9 @@ public final class Resident extends Human {
 	 * Print stuff
 	 *=========================================
 	 */
+	public String getThresholds() {
+		return decisionMaker.getThresholds();
+	}
 	
 	public String getDcString() {
 		return decisionMaker.toString();

@@ -1,10 +1,15 @@
 package fisheryvillage.population;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import fisheryvillage.batch.BatchRun;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -53,6 +58,10 @@ public class Human {
 	private int workplaceId = -1;
 	private int notHappyTick = 0;
 	
+	private double salaryTaxedData = 0;
+	
+	protected ArrayList<String> agentInfo = new ArrayList<>();
+	
 	protected Human(int id, boolean gender, boolean foreigner, int age, double money) {
 
 		this.id = id;
@@ -66,6 +75,10 @@ public class Human {
 		
 		setStatusByAge();
 		addToContext();
+		
+		agentInfo.add("Tick,id,gender,foreigner,hasBeenFisher,age,money,childrenWanted,nettoIncome,necessaryCost,jobTitle,status,workplaceId,notHappyTick,migrTickRequired,socialStatus" +
+				 	  ",partnerId,salaryTaxed,hasEnoughMoney,childrenUnder18,house,P Thr.,P Lvl.,S Thr., S Lvl.,U Thr.,U Lvl.,T Thr.,T Lvl.,s_job,s_house,s_boat,s_ecol,s_econ,s_don,s_events,s_free_ev");
+
 	}
 
 	protected Human(int id, boolean gender, boolean foreigner, boolean hasBeenFisher, int age, double money,
@@ -85,6 +98,9 @@ public class Human {
 		this.notHappyTick = notHappyTick;
 		
 		addToContext();
+		
+		agentInfo.add("Tick,id,gender,foreigner,hasBeenFisher,age,money,childrenWanted,nettoIncome,necessaryCost,jobTitle,status,workplaceId,notHappyTick,migrTickRequired,socialStatus" +
+					  ",partnerId,salaryTaxed,hasEnoughMoney,childrenUnder18,house,P Thr.,P Lvl.,S Thr., S Lvl.,U Thr.,U Lvl.,T Thr.,T Lvl.,s_job,s_house,s_boat,s_ecol,s_econ,s_don,s_events,s_free_ev");
 	}
 
 	private void addToContext() {
@@ -135,8 +151,13 @@ public class Human {
 		nettoIncome = 0;
 		soloNetIncome = 0;
 		salaryUntaxed = 0;
+		salaryTaxedData = 0;
 	}
 
+	public double getSalaryTaxedData() {
+		return salaryTaxedData;
+	}
+	
 	/**
 	 * Get salary, pay tax and share it with partner
 	 */
@@ -144,6 +165,7 @@ public class Human {
 		
 		this.salaryUntaxed = calculateSalary();
 		double salary = payTax(salaryUntaxed);
+		salaryTaxedData = salary;
 		soloNetIncome = salary;
 		double benefits = calculateBenefits();
 		double bankrupt_benefits = calculateBankruptBenefits();
@@ -347,6 +369,28 @@ public class Human {
 		SimUtils.getContext().remove(this);
 	}
 	
+	
+	public void writeToFile(String filePathAndName, List<String> data) {
+		PrintWriter writer;
+		try {
+			writer = new PrintWriter(filePathAndName, "UTF-8");
+			for (String datum : data) {
+				writer.println(datum);
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public String getLastMigrData() {
+		return agentInfo.get(agentInfo.size() - 1);
+	}
+	
 	protected void migrateOutOfTown() {
 	
 		SimUtils.getGrid().moveTo(this, RandomHelper.nextIntFromTo(1, Constants.GRID_VILLAGE_START - 2), RandomHelper.nextIntFromTo(0, Constants.GRID_HEIGHT - 1));
@@ -356,13 +400,25 @@ public class Human {
 		if (partner != null) {
 			Logger.logInfo("and takes partner H" + partner.getId() + " with her/him");
 			SimUtils.getDataCollector().addMigratorOut(false, partner.getId());
+			SimUtils.getDataCollector().addMigratedPersonsExt(false, partner.getLastMigrData());
+			if (!BatchRun.getEnable()) {
+				partner.writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\MigrWith" + partner.getId() + ".txt", partner.getAgentInfo());
+			}
 			partner.removeSelf();
 		}
 		// Also remove children (in removeSelf the child removes the childrenIds id in the parent.
 		for (Human child : HumanUtils.getChildrenUnder18(this)) {
 			Logger.logInfo("and also child H" + child.getId());
 			SimUtils.getDataCollector().addMigratorOut(false, child.getId());
+			SimUtils.getDataCollector().addMigratedPersonsExt(false, child.getLastMigrData());
+			if (!BatchRun.getEnable()) {
+				child.writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\MigrChild" + child.getId() + ".txt", child.getAgentInfo());
+			}
 			child.removeSelf();
+		}
+		SimUtils.getDataCollector().addMigratedPersonsExt(true, getLastMigrData());
+		if (!BatchRun.getEnable()) {
+			writeToFile("D:\\UniversiteitUtrecht\\7MasterThesis\\Repast-filesink\\fisheryvillage\\MigrSelf" + id + ".txt", agentInfo);
 		}
 		removeSelf();
 	}
@@ -374,6 +430,10 @@ public class Human {
 		}
 	}
 
+	public ArrayList<String> getAgentInfo() {
+		return agentInfo;
+	}
+	
 	/**
 	 * Remove all property but share the house with husband or wife
 	 */
@@ -476,25 +536,27 @@ public class Human {
 		
 		switch(status) {
 		case FACTORY_WORKER:
-			return Math.round(SimUtils.getFactory().getFactoryWorkerPayment());
+			return SimUtils.getFactory().getFactoryWorkerPayment();
 		case FACTORY_BOSS:
-			return Math.round(SimUtils.getFactory().getFactoryBossPayment());
+			return SimUtils.getFactory().getFactoryBossPayment();
 		case TEACHER:
-			return Math.round(SimUtils.getSchool().getTeacherPayment());
+			return SimUtils.getSchool().getTeacherPayment();
 		case WORK_OUT_OF_TOWN:
 			return Constants.SALARY_OUTSIDE_WORK;
 		case FISHER:
 			if (SimUtils.getBoatByHumanId(id) != null) {
-				return Math.round(SimUtils.getBoatByHumanId(id).getFisherPayment(id));
+				return SimUtils.getBoatByHumanId(id).getFisherPayment(id);
 			}
 			Logger.logError("Human.calculateSalary: H" + id + " no boat for fisher");
 			return 0;
 		case CAPTAIN:
 			if (SimUtils.getBoatByHumanId(id) != null) {
-				return Math.round(SimUtils.getBoatByHumanId(id).getCaptainPayment(id));
+				return SimUtils.getBoatByHumanId(id).getCaptainPayment(id);
 			}
 			Logger.logError("Human.calculateSalary: H" + id + " no boat for captain");
 			return 0;
+		case MAYOR:
+			return SimUtils.getCouncil().getMayorPayment();
 		case ELDERLY_CARETAKER:
 			return Math.round(SimUtils.getElderlyCare().getCaretakerPayment());
 		default: // You get nothing
@@ -877,7 +939,6 @@ public class Human {
 	 * Graphics and information
 	 *========================================
 	 */
-	
 	public String getStatusString() {
 		return status.toString();
 	}

@@ -1,152 +1,5 @@
-FATAL [Thread-17] 2018-07-03 15:22:47,302 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (38.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-85] 2018-07-03 15:37:03,394 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (30.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-101] 2018-07-03 15:40:24,824 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (26.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-219] 2018-07-03 16:05:10,676 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (30.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-296] 2018-07-03 16:21:20,199 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (18.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-18] 2018-07-05 18:41:10,034 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (30.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-49] 2018-07-05 18:48:55,940 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (50.0)
-java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
-	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
-	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
-	at java.base/java.util.Objects.checkIndex(Unknown Source)
-	at java.base/java.util.ArrayList.get(Unknown Source)
-	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
-	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
-	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
-	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-112] 2018-07-05 19:05:16,443 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1777.0)
+FATAL [Thread-78] 2018-07-10 00:00:06,380 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1345.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
 	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
@@ -163,12 +16,33 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:393)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:276)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-121] 2018-07-05 19:07:59,585 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+FATAL [Thread-97] 2018-07-10 00:04:40,646 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (54.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-133] 2018-07-10 10:42:09,050 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
 Current tick (1633.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
@@ -186,12 +60,96 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:393)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:276)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-225] 2018-07-05 19:29:39,044 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+FATAL [Thread-62] 2018-07-12 13:17:45,031 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (34.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-115] 2018-07-12 13:31:07,682 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (30.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-119] 2018-07-12 13:32:06,140 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (30.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-121] 2018-07-12 13:32:35,267 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (30.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-160] 2018-07-12 13:42:04,348 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
 Current tick (58.0)
 java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
@@ -212,8 +170,8 @@ java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
 	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
 	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-112] 2018-07-05 21:45:04,176 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (817.0)
+FATAL [Thread-3] 2018-07-15 11:35:53,543 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1873.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
 	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
@@ -230,13 +188,13 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-185] 2018-07-05 22:01:07,519 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1441.0)
+FATAL [Thread-2] 2018-07-15 11:53:26,746 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1297.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
 	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
@@ -253,13 +211,13 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-204] 2018-07-05 22:04:31,684 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1633.0)
+FATAL [Thread-3] 2018-07-15 12:07:06,183 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (625.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
 	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
@@ -276,35 +234,12 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-207] 2018-07-05 22:05:03,391 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1585.0)
-java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
-	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
-	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
-	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
-	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
-	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
-	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
-	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
-	at java.base/java.lang.Thread.run(Unknown Source)
-Caused by: java.lang.reflect.InvocationTargetException
-	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
-	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
-	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
-	... 7 more
-Caused by: java.lang.NullPointerException
-	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
-	... 10 more
-FATAL [Thread-86] 2018-07-05 23:22:59,875 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+FATAL [Thread-24] 2018-07-18 19:01:37,132 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
 Current tick (1345.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
@@ -322,13 +257,13 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-92] 2018-07-05 23:24:17,354 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (1825.0)
+FATAL [Thread-9] 2018-07-18 19:17:46,806 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1681.0)
 java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
 	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
 	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
@@ -345,12 +280,12 @@ Caused by: java.lang.reflect.InvocationTargetException
 	... 7 more
 Caused by: java.lang.NullPointerException
 	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
-	at fisheryvillage.population.Resident.actionGetChild(Resident.java:385)
-	at fisheryvillage.population.Resident.stepFamily(Resident.java:271)
-	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:188)
-	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:129)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
 	... 10 more
-FATAL [Thread-177] 2018-07-06 11:15:36,828 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+FATAL [Thread-97] 2018-07-18 19:42:03,281 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
 Current tick (62.0)
 java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
@@ -371,8 +306,77 @@ java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
 	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
 	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-223] 2018-07-06 11:25:16,222 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (31.0)
+FATAL [Thread-92] 2018-07-19 00:33:31,420 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1393.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-180] 2018-07-19 00:57:53,441 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1585.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-19] 2018-07-19 03:58:45,581 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1825.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-167] 2018-07-19 04:49:23,973 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (30.0)
 java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
 	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
@@ -392,8 +396,31 @@ java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
 	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
 	at java.base/java.lang.Thread.run(Unknown Source)
-FATAL [Thread-299] 2018-07-06 11:41:13,238 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
-Current tick (42.0)
+FATAL [Thread-219] 2018-07-19 05:07:22,234 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1393.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:394)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:277)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-240] 2018-07-19 05:14:27,643 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (74.0)
 java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
 	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
@@ -413,3 +440,606 @@ java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
 	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
 	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
 	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-100] 2018-07-20 21:03:07,139 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1297.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:397)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:280)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-166] 2018-07-21 01:57:43,220 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (38.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-34] 2018-07-22 08:57:36,443 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1441.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:397)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:280)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-115] 2018-07-24 19:33:59,320 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1009.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-219] 2018-07-24 20:01:00,434 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (22.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-49] 2018-07-24 20:34:26,843 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1681.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-33] 2018-07-24 21:51:28,611 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1825.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-60] 2018-07-24 21:59:52,148 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1729.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-127] 2018-07-24 22:20:36,026 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (66.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-143] 2018-07-24 22:25:37,666 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1681.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-170] 2018-07-25 00:32:48,753 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (961.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-67] 2018-07-25 00:53:01,530 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1873.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-32] 2018-07-25 01:25:26,889 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1729.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-69] 2018-07-25 06:57:39,056 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (721.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-100] 2018-07-25 07:07:02,029 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1873.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-113] 2018-07-25 07:11:00,875 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1537.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-171] 2018-07-25 07:28:34,637 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1585.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-149] 2018-07-25 10:34:16,313 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1681.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-159] 2018-07-25 10:36:03,912 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (46.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-7] 2018-07-25 15:30:43,160 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (50.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-35] 2018-07-25 15:41:54,752 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (66.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-80] 2018-07-25 15:51:34,495 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (62.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-127] 2018-07-25 16:01:44,796 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1825.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-171] 2018-07-25 16:11:06,879 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (23.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-78] 2018-07-25 19:02:11,731 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (961.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more
+FATAL [Thread-7] 2018-07-25 22:53:53,421 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (54.0)
+java.lang.IndexOutOfBoundsException: Index 0 out-of-bounds for length 0
+	at java.base/jdk.internal.util.Preconditions.outOfBounds(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Unknown Source)
+	at java.base/jdk.internal.util.Preconditions.checkIndex(Unknown Source)
+	at java.base/java.util.Objects.checkIndex(Unknown Source)
+	at java.base/java.util.ArrayList.get(Unknown Source)
+	at repast.simphony.visualizationOGL2D.SpatialWrapper.getChild(SpatialWrapper.java:69)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:118)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateSpatial(StyledDisplayLayerOGL2D.java:212)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.updateExistingSpatials(StyledDisplayLayerOGL2D.java:181)
+	at repast.simphony.visualizationOGL2D.StyledDisplayLayerOGL2D.update(StyledDisplayLayerOGL2D.java:249)
+	at repast.simphony.visualizationOGL2D.DisplayOGL2D.update(DisplayOGL2D.java:406)
+	at repast.simphony.visualization.engine.DisplayComponentControllerAction$DisplayUpdater.execute(DisplayComponentControllerAction.java:44)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:238)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+FATAL [Thread-81] 2018-07-26 12:25:52,022 repast.simphony.ui.GUIScheduleRunner - RunTimeException when running the schedule
+Current tick (1681.0)
+java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:72)
+	at repast.simphony.engine.controller.ScheduledMethodControllerAction$ScheduleMethodAllAction.execute(ScheduledMethodControllerAction.java:333)
+	at repast.simphony.engine.schedule.DefaultAction.execute(DefaultAction.java:38)
+	at repast.simphony.engine.schedule.ScheduleGroup.executeList(ScheduleGroup.java:205)
+	at repast.simphony.engine.schedule.ScheduleGroup.execute(ScheduleGroup.java:231)
+	at repast.simphony.engine.schedule.Schedule.execute(Schedule.java:352)
+	at repast.simphony.ui.GUIScheduleRunner$ScheduleLoopRunnable.run(GUIScheduleRunner.java:52)
+	at java.base/java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.reflect.InvocationTargetException
+	at fisheryvillage.FisheryVillageContextBuilder$$FastClassByCGLIB$$8d536b3a.invoke(<generated>)
+	at net.sf.cglib.reflect.FastMethod.invoke(FastMethod.java:53)
+	at repast.simphony.engine.schedule.DynamicTargetAction.execute(DynamicTargetAction.java:69)
+	... 7 more
+Caused by: java.lang.NullPointerException
+	at fisheryvillage.common.HumanUtils.spawnChild(HumanUtils.java:342)
+	at fisheryvillage.population.Resident.actionGetChild(Resident.java:412)
+	at fisheryvillage.population.Resident.stepFamily(Resident.java:295)
+	at fisheryvillage.FisheryVillageContextBuilder.step1Year(FisheryVillageContextBuilder.java:191)
+	at fisheryvillage.FisheryVillageContextBuilder.fullStep(FisheryVillageContextBuilder.java:132)
+	... 10 more

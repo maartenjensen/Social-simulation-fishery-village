@@ -1,5 +1,5 @@
 <repast.simphony.data2.engine.DataSetDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector Event</name>
+  <name>Boat for graph</name>
   <type>AGGREGATE</type>
   <inclTick>true</inclTick>
   <inclBatchRun>false</inclBatchRun>
@@ -11,52 +11,79 @@
     <pType>LAST</pType>
     <duration>-1.0</duration>
     <frequency>REPEAT</frequency>
-    <hashCode>1796591574</hashCode>
+    <hashCode>-1389032365</hashCode>
   </scheduleParams>
   <atEnd>false</atEnd>
   <methodDataSources class="linked-hash-map">
     <entry>
-      <string>No Money</string>
+      <string>Boat 1 employee cap</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>No Money</id>
+        <id>Boat 1 employee cap</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>eventNoMoney</methodName>
+        <methodName>getBoat1EmployeeCap</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Organize Free</string>
+      <string>Boat 1 fishers</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Organize Free</id>
+        <id>Boat 1 fishers</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>eventOrgFree</methodName>
+        <methodName>getBoat1FisherCount</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Organize Commercial</string>
+      <string>Boat 1 fish to catch normalized</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Organize Commercial</id>
+        <id>Boat 1 fish to catch normalized</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>eventOrgCom</methodName>
+        <methodName>getBoat1FishToCatchNorm</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Attend Free</string>
+      <string>Boat 1 has captain normalized</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Attend Free</id>
+        <id>Boat 1 has captain normalized</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>eventAttFree</methodName>
+        <methodName>getBoat1HasCaptain</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>
     <entry>
-      <string>Attend Commercial</string>
+      <string>Boat 2 employee cap</string>
       <repast.simphony.data2.engine.MethodDataSourceDefinition>
-        <id>Attend Commercial</id>
+        <id>Boat 2 employee cap</id>
         <className>fisheryvillage.DataCollector</className>
-        <methodName>eventAttCom</methodName>
+        <methodName>getBoat2EmployeeCap</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Boat 2 fishers</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Boat 2 fishers</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getBoat2FisherCount</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Boat 2 fish to catch normalized</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Boat 2 fish to catch normalized</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getBoat2FishToCatchNorm</methodName>
+        <aggType>SUM</aggType>
+      </repast.simphony.data2.engine.MethodDataSourceDefinition>
+    </entry>
+    <entry>
+      <string>Boat 2 has captain normalized</string>
+      <repast.simphony.data2.engine.MethodDataSourceDefinition>
+        <id>Boat 2 has captain normalized</id>
+        <className>fisheryvillage.DataCollector</className>
+        <methodName>getBoat2HasCaptain</methodName>
         <aggType>SUM</aggType>
       </repast.simphony.data2.engine.MethodDataSourceDefinition>
     </entry>

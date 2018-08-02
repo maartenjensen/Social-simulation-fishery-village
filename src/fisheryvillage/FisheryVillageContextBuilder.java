@@ -2,7 +2,7 @@ package fisheryvillage;
 
 import java.util.ArrayList;
 
-import fisheryvillage.common.BatchRun;
+import fisheryvillage.batch.BatchRun;
 import fisheryvillage.common.Constants;
 import fisheryvillage.common.HumanUtils;
 import fisheryvillage.common.Logger;
@@ -44,7 +44,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 	public Context<Object> build(Context<Object> context) {
 
 		// Batch run
-		boolean initFramework = BatchRun.setEnable(true);
+		boolean initFramework = BatchRun.setEnable(false);
 		
 		// Reset human id
 		HumanUtils.resetHumanId();
@@ -59,6 +59,7 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		else {
 			RepastParam.setRepastParameters();
 			Logger.setLoggerAll(true, true, false, false, false, false);
+			Log.disableLogger();
 		}
 		
 		// Add context to this ID
@@ -101,6 +102,8 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		
 		// Create population
 		initializePopulation();
+		
+		updateWorldToRunningCondition();
 
 		return context;
 	}
@@ -311,6 +314,10 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		Logger.logMain("- Run Council.stepDistributeMoney");
 		SimUtils.getCouncil().stepDistributeMoney();
 	
+		for (final Resident resident: residents) {
+			resident.stepSaveCurrentData();
+		}
+		
 		// Human.stepDeath should be the last one before Human.stepLocation
 		Logger.logMain("- Run Human.stepRemove");
 		ArrayList<Integer> humanIds = new ArrayList<Integer>();
@@ -440,6 +447,37 @@ public class FisheryVillageContextBuilder implements ContextBuilder<Object> {
 		HumanUtils.printAverageValues();
 		// Do a location step
 		step6Tick();
+	}
+	
+	private void updateWorldToRunningCondition() {
+		Logger.logMain("Running condition: " + BatchRun.getRunningCondition().name());
+		switch(BatchRun.getRunningCondition()) {
+		case NONE:
+			return;
+		case NO_SCHOOL:
+			SimUtils.getSchool().disableSchool();
+			break;
+		case NO_EVENTHALL:
+			SimUtils.getEventHall().disableEventHall();
+			break;
+		case NO_FACTORY:
+			SimUtils.getFactory().disableFactory();
+			break;
+		case NO_DONATION:
+			//See resident
+			break;
+		case NO_EV_AND_DON:
+			SimUtils.getEventHall().disableEventHall();
+			//See resident
+			break;
+		case ONE_BOAT:
+			ArrayList<Boat> boats = SimUtils.getObjectsAll(Boat.class);
+			boats.get(0).disableBoat();
+			break;
+		case QUOTA:
+			
+			break;
+		}
 	}
 
 	private void savePopulation(int tick) {

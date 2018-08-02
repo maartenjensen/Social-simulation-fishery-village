@@ -37,7 +37,7 @@ public class ActionImplementation {
 			break;
 		case "Job captain":
 			for (Boat boat : boats) {
-				if (!boat.hasCaptain()) {
+				if (!boat.hasCaptain() && !boat.getDisabled()) {
 					if (resident.getMoney() > BoatType.LARGE.getPrice()) {
 						boat.setBoatType(BoatType.LARGE);
 					}

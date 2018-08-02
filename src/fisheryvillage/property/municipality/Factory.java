@@ -142,10 +142,20 @@ public class Factory extends Workplace {
 		return paymentAmount;
 	}
 	
+	public void disableFactory() {
+		allJobs.remove(0);
+		allJobs.remove(0);
+		
+		fireEmployees();
+	}
+	
 	@Override
 	public ArrayList<Status> getVacancy(boolean hasBeenFisher, double money) {
 		
 		ArrayList<Status> possibleJobs = new ArrayList<Status>();
+		if (allJobs.size() == 0)
+			return possibleJobs;
+		
 		if (!SimUtils.getEcosystem().getFishAlive() && fishUnprocessedKg == 0)
 			return possibleJobs;
 		

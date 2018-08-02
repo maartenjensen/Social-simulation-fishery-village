@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Humans by work</name>
-  <dataSet>Human by status</dataSet>
+  <name>DataCollector general</name>
+  <dataSet>DataCollector general</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Count</yAxisLabel>
-  <chartTitle>Humans by work</chartTitle>
+  <yAxisLabel>Counts</yAxisLabel>
+  <chartTitle>DataCollector general</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,11 +21,83 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>N F. boss</string>
+      <string>Children born</string>
       <SeriesData>
-        <label>N F. boss</label>
+        <label>Children born</label>
+        <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate out self</string>
+      <SeriesData>
+        <label>Migrate out self</label>
+        <color>
+          <red>255</red>
+          <green>0</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Died</string>
+      <SeriesData>
+        <label>Died</label>
         <color>
           <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate in</string>
+      <SeriesData>
+        <label>Migrate in</label>
+        <color>
+          <red>0</red>
+          <green>255</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate out with tick</string>
+      <SeriesData>
+        <label>Migrate out with tick</label>
+        <color>
+          <red>204</red>
+          <green>153</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Population number</string>
+      <SeriesData>
+        <label>Population number</label>
+        <color>
+          <red>0</red>
+          <green>255</green>
+          <blue>255</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Migrate out self tick</string>
+      <SeriesData>
+        <label>Migrate out self tick</label>
+        <color>
+          <red>153</red>
           <green>0</green>
           <blue>153</blue>
           <alpha>255</alpha>
@@ -33,96 +105,12 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>N Teachers</string>
+      <string>Migrate out with</string>
       <SeriesData>
-        <label>N Teachers</label>
-        <color>
-          <red>204</red>
-          <green>102</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Caretakers</string>
-      <SeriesData>
-        <label>N Caretakers</label>
+        <label>Migrate out with</label>
         <color>
           <red>255</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Fishers</string>
-      <SeriesData>
-        <label>N Fishers</label>
-        <color>
-          <red>255</red>
-          <green>255</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N F. workers</string>
-      <SeriesData>
-        <label>N F. workers</label>
-        <color>
-          <red>0</red>
-          <green>153</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Mayor</string>
-      <SeriesData>
-        <label>N Mayor</label>
-        <color>
-          <red>0</red>
-          <green>255</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Unemployed</string>
-      <SeriesData>
-        <label>N Unemployed</label>
-        <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>204</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N. Captain</string>
-      <SeriesData>
-        <label>N. Captain</label>
-        <color>
-          <red>204</red>
-          <green>204</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>N Workers outside</string>
-      <SeriesData>
-        <label>N Workers outside</label>
-        <color>
-          <red>0</red>
-          <green>0</green>
+          <green>200</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>

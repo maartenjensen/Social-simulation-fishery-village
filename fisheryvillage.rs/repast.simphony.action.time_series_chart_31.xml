@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>DataCollector general</name>
-  <dataSet>DataCollector general</dataSet>
+  <name>Human avg values</name>
+  <dataSet>Human avg values</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Counts</yAxisLabel>
-  <chartTitle>DataCollector general</chartTitle>
+  <yAxisLabel>Level</yAxisLabel>
+  <chartTitle>Human average value</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,23 +21,11 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>Children born</string>
+      <string>Avg tradition level</string>
       <SeriesData>
-        <label>Children born</label>
+        <label>Avg tradition level</label>
         <color>
-          <red>255</red>
-          <green>0</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Migrate out self</string>
-      <SeriesData>
-        <label>Migrate out self</label>
-        <color>
-          <red>255</red>
+          <red>0</red>
           <green>0</green>
           <blue>255</blue>
           <alpha>255</alpha>
@@ -45,11 +33,11 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Died</string>
+      <string>Avg power level</string>
       <SeriesData>
-        <label>Died</label>
+        <label>Avg power level</label>
         <color>
-          <red>0</red>
+          <red>255</red>
           <green>0</green>
           <blue>0</blue>
           <alpha>255</alpha>
@@ -57,9 +45,9 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Migrate in</string>
+      <string>Avg self-direction level</string>
       <SeriesData>
-        <label>Migrate in</label>
+        <label>Avg self-direction level</label>
         <color>
           <red>0</red>
           <green>255</green>
@@ -69,49 +57,13 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>Migrate out with tick</string>
+      <string>Avg universalism level</string>
       <SeriesData>
-        <label>Migrate out with tick</label>
-        <color>
-          <red>204</red>
-          <green>153</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Population number</string>
-      <SeriesData>
-        <label>Population number</label>
-        <color>
-          <red>0</red>
-          <green>255</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Migrate out self tick</string>
-      <SeriesData>
-        <label>Migrate out self tick</label>
-        <color>
-          <red>153</red>
-          <green>0</green>
-          <blue>153</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>Migrate out with</string>
-      <SeriesData>
-        <label>Migrate out with</label>
+        <label>Avg universalism level</label>
         <color>
           <red>255</red>
-          <green>200</green>
-          <blue>0</blue>
+          <green>0</green>
+          <blue>255</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>

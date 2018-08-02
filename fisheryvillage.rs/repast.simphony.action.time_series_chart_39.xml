@@ -1,9 +1,9 @@
 <repast.simphony.chart2.engine.TimeSeriesChartDescriptor simphonyVersion="2.5.0">
-  <name>Building savings</name>
-  <dataSet>Buildings savings</dataSet>
+  <name>Boat 1</name>
+  <dataSet>Boat for graph</dataSet>
   <xAxisLabel>Tick Count</xAxisLabel>
-  <yAxisLabel>Money $</yAxisLabel>
-  <chartTitle>Building savings</chartTitle>
+  <yAxisLabel>Count</yAxisLabel>
+  <chartTitle>Boat 1</chartTitle>
   <type>TIME_SERIES</type>
   <background>
     <red>255</red>
@@ -21,9 +21,9 @@
   <showLegend>true</showLegend>
   <seriesIds>
     <entry>
-      <string>$ Council</string>
+      <string>Boat 1 employee cap</string>
       <SeriesData>
-        <label>$ Council</label>
+        <label>Boat 1 employee cap</label>
         <color>
           <red>0</red>
           <green>0</green>
@@ -33,48 +33,36 @@
       </SeriesData>
     </entry>
     <entry>
-      <string>$ Elderly Care</string>
+      <string>Boat 1 fishers</string>
       <SeriesData>
-        <label>$ Elderly Care</label>
+        <label>Boat 1 fishers</label>
         <color>
           <red>255</red>
-          <green>0</green>
-          <blue>255</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>$ Social Care</string>
-      <SeriesData>
-        <label>$ Social Care</label>
-        <color>
-          <red>255</red>
-          <green>200</green>
+          <green>255</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
       </SeriesData>
     </entry>
     <entry>
-      <string>$ Factory</string>
+      <string>Boat 1 fish to catch normalized</string>
       <SeriesData>
-        <label>$ Factory</label>
-        <color>
-          <red>255</red>
-          <green>0</green>
-          <blue>0</blue>
-          <alpha>255</alpha>
-        </color>
-      </SeriesData>
-    </entry>
-    <entry>
-      <string>$ School</string>
-      <SeriesData>
-        <label>$ School</label>
+        <label>Boat 1 fish to catch normalized</label>
         <color>
           <red>0</red>
           <green>255</green>
+          <blue>0</blue>
+          <alpha>255</alpha>
+        </color>
+      </SeriesData>
+    </entry>
+    <entry>
+      <string>Boat 1 has captain normalized</string>
+      <SeriesData>
+        <label>Boat 1 has captain normalized</label>
+        <color>
+          <red>255</red>
+          <green>153</green>
           <blue>0</blue>
           <alpha>255</alpha>
         </color>
